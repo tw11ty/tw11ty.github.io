@@ -251,7 +251,7 @@ leak = <span class="keyword">lambda</span> name, value        : info(<span class
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071529364.png" alt="image-20240607152900330"></p>
 <p>给了栈地址 以及0x100长度限制的格式化字符串</p>
 <blockquote>
-<p>思路：改_exit_got为main地址同时泄露libc，然后改read_got为system地址，执行read(“&#x2F;bin&#x2F;sh\x00”)</p>
+<p>思路：改_exit_got为main地址同时泄露libc，然后再改exit_got为one_gadget，退出时执行one_gadget</p>
 </blockquote>
 <p>如何修改got？</p>
 <p>printf时的栈空间  利用rsp+8 处的连续指针 （fmtarg 看相对偏移括号里面的不用管）</p>
