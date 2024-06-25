@@ -240,7 +240,7 @@ awd_pwn_patcher.save()</code></pre>
 <p>自己还是太菜了。。。</p>
 <h3 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h3><p>当时没逆完的现在补补吧。</p>
 <h4 id="恢复符号表"><a href="#恢复符号表" class="headerlink" title="恢复符号表"></a>恢复符号表</h4><p>先尝试<strong>恢复静态编译去符号的库函数名</strong>，题目的编译环境为22，估计靶机环境是2.34以上。</p>
-<p>[IDA_flair]([<a target="_blank" rel="noopener" href="https://blog.csdn.net/Breeze_CAT/article/details/103788796">pwn&amp;re]使用IDA flair恢复静态编译去符号的库函数名_ida工具flair70-CSDN博客</a>)直接导入对应的sig文件，对应sig文件<a target="_blank" rel="noopener" href="https://github.com/push0ebp/sig-database">push0ebp&#x2F;sig-database: IDA FLIRT Signature Database (github.com)</a>下载，里面最glibc最高为2.35，如果是再高点就需需要自己生成了。</p>
+<p><a href="(https://blog.csdn.net/Breeze_CAT/article/details/103788796)">IDA_flair</a>直接导入对应的sig文件，对应sig文件<a target="_blank" rel="noopener" href="https://github.com/push0ebp/sig-database">push0ebp&#x2F;sig-database: IDA FLIRT Signature Database (github.com)</a>下载，里面最glibc最高为2.35，如果是再高点就需需要自己生成了。</p>
 <p>导入成功</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251713761.png" alt="image-20240625171320497"></p>
 <h4 id="函数分析"><a href="#函数分析" class="headerlink" title="函数分析"></a>函数分析</h4><p>lsflag遍历一遍chunk</p>
