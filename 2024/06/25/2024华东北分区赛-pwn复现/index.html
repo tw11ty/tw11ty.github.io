@@ -273,9 +273,7 @@ awd_pwn_patcher.save()</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251745788.png" alt="image-20240625174530752"></p>
 <p>过了这段chk后会打印flag</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251746139.png" alt="image-20240625174644089"></p>
-<p>由于加密是静态加密，对0x4E60F0内的数据进行加密</p>
-<p>先执行chkflag后会将flag写入到0x4E60F0内，这时使用getflag取出flag前八字节，计算出四次循环比较时的值，将计算的结果使用editflag写入到chunk中</p>
-<p>然后再执行chkflag就能过check拿到flag了。我们只需要第一次chkflag后，getflag读取出0x4E60F0的数据，然后计算出四次改变值，通过editflag写入对应的chunk中，最后再chkflag。</p>
+<p>先申请出四块chunk用于存放加密后的flag，然后执行chkflag，将flag写入到0x4E60F0内，这时使用getflag取出0x4E60F0中加密过后的flag。再循环四次使用editflag往四块chunk中写入四段循环加密的flag，最后执行chkflag就能成功的过check，输出flag。</p>
 <p>一个去了符号表的逻辑漏洞……洞有点多，check的点也是奇奇又怪怪。</p>
 <pre><code class="highlight python"><span class="comment">#coding:utf-8</span>
 <span class="keyword">from</span> pwn <span class="keyword">import</span> *
