@@ -217,7 +217,7 @@ docker build -t firmianay/qemu-system:$&#123;ARCH&#125; .
 <p>漏洞点位于&#x2F;usr&#x2F;sbin&#x2F;httpd中的sub_17F80，由于Content-Length引起的溢出</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251953973.png" alt="image-20240625195352919"></p>
 <p>uVar6是 “Content-Length” 的初始地址</p>
-<p>通过strncpy来将 &amp;local_38的   iVar3 - (iVar4 + 1)   字节数据copy到 iVar4 + 1</p>
+<p>通过strncpy来将iVar4 + 1 (Content-Length_value)的 iVar3 - (iVar4 + 1) 字节(Content-Length_len)数据copy到 &amp;local_38</p>
 <p>而iVar3 、4是在字符串中“\n”和“:”首次出现的地址，二者之间也就是输入的消息</p>
 <p>程序没有对Content-length字段进行校验，直接将输入的消息赋值给了local_38中，而local_38距离栈底只有0x38字节</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406252002547.png" alt="image-20240625200208487"></p>
