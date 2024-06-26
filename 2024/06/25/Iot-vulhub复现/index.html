@@ -68,14 +68,19 @@
   
 
   <main class="post-content"><p>借着逆向课的作业，就借此机会来学习并复现iot固件漏洞。网上搜集资料找到了<a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub">Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)</a>，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
-<p><a target="_blank" rel="noopener" href="https://brvc3.github.io/2023/03/15/IoT-Vulhub%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">IoT-Vulhub基础环境搭建 | Brvc3’s Base</a></p>
-<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/13430?time__1311=Gqmxu7G=5iq05DK5YK0=Tit0nnQbDcD=roD">IoT-vulhub 漏洞复现(一):Vivotek远程栈溢出漏洞 - 先知社区 (aliyun.com)</a></p>
-</blockquote>
 <p>由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了……</p>
-<h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建"></a>环境构建</h1><p>docker拉取问题解决：<a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file">https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file</a></p>
-<h2 id="基础环境构建"><a href="#基础环境构建" class="headerlink" title="基础环境构建"></a>基础环境构建</h2><p> 构建 ubuntu1604 基础镜像</p>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>- <a href="#env">环境构建</a></p>
+<ul>
+<li><a href="#env_basic">基础环境构建</a></li>
+<li><a href="#env_vul">漏洞环境构建</a></li>
+</ul>
+<p>- <a href="#TOTOLINK">TOTOLINK NR1800X (CVE-2022-41518)</a></p>
+<p>- <a href="#VIVOTEK">Vivotek CC8160 栈溢出漏洞</a></p>
+<p>- <a href="#HG532">华为 HG532 远程代码执行漏洞（CVE-2017-17215）</a></p>
+<h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建 "></a>环境构建 <a id="env"></a></h1><p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
+<p><a target="_blank" rel="noopener" href="https://brvc3.github.io/2023/03/15/IoT-Vulhub%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">IoT-Vulhub基础环境搭建 | Brvc3’s Base</a></p>
+<p>docker拉取问题解决：<a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file">https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file</a></p>
+<h2 id="基础环境构建"><a href="#基础环境构建" class="headerlink" title="基础环境构建"></a>基础环境构建<a id="env_basic"></a></h2><p> 构建 ubuntu1604 基础镜像</p>
 <blockquote>
 <p>cd baseImage&#x2F;ubuntu1604 &amp;&amp; docker build -t firmianay&#x2F;ubuntu1604 .</p>
 </blockquote>
@@ -83,7 +88,7 @@
 <blockquote>
 <p>cd baseImage&#x2F;binwalk &amp;&amp; docker build -t firmianay&#x2F;binwalk .</p>
 </blockquote>
-<h2 id="漏洞环境构建"><a href="#漏洞环境构建" class="headerlink" title="漏洞环境构建"></a>漏洞环境构建</h2><p>初始化环境（arm&#x2F;mips&#x2F;mipsel）</p>
+<h2 id="漏洞环境构建"><a href="#漏洞环境构建" class="headerlink" title="漏洞环境构建"></a>漏洞环境构建<a id="env_vul"></a></h2><p>初始化环境（arm&#x2F;mips&#x2F;mipsel）</p>
 <blockquote>
 <p>.&#x2F;init_env.sh xxxx</p>
 </blockquote>
@@ -102,7 +107,7 @@
 <blockquote>
 <p>docker-compose -f docker-compose-xxxx.yml down -v</p>
 </blockquote>
-<h1 id="TOTOLINK-NR1800X-CVE-2022-41518"><a href="#TOTOLINK-NR1800X-CVE-2022-41518" class="headerlink" title="TOTOLINK NR1800X (CVE-2022-41518)"></a>TOTOLINK NR1800X (CVE-2022-41518)</h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1995/">TOTOLINK NR1800X 系列 CVE 分析 (seebug.org)</a></p>
+<h1 id="TOTOLINK-NR1800X-CVE-2022-41518"><a href="#TOTOLINK-NR1800X-CVE-2022-41518" class="headerlink" title="TOTOLINK NR1800X (CVE-2022-41518)"></a>TOTOLINK NR1800X (CVE-2022-41518)<a id="TOTOLINK"></a></h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1995/">TOTOLINK NR1800X 系列 CVE 分析 (seebug.org)</a></p>
 <h2 id="漏洞环境"><a href="#漏洞环境" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -172,7 +177,7 @@ wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-2.6.32-5-4kc-malta
 <p>&#x2F;cgi-bin&#x2F;cstecgi.cgi 的 UploadFirmwareFile 函数，其参数FileName参数可控，并且将作为doSystem的参数被执行。</p>
 <p>这个命令注入不需要进行绕过。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902945.png" alt="image-20240623164123142"></p>
-<h1 id="Vivotek-CC8160-栈溢出漏洞"><a href="#Vivotek-CC8160-栈溢出漏洞" class="headerlink" title="Vivotek CC8160 栈溢出漏洞"></a>Vivotek CC8160 栈溢出漏洞</h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/5054?time__1311=n4+xnD07iti=j2DBqooGkYd0QeG=Q8DRjoD&alichlgref=https://xz.aliyun.com/t/5054#toc-4">Vivotek远程栈溢出漏洞分析与复现 - 先知社区 (aliyun.com)</a></p>
+<h1 id="Vivotek-CC8160-栈溢出漏洞"><a href="#Vivotek-CC8160-栈溢出漏洞" class="headerlink" title="Vivotek CC8160 栈溢出漏洞"></a>Vivotek CC8160 栈溢出漏洞<a id="VIVOTEK"></a></h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/5054?time__1311=n4+xnD07iti=j2DBqooGkYd0QeG=Q8DRjoD&alichlgref=https://xz.aliyun.com/t/5054#toc-4">Vivotek远程栈溢出漏洞分析与复现 - 先知社区 (aliyun.com)</a></p>
 <h2 id="漏洞环境-1"><a href="#漏洞环境-1" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -242,7 +247,7 @@ session.post(url, headers=header)</code></pre>
 
 
 
-<h1 id="华为-HG532-远程代码执行漏洞（CVE-2017-17215）"><a href="#华为-HG532-远程代码执行漏洞（CVE-2017-17215）" class="headerlink" title="华为 HG532 远程代码执行漏洞（CVE-2017-17215）"></a>华为 HG532 远程代码执行漏洞（CVE-2017-17215）</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/L0g4n-blog/p/15613816.html">漏洞分析：CVE-2017-17215 - Riv4ille - 博客园 (cnblogs.com)</a></p>
+<h1 id="华为-HG532-远程代码执行漏洞（CVE-2017-17215）"><a href="#华为-HG532-远程代码执行漏洞（CVE-2017-17215）" class="headerlink" title="华为 HG532 远程代码执行漏洞（CVE-2017-17215）"></a>华为 HG532 远程代码执行漏洞（CVE-2017-17215）<a id="HG532"></a></h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/L0g4n-blog/p/15613816.html">漏洞分析：CVE-2017-17215 - Riv4ille - 博客园 (cnblogs.com)</a></p>
 <h2 id="漏洞环境-2"><a href="#漏洞环境-2" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -317,8 +322,6 @@ log.success(<span class="string">&quot;getshell&quot;</span>)
 io.interactive()
 
 thread.join()</code></pre>
-
-
 
 
 
