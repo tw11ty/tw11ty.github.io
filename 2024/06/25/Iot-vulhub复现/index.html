@@ -275,11 +275,11 @@ session.post(url, headers=header)</code></pre>
 <p>发现是接收到了SSL证书错误，添加-k选项，忽略SSL证书验证</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260916879.png" alt="image-20240626091654813"></p>
 <p>成功访问服务！</p>
-<p><img src="C:/Users/1i/AppData/Roaming/Typora/typora-user-images/image-20240626094931147.png" alt="image-20240626094931147"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261029907.png" alt="image-20240626094931147"></p>
 <p>照着文档打通了<img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260045636.png" alt="image-20240626004523543"></p>
 <h2 id="漏洞复现-2"><a href="#漏洞复现-2" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>详细的控制流分析以及UPnP协议的学习有些心有余而力不足了</p>
 <p>简单分析一下upnp里面的关键漏洞代码</p>
-<p><img src="C:/Users/1i/AppData/Roaming/Typora/typora-user-images/image-20240626101528081.png" alt="image-20240626101528081"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261030685.png" alt="image-20240626101528081"></p>
 <p>这里调用了snprintf(a0, a1, a2, a3)</p>
 <p>即snprintf(a0, 0x400, “upg -g -U %s -t ‘1 Firmware Upgrade Ima”, a3)</p>
 <p>a0源操作数，a1为size，a2为格式化字符，a3为指定格式化的数据</p>
