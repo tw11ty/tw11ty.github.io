@@ -497,7 +497,7 @@
 
 <p>ps：syscall ret指令的寻找：ROPgadget –multibr –binary&#x3D;&#x2F;root&#x2F;glibc-all-in-one&#x2F;libs&#x2F;2.35-0ubuntu3.8_amd64&#x2F;libc.so.6 | grep “syscall”</p>
 <p>python低版本中的ctypes库在加载高版本的libc.so文件时会加载失败，需要使用高版本python(python3.8加载libc2.35失败)</p>
-<h3 id="正确解法"><a href="#正确解法" class="headerlink" title="正确解法"></a>正确解法<a id="success"></a></h3><p>[lmarch2](<a target="_blank" rel="noopener" href="https://www.cnblogs.com/imarch22/p/18288087#stdout">2024春秋杯WP - lmarch2 - 博客园 (cnblogs.com)</a>)师傅有写</p>
+<h3 id="正确解法"><a href="#正确解法" class="headerlink" title="正确解法"></a>正确解法<a id="success"></a></h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/imarch22/p/18288087#stdout">lmarch2</a>师傅有写</p>
 <p>自己太粗心了，没观察到栈信息，直接想着用&#x2F;dev&#x2F;urandom的绕过了。通过爆破love字符串，输入buf长度为0xa带出循环次数i，通过判断i位置来判断passwd字段是否正确</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071622115.png" alt="image-20240707162258071"></p>
 <p>exp就不贴了。</p>
