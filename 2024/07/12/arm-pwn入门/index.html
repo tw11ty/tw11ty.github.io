@@ -71,7 +71,7 @@
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://blingblingxuanxuan.github.io/2021/01/27/arm-pwn-start/#arm-pwn%E5%9F%BA%E6%9C%AC%E6%8A%80%E8%83%BD">arm pwn 入门 | blingbling’s blog (blingblingxuanxuan.github.io)</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com)</a></p>
-<p>[<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272332.htm#msg_header_h2_1">原创] CTF 中 ARM &amp; AArch64 架构下的 Pwn-Pwn-看雪-安全社区|安全招聘|kanxue.com</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272332.htm#msg_header_h2_1">[原创] CTF 中 ARM &amp; AArch64 架构下的 Pwn-Pwn-看雪-安全社区|安全招聘|kanxue.com</a></p>
 <h1 id="ARM寄存器集"><a href="#ARM寄存器集" class="headerlink" title="ARM寄存器集"></a>ARM寄存器集</h1><p>ARM指令集体系结构属于RISC（精简指令集） 32位 寄存器-寄存器型的体系结构，使用load&#x2F;stort指令在存储器与寄存器之间移动数据</p>
 <p>具有规整的32位指令格式，不能够像Pentium那样的CISC处理器将地址以及16位或者32位数据加载到寄存器中。</p>
 <p>ARM32寄存器集</p>
@@ -292,7 +292,7 @@
 <p>​       ……</p>
 <p>​       LDMFD r13!, {r0-r4, r10, r15} ; 恢复工作寄存器，把r14送入PC中</p>
 </blockquote>
-<h1 id="ARM-PWN环境搭建"><a href="#ARM-PWN环境搭建" class="headerlink" title="ARM PWN环境搭建"></a>ARM PWN环境搭建</h1><p>基础环境安装可看这位师傅[【Pwn 笔记】跨平台架构的环境配置与调试 | binLep’s Blog](<a target="_blank" rel="noopener" href="https://binlep.github.io/old_blog_01/2020/03/20/%E3%80%90Pwn">https://binlep.github.io/old_blog_01/2020/03/20/【Pwn</a> 笔记】跨平台架构的环境配置与调试&#x2F;)，写得很详细</p>
+<h1 id="ARM-PWN环境搭建"><a href="#ARM-PWN环境搭建" class="headerlink" title="ARM PWN环境搭建"></a>ARM PWN环境搭建</h1><p>基础环境安装可看这位师傅<a target="_blank" rel="noopener" href="https://binlep.github.io/old_blog_01/2020/03/20/%E3%80%90Pwn%20%E7%AC%94%E8%AE%B0%E3%80%91%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E4%B8%8E%E8%B0%83%E8%AF%95/">【Pwn 笔记】跨平台架构的环境配置与调试 | binLep’s Blog</a>，写得很详细</p>
 <p>使用qemu构建一个虚拟环境来运行arm文件，使用gdb-multiarch连接到qemu，进行远程调试</p>
 <p>AArch64：是ARMv8及更高版本中引入的64位架构。而qemu-arm用于模拟32位的ARM架构的二进制文件，qemu-aarch64用于模拟64位的ARM aarch64架构的二进制文件</p>
 <blockquote>
@@ -420,7 +420,7 @@ payload = shellcode.ljust(<span class="number">0x68</span>, <span class="string"
 io.send(payload)
 io.interactive()</code></pre>
 
-<p>不过<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">ZIKH26</a>)师傅的payload有些理不清</p>
+<p>不过<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">ZIKH26</a>师傅的payload有些理不清</p>
 <h1 id="题目三：64位-aarch64架构-动态"><a href="#题目三：64位-aarch64架构-动态" class="headerlink" title="题目三：64位 aarch64架构 动态"></a>题目三：64位 aarch64架构 动态</h1><p>上海骇极杯 2018 baby_arm</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121840669.png" alt="image-20240712184024595"></p>
 <p>往bss段上写数据，然后存在栈溢出</p>
