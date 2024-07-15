@@ -52,6 +52,36 @@
     <div class="post-list">
   
   <section class="post-item">
+    <a class="post-item-title" href="/2024/07/15/WKCTF-pwn/">WKCTF-pwn</a>
+    <div class="post-item-summary">
+      baby_stackwait函数里面有个格式化字符串，多试几次能试出来offset&#x3D;20时拿到libc
+
+
+v2长度为256字节，此函数中的a1[256]会造成栈上的off by null
+
+布置的payload，rbp每次低字节为00
+
+可以用ret填，不过exp多打几次出了
+
+#coding:utf-8
+from pwn import *
+from tw11ty import *
+#from ctypes import *
+
+if __name__ == &#x
+      <a class="read-more" href="/2024/07/15/WKCTF-pwn/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2024.07.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">writewp</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
     <a class="post-item-title" href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/">arm-pwn入门</a>
     <div class="post-item-summary">
       一些师傅的博客：
