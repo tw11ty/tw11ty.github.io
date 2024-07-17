@@ -69,17 +69,8 @@
 
   <main class="post-content"><p>借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了<a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub">Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)</a>，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。</p>
 <p>由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了……</p>
-<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>- <a href="#env">环境构建</a></p>
-<ul>
-<li><a href="#env_basic">基础环境构建</a></li>
-<li><a href="#env_vul">漏洞环境构建</a></li>
-</ul>
-<p>- <a href="#TOTOLINK">TOTOLINK NR1800X (CVE-2022-41518)</a></p>
-<p>- <a href="#VIVOTEK">Vivotek CC8160 栈溢出漏洞</a></p>
-<p>- <a href="#HG532">华为 HG532 远程代码执行漏洞（CVE-2017-17215）</a></p>
-<p>- <a href="#CISCO">Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）</a></p>
-<p>- <a href="#DLINK">D-Link DIR-859 命令注入漏洞（未成功）（CVE-2019-17621）</a></p>
-<h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建 "></a>环境构建 <a id="env"></a></h1><p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
+<p>[TOC]</p>
+<h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建"></a>环境构建</h1><p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
 <p><a target="_blank" rel="noopener" href="https://brvc3.github.io/2023/03/15/IoT-Vulhub%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">IoT-Vulhub基础环境搭建 | Brvc3’s Base</a></p>
 <p>docker拉取问题解决：<a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file">https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file</a></p>
 <h2 id="基础环境构建"><a href="#基础环境构建" class="headerlink" title="基础环境构建"></a>基础环境构建<a id="env_basic"></a></h2><p> 构建 ubuntu1604 基础镜像</p>
@@ -109,7 +100,7 @@
 <blockquote>
 <p>docker-compose -f docker-compose-xxxx.yml down -v</p>
 </blockquote>
-<h1 id="TOTOLINK-NR1800X-CVE-2022-41518"><a href="#TOTOLINK-NR1800X-CVE-2022-41518" class="headerlink" title="TOTOLINK NR1800X (CVE-2022-41518)"></a>TOTOLINK NR1800X (CVE-2022-41518)<a id="TOTOLINK"></a></h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1995/">TOTOLINK NR1800X 系列 CVE 分析 (seebug.org)</a></p>
+<h1 id="TOTOLINK-NR1800X-CVE-2022-41518"><a href="#TOTOLINK-NR1800X-CVE-2022-41518" class="headerlink" title="TOTOLINK NR1800X (CVE-2022-41518)"></a>TOTOLINK NR1800X (CVE-2022-41518)</h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1995/">TOTOLINK NR1800X 系列 CVE 分析 (seebug.org)</a></p>
 <h2 id="漏洞环境"><a href="#漏洞环境" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -164,7 +155,7 @@ wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-2.6.32-5-4kc-malta
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902277.png" alt="image-20240623143052731"></p>
 <p>3.开启ssh隧道</p>
 <p>本地使用ssh创建socks代理，然后浏览器配置代理</p>
-<pre><code class="highlight plaintext">ssh -D 10007 root@124.221.122.67 -p 1234</code></pre>
+<pre><code class="highlight plaintext">ssh -D 10006 root@124.221.122.67 -p 1234</code></pre>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903524.png" alt="image-20240623153609456"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903795.png" alt="image-20240623152246628"></p>
@@ -179,7 +170,7 @@ wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-2.6.32-5-4kc-malta
 <p>&#x2F;cgi-bin&#x2F;cstecgi.cgi 的 UploadFirmwareFile 函数，其参数FileName参数可控，并且将作为doSystem的参数被执行。</p>
 <p>这个命令注入不需要进行绕过。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902945.png" alt="image-20240623164123142"></p>
-<h1 id="Vivotek-CC8160-栈溢出漏洞"><a href="#Vivotek-CC8160-栈溢出漏洞" class="headerlink" title="Vivotek CC8160 栈溢出漏洞"></a>Vivotek CC8160 栈溢出漏洞<a id="VIVOTEK"></a></h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/5054?time__1311=n4+xnD07iti=j2DBqooGkYd0QeG=Q8DRjoD&alichlgref=https://xz.aliyun.com/t/5054#toc-4">Vivotek远程栈溢出漏洞分析与复现 - 先知社区 (aliyun.com)</a></p>
+<h1 id="Vivotek-CC8160-栈溢出漏洞"><a href="#Vivotek-CC8160-栈溢出漏洞" class="headerlink" title="Vivotek CC8160 栈溢出漏洞"></a>Vivotek CC8160 栈溢出漏洞</h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/5054?time__1311=n4+xnD07iti=j2DBqooGkYd0QeG=Q8DRjoD&alichlgref=https://xz.aliyun.com/t/5054#toc-4">Vivotek远程栈溢出漏洞分析与复现 - 先知社区 (aliyun.com)</a></p>
 <h2 id="漏洞环境-1"><a href="#漏洞环境-1" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -249,7 +240,7 @@ session.post(url, headers=header)</code></pre>
 
 
 
-<h1 id="华为-HG532-远程代码执行漏洞（CVE-2017-17215）"><a href="#华为-HG532-远程代码执行漏洞（CVE-2017-17215）" class="headerlink" title="华为 HG532 远程代码执行漏洞（CVE-2017-17215）"></a>华为 HG532 远程代码执行漏洞（CVE-2017-17215）<a id="HG532"></a></h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/L0g4n-blog/p/15613816.html">漏洞分析：CVE-2017-17215 - Riv4ille - 博客园 (cnblogs.com)</a></p>
+<h1 id="华为-HG532-远程代码执行漏洞（CVE-2017-17215）"><a href="#华为-HG532-远程代码执行漏洞（CVE-2017-17215）" class="headerlink" title="华为 HG532 远程代码执行漏洞（CVE-2017-17215）"></a>华为 HG532 远程代码执行漏洞（CVE-2017-17215）</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/L0g4n-blog/p/15613816.html">漏洞分析：CVE-2017-17215 - Riv4ille - 博客园 (cnblogs.com)</a></p>
 <h2 id="漏洞环境-2"><a href="#漏洞环境-2" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -327,7 +318,7 @@ thread.join()</code></pre>
 
 
 
-<h1 id="Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）"><a href="#Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）" class="headerlink" title="Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）"></a>Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）<a id="CISCO"></a></h1><p>难题的复现找来找去只有那么几位师傅</p>
+<h1 id="Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）"><a href="#Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）" class="headerlink" title="Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）"></a>Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）</h1><p>难题的复现找来找去只有那么几位师傅</p>
 <p><a target="_blank" rel="noopener" href="https://xuanxuanblingbling.github.io/iot/2020/10/26/rv110w/">思科路由器 RV110W CVE-2020-3331 漏洞复现 | Clang裁缝店 (xuanxuanblingbling.github.io)</a></p>
 <p>[<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-271900.htm">原创]Cisco RV110W 远程代码执行漏洞分析(CVE-2020-3331)-二进制漏洞-看雪-安全社区|安全招聘|kanxue.com</a></p>
 <p>思科无线路由器</p>
@@ -349,8 +340,8 @@ thread.join()</code></pre>
 </blockquote>
 <p>docker内进行端口转发(Docker-compose.yml中写好了端口映射)</p>
 <blockquote>
-<p>ssh <a href="mailto:&#114;&#111;&#x6f;&#x74;&#x40;&#x31;&#50;&#55;&#46;&#48;&#x2e;&#x30;&#x2e;&#49;">&#114;&#111;&#x6f;&#x74;&#x40;&#x31;&#50;&#55;&#46;&#48;&#x2e;&#x30;&#x2e;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
-<p>ssh <a href="mailto:&#x72;&#x6f;&#x6f;&#x74;&#x40;&#49;&#x32;&#55;&#x2e;&#48;&#46;&#x30;&#46;&#49;">&#x72;&#x6f;&#x6f;&#x74;&#x40;&#49;&#x32;&#55;&#x2e;&#48;&#46;&#x30;&#46;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
+<p>ssh <a href="mailto:&#114;&#111;&#111;&#x74;&#64;&#x31;&#50;&#55;&#x2e;&#48;&#46;&#48;&#x2e;&#49;">&#114;&#111;&#111;&#x74;&#64;&#x31;&#50;&#55;&#x2e;&#48;&#46;&#48;&#x2e;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
+<p>ssh <a href="mailto:&#114;&#111;&#111;&#x74;&#x40;&#x31;&#x32;&#55;&#46;&#48;&#x2e;&#48;&#46;&#49;">&#114;&#111;&#111;&#x74;&#x40;&#x31;&#x32;&#55;&#46;&#48;&#x2e;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
 </blockquote>
 <p>nmap可以扫到服务  8888–漏洞服务    6666–gdbserver</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png" alt="image-20240626231935303"></p>
@@ -434,7 +425,7 @@ thread.join()</code></pre>
 
 
 
-<h1 id="D-Link-DIR-859-命令注入漏洞（CVE-2019-17621）"><a href="#D-Link-DIR-859-命令注入漏洞（CVE-2019-17621）" class="headerlink" title="D-Link DIR-859 命令注入漏洞（CVE-2019-17621）"></a>D-Link DIR-859 命令注入漏洞（CVE-2019-17621）<a id="DLINK"></a></h1><h2 id="漏洞环境-4"><a href="#漏洞环境-4" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
+<h1 id="D-Link-DIR-859-命令注入漏洞（CVE-2019-17621）"><a href="#D-Link-DIR-859-命令注入漏洞（CVE-2019-17621）" class="headerlink" title="D-Link DIR-859 命令注入漏洞（CVE-2019-17621）"></a>D-Link DIR-859 命令注入漏洞（CVE-2019-17621）</h1><h2 id="漏洞环境-4"><a href="#漏洞环境-4" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>firmadyne：固件主机：192.168.0.1</li>
 <li>htdocs&#x2F;cgibin（有漏洞的服务程序）：192.168.0.1:49152</li>
@@ -448,31 +439,138 @@ thread.join()</code></pre>
 </blockquote>
 <p>两种方法都尝试了，docker都没起来</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271926418.png" alt="image-20240627192536273"></p>
-<h3 id="本地环境搭建"><a href="#本地环境搭建" class="headerlink" title="本地环境搭建"></a>本地环境搭建</h3><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TzFepaBpYnMbZ8Mep4IXwA">D-Link DIR-859 RCE漏洞（CVE-2019-17621）分析复现 (qq.com)</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/liyansong2018/firmware-analysis-plus">liyansong2018&#x2F;firmware-analysis-plus: Simulate firmware with one click of firmadyne (使用 firmadyne 一键模拟固件) (github.com)</a></p>
-<p>由于服务器为centos7，不支持firmadyne工具使用，本地vmware-ubuntu16.04虚拟机环境搭建</p>
-<p>项目构建好后先使用binwalk提取固件</p>
+<h2 id="本地环境搭建"><a href="#本地环境搭建" class="headerlink" title="本地环境搭建"></a>本地环境搭建</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TzFepaBpYnMbZ8Mep4IXwA">D-Link DIR-859 RCE漏洞（CVE-2019-17621）分析复现 (qq.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/VxerLee/p/16427304.html">零基础学IoT Pwn</a></p>
+<p>本地ubuntu22.04虚拟机搭建IOT环境</p>
+<h3 id="binwalk固件解包工具"><a href="#binwalk固件解包工具" class="headerlink" title="binwalk固件解包工具"></a>binwalk固件解包工具</h3><p><a target="_blank" rel="noopener" href="https://github.com/ReFirmLabs/binwalk">ReFirmLabs&#x2F;binwalk: Firmware Analysis Tool (github.com)</a></p>
+<pre><code class="highlight shell">git clone https://github.com/ReFirmLabs/binwalk.git
+<span class="meta prompt_"></span>
+<span class="meta prompt_">#</span><span class="language-bash">依赖项包含在deps.sh中</span>
+./.deps.sh
+<span class="meta prompt_">#</span><span class="language-bash">一些依赖工具</span>
+sudo apt-get install mtd-utils gzip bzip2 tar arj lhasa p7zip p7zip-full cabextract cramfsprogs cramfsswap squashfs-tools sleuthkit default-jdk lzop srecord
+
+sudo python3 setup.py install
+<span class="meta prompt_"></span>
+<span class="meta prompt_">#</span><span class="language-bash">卸载</span>
+sudo python3 setup.py uninstall</code></pre>
+
+
+
+<h3 id="qemu"><a href="#qemu" class="headerlink" title="qemu"></a>qemu</h3><p>没有本地编译，直接用官方的命令行安装</p>
+<p><a target="_blank" rel="noopener" href="https://www.qemu.org/download/#linux">Download QEMU - QEMU</a></p>
+<p>Debian&#x2F;Ubuntu:</p>
+<ul>
+<li>For full system emulation: <code>apt-get install qemu-system</code></li>
+<li>For emulating Linux binaries: <code>apt-get install qemu-user-static</code></li>
+</ul>
+<h3 id="Firmadyne-固件仿真工具"><a href="#Firmadyne-固件仿真工具" class="headerlink" title="Firmadyne 固件仿真工具"></a>Firmadyne 固件仿真工具</h3><p><a target="_blank" rel="noopener" href="https://github.com/firmadyne/firmadyne#introduction">firmadyne&#x2F;firmadyne: Platform for emulation and dynamic analysis of Linux-based firmware (github.com)</a></p>
+<pre><code class="highlight shell">git clone --recursive https://github.com/firmadyne/firmadyne.git    #克隆项目以及子项目</code></pre>
+
+<p>安装postgresql数据库</p>
+<pre><code class="highlight shell">sudo apt-get install postgresql
+sudo -u postgres createuser -P firmadyne  #密码设置为firmadyne
+sudo -u postgres createdb -O firmadyne firmware
+sudo -u postgres psql -d firmware &lt; ./firmadyne/database/schema</code></pre>
+
+<p>检查数据库是否配置完成</p>
+<pre><code class="highlight plaintext">sudo -u postgres psql -d firmware   #连接到数据库
+\dt                       #列出所有表
+\d table_name                 #查看表结构
+SELECT * FROM table_name;        #查看表中数据
+\q                       #退出</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913673.png" alt="image-20240717091308539"></p>
+<p>下载需要的二进制工具</p>
+<pre><code class="highlight plaintext">sudo ./download.sh
+ls ./binaries/   #检查安装完成</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913451.png" alt="image-20240717091350377"></p>
+<h3 id="模拟运行固件"><a href="#模拟运行固件" class="headerlink" title="模拟运行固件"></a>模拟运行固件</h3><p>清理环境</p>
+<pre><code class="highlight plaintext">sudo su
+./reset.py</code></pre>
+
+<p>提取固件包并保存镜像</p>
+<pre><code class="highlight shell">./sources/extractor/extractor.py -b Dlink -sql 127.0.0.1 -np -nk DIR822A1_FW103WWb03.bin  images
+<span class="meta prompt_">#</span><span class="language-bash">-b  指定固件所属品牌</span>
+<span class="meta prompt_">#</span><span class="language-bash">-sql 连接本地数据库</span>
+<span class="meta prompt_">#</span><span class="language-bash">-np 不使用并行模式，这个参数告诉脚本不使用并行处理，通常用于调试或在资源有限的系统上运行时使用</span>
+<span class="meta prompt_">#</span><span class="language-bash">-nk 不保留提取的固件镜像</span></code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170935339.png" alt="image-20240717093500277"></p>
+<p>识别CPU架构</p>
+<pre><code class="highlight plaintext">./scripts/getArch.sh ./images/2.tar.gz</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170936295.png" alt="image-20240717093612247"></p>
+<p>创建镜像</p>
+<pre><code class="highlight plaintext">./scripts/makeImage.sh id</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171034660.png" alt="image-20240717103423529"></p>
+<p>存储数据库</p>
+<pre><code class="highlight plaintext">./scripts/tar2db.py -i id -f ./images/3.tar.gz
+
+#数据库查看
+sudo -u postgres psql -d firmware 
+SELECT * FROM image WHERE id = 3;</code></pre>
+
+
+
+<p>设置网络接口</p>
+<pre><code class="highlight plaintext">./scripts/inferNetwork.sh id</code></pre>
+
+
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171033321.png" alt="image-20240717103310256"></p>
+<p>然后本地会生成一个同网段的网卡</p>
+<p>运行固件</p>
+<pre><code class="highlight plaintext">./scratch/id/run.sh</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171040100.png" alt="image-20240717104031046"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171039126.png" alt="image-20240717103956988"></p>
+<p>ssh端口转发</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qingzhantianxia/article/details/121956966">流量转发之端口转发-CSDN博客</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171111502.png" alt="屏幕截图 2024-07-17 110805"></p>
+<p>调试环境的搭建先搁着</p>
+<p>用iot-vulhub里面提供的exp打通</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171118223.png" alt="image-20240717111850093"></p>
+<p>服务关闭</p>
+<pre><code class="highlight plaintext">netstat -lnp  #查看qemu服务PID
+kill -9 pid</code></pre>
+
+
+
+
+
+<p>模拟固件过程中使用数据库来记录和统计固件信息，有时这一行为是无用功，<a target="_blank" rel="noopener" href="https://wzt.ac.cn/2021/08/15/firmadyne3/">固件模拟 Case Study (3) | CataLpa’s Site (wzt.ac.cn)</a>这位师傅是修改了模拟运行固件中，将写入数据库的代码进行了删改</p>
+<p>FAT项目基于Firmadyne进行了更改，不使用PostgreSQL数据库存储设备信息。</p>
+<p>下载 Firmware Analysis Toolkit</p>
+<pre><code class="highlight plaintext">git clone https://github.com/attify/firmware-analysis-toolkit.git</code></pre>
+
+<p>改fat.config文件中发的配置信息</p>
+<pre><code class="highlight plaintext">[DEFAULT]
+sudo_password=Your_Root_pwd
+firmadyne_path=Your_firmadyne_Path</code></pre>
+
+<p>设置的网络接口为空，虽然跑起来了，但是ifconfig没有网卡信息，服务没起起来</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171324298.png" alt="image-20240717132423058"></p>
+<p>inferNetwork.sh没有找到任何网络接口，作者有在论文中提到<a target="_blank" rel="noopener" href="https://github.com/firmadyne/firmadyne/blob/master/paper/paper.pdf">firmadyne&#x2F;paper&#x2F;paper.pdf at master · firmadyne&#x2F;firmadyne (github.com)</a> </p>
 <blockquote>
-<p>sudo binwalk -e –run-as&#x3D;root DIR822A1_FW103WWb03.bin</p>
+<p>一个令人不便的事实是，提高仿真成功率或修复固件映像的网络配置检测，例如 Shibby 的 Tomato，是一个手动过程。</p>
+<p>它要求分析人员手动检查系统日志，以便根据根本原因识别和分类仿真失败，然后进行必要的更改以支持这些映像。</p>
+<p>通常，这可能是一个循环过程，因为仿真失败可能有多种原因。</p>
 </blockquote>
-<p>然后使用extractor.py脚本分析处理信息</p>
-<blockquote>
-<p>sudo .&#x2F;sources&#x2F;extractor&#x2F;extractor.py -b Dlink -sql 127.0.0.1 -np -nk “DIR822A1_FW103WWb03.bin” images</p>
-</blockquote>
-<p>但是不知道为什么会在分析过程中卡死……</p>
-<p>卡死。。。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406272228828.png" alt="image-20240627222438432"></p>
-<p>暂不在这上面花太多精力了。直接通过分离出的cgibin进行简单分析漏洞成因。</p>
+<p>firmware-analysis-toolkit的作者有在<a target="_blank" rel="noopener" href="https://github.com/attify/firmware-analysis-toolkit/issues/46">issuse46</a>里提供了一个方法，将inferNetwork.sh超时值增加</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171410301.png" alt="image-20240717141057141"></p>
 <h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TzFepaBpYnMbZ8Mep4IXwA">D-Link DIR-859 RCE漏洞（CVE-2019-17621）分析复现 (qq.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/m00nflower/p/15933470.html">CVE-2019-17621 Dlink-859 RCE 复现 - moon_flower - 博客园 (cnblogs.com)</a></p>
-<p>第二位师傅已经将流程详细的讲解了一遍，这里就不多赘述了。</p>
 <p>主要漏洞利用在：利用fwrite函数控制$shell_file的值，如果向$shell_file中写入了由反引号包裹的命令，就能RCE绕过。</p>
 <p>cigbin程序中的调用流程：buf_8 -&gt;xmldbc_ephp-&gt;FUN_0041420c -&gt;FUN_0041372c -&gt; socket</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406272301792.png" alt="image-20240627230116665"></p>
 <p>调用了GENA_subscribe_new()，定义在gena.php文件中  htdocs&#x2F;upnpinc下</p>
 <p>这里也就是漏洞所在。。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406272304282.png" alt="image-20240627230435176"></p>
-<p>这个cve的复现实在是超出力所能及的范围了，不仅仅是docker环境g了，还有本地分析工具的构建，以及漏洞的分析挖掘，让人有些郁闷了。。</p>
+<p>从这开始，对于iot-vulhub的复现，不仅仅依赖于docker环境部署，更多将在本地部署设备环境。</p>
+<hr>
 <p>ing。。。</p>
 </main>
 
