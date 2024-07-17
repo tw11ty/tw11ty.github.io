@@ -80,7 +80,13 @@
 <p>- <a href="#CISCO">Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）</a></p>
 <p>- <a href="#DLINK">D-Link DIR-859 命令注入漏洞（未成功）（CVE-2019-17621）</a></p>
 <ul>
-<li><a href="#LOCAL">本地IOT环境搭建</a></li>
+<li><a href="#LOCAL">本地仿真环境搭建</a><ul>
+<li><a href="#binwalk">binwelk 固件解包工具</a></li>
+<li><a href="#qemu">qemu</a></li>
+<li><a href="#firmadyne">Firmadyne 固件仿真工具</a></li>
+<li><a href="#action">模拟运行固件</a></li>
+</ul>
+</li>
 </ul>
 <h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建 "></a>环境构建 <a id="env"></a></h1><p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
 <p><a target="_blank" rel="noopener" href="https://brvc3.github.io/2023/03/15/IoT-Vulhub%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">IoT-Vulhub基础环境搭建 | Brvc3’s Base</a></p>
@@ -352,8 +358,8 @@ thread.join()</code></pre>
 </blockquote>
 <p>docker内进行端口转发(Docker-compose.yml中写好了端口映射)</p>
 <blockquote>
-<p>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#50;&#55;&#x2e;&#48;&#x2e;&#x30;&#46;&#49;">&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#50;&#55;&#x2e;&#48;&#x2e;&#x30;&#46;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
-<p>ssh <a href="mailto:&#x72;&#111;&#111;&#116;&#64;&#x31;&#50;&#x37;&#x2e;&#x30;&#46;&#48;&#46;&#49;">&#x72;&#111;&#111;&#116;&#64;&#x31;&#50;&#x37;&#x2e;&#x30;&#46;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
+<p>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#x40;&#49;&#x32;&#x37;&#x2e;&#48;&#46;&#x30;&#46;&#49;">&#114;&#x6f;&#x6f;&#116;&#x40;&#49;&#x32;&#x37;&#x2e;&#48;&#46;&#x30;&#46;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
+<p>ssh <a href="mailto:&#114;&#x6f;&#111;&#116;&#x40;&#49;&#x32;&#x37;&#46;&#48;&#46;&#48;&#46;&#49;">&#114;&#x6f;&#111;&#116;&#x40;&#49;&#x32;&#x37;&#46;&#48;&#46;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
 </blockquote>
 <p>nmap可以扫到服务  8888–漏洞服务    6666–gdbserver</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png" alt="image-20240626231935303"></p>
@@ -454,7 +460,7 @@ thread.join()</code></pre>
 <h2 id="本地环境搭建"><a href="#本地环境搭建" class="headerlink" title="本地环境搭建"></a>本地环境搭建<a id="LOCAL"></a></h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TzFepaBpYnMbZ8Mep4IXwA">D-Link DIR-859 RCE漏洞（CVE-2019-17621）分析复现 (qq.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/VxerLee/p/16427304.html">零基础学IoT Pwn</a></p>
 <p>本地ubuntu22.04虚拟机搭建IOT环境</p>
-<h3 id="binwalk固件解包工具"><a href="#binwalk固件解包工具" class="headerlink" title="binwalk固件解包工具"></a>binwalk固件解包工具</h3><p><a target="_blank" rel="noopener" href="https://github.com/ReFirmLabs/binwalk">ReFirmLabs&#x2F;binwalk: Firmware Analysis Tool (github.com)</a></p>
+<h3 id="binwalk固件解包工具"><a href="#binwalk固件解包工具" class="headerlink" title="binwalk固件解包工具"></a>binwalk固件解包工具<a id="binwalk"></a></h3><p><a target="_blank" rel="noopener" href="https://github.com/ReFirmLabs/binwalk">ReFirmLabs&#x2F;binwalk: Firmware Analysis Tool (github.com)</a></p>
 <pre><code class="highlight shell">git clone https://github.com/ReFirmLabs/binwalk.git
 <span class="meta prompt_"></span>
 <span class="meta prompt_">#</span><span class="language-bash">依赖项包含在deps.sh中</span>
@@ -469,14 +475,14 @@ sudo python3 setup.py uninstall</code></pre>
 
 
 
-<h3 id="qemu"><a href="#qemu" class="headerlink" title="qemu"></a>qemu</h3><p>没有本地编译，直接用官方的命令行安装</p>
+<h3 id="qemu"><a href="#qemu" class="headerlink" title="qemu"></a>qemu<a id="qemu"></a></h3><p>没有本地编译，直接用官方的命令行安装</p>
 <p><a target="_blank" rel="noopener" href="https://www.qemu.org/download/#linux">Download QEMU - QEMU</a></p>
 <p>Debian&#x2F;Ubuntu:</p>
 <ul>
 <li>For full system emulation: <code>apt-get install qemu-system</code></li>
 <li>For emulating Linux binaries: <code>apt-get install qemu-user-static</code></li>
 </ul>
-<h3 id="Firmadyne-固件仿真工具"><a href="#Firmadyne-固件仿真工具" class="headerlink" title="Firmadyne 固件仿真工具"></a>Firmadyne 固件仿真工具</h3><p><a target="_blank" rel="noopener" href="https://github.com/firmadyne/firmadyne#introduction">firmadyne&#x2F;firmadyne: Platform for emulation and dynamic analysis of Linux-based firmware (github.com)</a></p>
+<h3 id="Firmadyne-固件仿真工具"><a href="#Firmadyne-固件仿真工具" class="headerlink" title="Firmadyne 固件仿真工具"></a>Firmadyne 固件仿真工具<a id="firmadyne"></a></h3><p><a target="_blank" rel="noopener" href="https://github.com/firmadyne/firmadyne#introduction">firmadyne&#x2F;firmadyne: Platform for emulation and dynamic analysis of Linux-based firmware (github.com)</a></p>
 <pre><code class="highlight shell">git clone --recursive https://github.com/firmadyne/firmadyne.git    #克隆项目以及子项目</code></pre>
 
 <p>安装postgresql数据库</p>
@@ -498,7 +504,7 @@ SELECT * FROM table_name;        #查看表中数据
 ls ./binaries/   #检查安装完成</code></pre>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913451.png" alt="image-20240717091350377"></p>
-<h3 id="模拟运行固件"><a href="#模拟运行固件" class="headerlink" title="模拟运行固件"></a>模拟运行固件</h3><p>清理环境</p>
+<h3 id="模拟运行固件"><a href="#模拟运行固件" class="headerlink" title="模拟运行固件"></a>模拟运行固件<a id="action"></a></h3><p>清理环境</p>
 <pre><code class="highlight plaintext">sudo su
 ./reset.py</code></pre>
 
