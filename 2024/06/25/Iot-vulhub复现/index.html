@@ -352,8 +352,8 @@ thread.join()</code></pre>
 </blockquote>
 <p>docker内进行端口转发(Docker-compose.yml中写好了端口映射)</p>
 <blockquote>
-<p>ssh <a href="mailto:&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x32;&#55;&#46;&#48;&#x2e;&#x30;&#46;&#49;">&#x72;&#111;&#111;&#x74;&#64;&#x31;&#x32;&#55;&#46;&#48;&#x2e;&#x30;&#46;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
-<p>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#64;&#49;&#50;&#55;&#x2e;&#x30;&#46;&#48;&#x2e;&#x31;">&#114;&#x6f;&#x6f;&#116;&#64;&#49;&#50;&#55;&#x2e;&#x30;&#46;&#48;&#x2e;&#x31;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
+<p>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#50;&#55;&#x2e;&#48;&#x2e;&#x30;&#46;&#49;">&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#50;&#55;&#x2e;&#48;&#x2e;&#x30;&#46;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
+<p>ssh <a href="mailto:&#x72;&#111;&#111;&#116;&#64;&#x31;&#50;&#x37;&#x2e;&#x30;&#46;&#48;&#46;&#49;">&#x72;&#111;&#111;&#116;&#64;&#x31;&#50;&#x37;&#x2e;&#x30;&#46;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
 </blockquote>
 <p>nmap可以扫到服务  8888–漏洞服务    6666–gdbserver</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png" alt="image-20240626231935303"></p>
@@ -366,7 +366,7 @@ thread.join()</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270002901.png" alt="image-20240627000252848"></p>
 <p>官方手册</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270004520.png" alt="image-20240627000444482"></p>
-<p>要求GDB 8.0以上，Python3.6+，修改更麻烦了，干脆不装gef了，把gef哪行注释掉</p>
+<p>要求GDB 8.0以上，Python3.6+，修改更麻烦了，干脆不装gef了，把gef那行注释掉</p>
 <pre><code class="highlight Dockerfile"><span class="keyword">FROM</span> firmianay/ubuntu1604                                                                                                                
 <span class="keyword">LABEL</span><span class="language-bash"> Author=<span class="string">&quot;firmianay@gmail.com&quot;</span>                                                                                                       </span>
                                                                                                                                          
@@ -558,7 +558,7 @@ kill -9 pid</code></pre>
 <p>下载 Firmware Analysis Toolkit</p>
 <pre><code class="highlight plaintext">git clone https://github.com/attify/firmware-analysis-toolkit.git</code></pre>
 
-<p>改fat.config文件中发的配置信息</p>
+<p>改fat.config文件中的配置信息</p>
 <pre><code class="highlight plaintext">[DEFAULT]
 sudo_password=Your_Root_pwd
 firmadyne_path=Your_firmadyne_Path</code></pre>
