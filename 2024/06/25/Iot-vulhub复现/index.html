@@ -69,8 +69,20 @@
 
   <main class="post-content"><p>借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了<a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub">Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)</a>，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。</p>
 <p>由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了……</p>
-<p>[TOC]</p>
-<h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建"></a>环境构建</h1><p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>- <a href="#env">环境构建</a></p>
+<ul>
+<li><a href="#env_basic">基础环境构建</a></li>
+<li><a href="#env_vul">漏洞环境构建</a></li>
+</ul>
+<p>- <a href="#TOTOLINK">TOTOLINK NR1800X (CVE-2022-41518)</a></p>
+<p>- <a href="#VIVOTEK">Vivotek CC8160 栈溢出漏洞</a></p>
+<p>- <a href="#HG532">华为 HG532 远程代码执行漏洞（CVE-2017-17215）</a></p>
+<p>- <a href="#CISCO">Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）</a></p>
+<p>- <a href="#DLINK">D-Link DIR-859 命令注入漏洞（未成功）（CVE-2019-17621）</a></p>
+<ul>
+<li><a href="#LOCAL">本地IOT环境搭建</a></li>
+</ul>
+<h1 id="环境构建"><a href="#环境构建" class="headerlink" title="环境构建 "></a>环境构建 <a id="env"></a></h1><p><a target="_blank" rel="noopener" href="https://wsxk.github.io/IotVulhub/">IoT-vulhub 漏洞复现 – wsxk’s blog – 小菜鸡</a></p>
 <p><a target="_blank" rel="noopener" href="https://brvc3.github.io/2023/03/15/IoT-Vulhub%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">IoT-Vulhub基础环境搭建 | Brvc3’s Base</a></p>
 <p>docker拉取问题解决：<a target="_blank" rel="noopener" href="https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file">https://github.com/DaoCloud/public-image-mirror?tab=readme-ov-file</a></p>
 <h2 id="基础环境构建"><a href="#基础环境构建" class="headerlink" title="基础环境构建"></a>基础环境构建<a id="env_basic"></a></h2><p> 构建 ubuntu1604 基础镜像</p>
@@ -100,7 +112,7 @@
 <blockquote>
 <p>docker-compose -f docker-compose-xxxx.yml down -v</p>
 </blockquote>
-<h1 id="TOTOLINK-NR1800X-CVE-2022-41518"><a href="#TOTOLINK-NR1800X-CVE-2022-41518" class="headerlink" title="TOTOLINK NR1800X (CVE-2022-41518)"></a>TOTOLINK NR1800X (CVE-2022-41518)</h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1995/">TOTOLINK NR1800X 系列 CVE 分析 (seebug.org)</a></p>
+<h1 id="TOTOLINK-NR1800X-CVE-2022-41518"><a href="#TOTOLINK-NR1800X-CVE-2022-41518" class="headerlink" title="TOTOLINK NR1800X (CVE-2022-41518)"></a>TOTOLINK NR1800X (CVE-2022-41518)<a id="TOTOLINK"></a></h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1995/">TOTOLINK NR1800X 系列 CVE 分析 (seebug.org)</a></p>
 <h2 id="漏洞环境"><a href="#漏洞环境" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -170,7 +182,7 @@ wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-2.6.32-5-4kc-malta
 <p>&#x2F;cgi-bin&#x2F;cstecgi.cgi 的 UploadFirmwareFile 函数，其参数FileName参数可控，并且将作为doSystem的参数被执行。</p>
 <p>这个命令注入不需要进行绕过。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902945.png" alt="image-20240623164123142"></p>
-<h1 id="Vivotek-CC8160-栈溢出漏洞"><a href="#Vivotek-CC8160-栈溢出漏洞" class="headerlink" title="Vivotek CC8160 栈溢出漏洞"></a>Vivotek CC8160 栈溢出漏洞</h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/5054?time__1311=n4+xnD07iti=j2DBqooGkYd0QeG=Q8DRjoD&alichlgref=https://xz.aliyun.com/t/5054#toc-4">Vivotek远程栈溢出漏洞分析与复现 - 先知社区 (aliyun.com)</a></p>
+<h1 id="Vivotek-CC8160-栈溢出漏洞"><a href="#Vivotek-CC8160-栈溢出漏洞" class="headerlink" title="Vivotek CC8160 栈溢出漏洞"></a>Vivotek CC8160 栈溢出漏洞<a id="VIVOTEK"></a></h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/5054?time__1311=n4+xnD07iti=j2DBqooGkYd0QeG=Q8DRjoD&alichlgref=https://xz.aliyun.com/t/5054#toc-4">Vivotek远程栈溢出漏洞分析与复现 - 先知社区 (aliyun.com)</a></p>
 <h2 id="漏洞环境-1"><a href="#漏洞环境-1" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -240,7 +252,7 @@ session.post(url, headers=header)</code></pre>
 
 
 
-<h1 id="华为-HG532-远程代码执行漏洞（CVE-2017-17215）"><a href="#华为-HG532-远程代码执行漏洞（CVE-2017-17215）" class="headerlink" title="华为 HG532 远程代码执行漏洞（CVE-2017-17215）"></a>华为 HG532 远程代码执行漏洞（CVE-2017-17215）</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/L0g4n-blog/p/15613816.html">漏洞分析：CVE-2017-17215 - Riv4ille - 博客园 (cnblogs.com)</a></p>
+<h1 id="华为-HG532-远程代码执行漏洞（CVE-2017-17215）"><a href="#华为-HG532-远程代码执行漏洞（CVE-2017-17215）" class="headerlink" title="华为 HG532 远程代码执行漏洞（CVE-2017-17215）"></a>华为 HG532 远程代码执行漏洞（CVE-2017-17215）<a id="HG532"></a></h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/L0g4n-blog/p/15613816.html">漏洞分析：CVE-2017-17215 - Riv4ille - 博客园 (cnblogs.com)</a></p>
 <h2 id="漏洞环境-2"><a href="#漏洞环境-2" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>qemu-system：固件主机：192.168.2.2</li>
@@ -318,7 +330,7 @@ thread.join()</code></pre>
 
 
 
-<h1 id="Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）"><a href="#Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）" class="headerlink" title="Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）"></a>Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）</h1><p>难题的复现找来找去只有那么几位师傅</p>
+<h1 id="Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）"><a href="#Cisco-RV110W-远程代码执行漏洞（CVE-2020-3331）" class="headerlink" title="Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）"></a>Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）<a id="CISCO"></a></h1><p>难题的复现找来找去只有那么几位师傅</p>
 <p><a target="_blank" rel="noopener" href="https://xuanxuanblingbling.github.io/iot/2020/10/26/rv110w/">思科路由器 RV110W CVE-2020-3331 漏洞复现 | Clang裁缝店 (xuanxuanblingbling.github.io)</a></p>
 <p>[<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-271900.htm">原创]Cisco RV110W 远程代码执行漏洞分析(CVE-2020-3331)-二进制漏洞-看雪-安全社区|安全招聘|kanxue.com</a></p>
 <p>思科无线路由器</p>
@@ -340,8 +352,8 @@ thread.join()</code></pre>
 </blockquote>
 <p>docker内进行端口转发(Docker-compose.yml中写好了端口映射)</p>
 <blockquote>
-<p>ssh <a href="mailto:&#114;&#111;&#111;&#x74;&#64;&#x31;&#50;&#55;&#x2e;&#48;&#46;&#48;&#x2e;&#49;">&#114;&#111;&#111;&#x74;&#64;&#x31;&#50;&#55;&#x2e;&#48;&#46;&#48;&#x2e;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
-<p>ssh <a href="mailto:&#114;&#111;&#111;&#x74;&#x40;&#x31;&#x32;&#55;&#46;&#48;&#x2e;&#48;&#46;&#49;">&#114;&#111;&#111;&#x74;&#x40;&#x31;&#x32;&#55;&#46;&#48;&#x2e;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
+<p>ssh <a href="mailto:&#114;&#111;&#111;&#116;&#64;&#x31;&#x32;&#x37;&#46;&#x30;&#x2e;&#48;&#46;&#49;">&#114;&#111;&#111;&#116;&#64;&#x31;&#x32;&#x37;&#46;&#x30;&#x2e;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
+<p>ssh <a href="mailto:&#x72;&#x6f;&#111;&#116;&#64;&#49;&#x32;&#x37;&#46;&#x30;&#46;&#x30;&#46;&#x31;">&#x72;&#x6f;&#111;&#116;&#64;&#49;&#x32;&#x37;&#46;&#x30;&#46;&#x30;&#46;&#x31;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
 </blockquote>
 <p>nmap可以扫到服务  8888–漏洞服务    6666–gdbserver</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png" alt="image-20240626231935303"></p>
@@ -425,7 +437,7 @@ thread.join()</code></pre>
 
 
 
-<h1 id="D-Link-DIR-859-命令注入漏洞（CVE-2019-17621）"><a href="#D-Link-DIR-859-命令注入漏洞（CVE-2019-17621）" class="headerlink" title="D-Link DIR-859 命令注入漏洞（CVE-2019-17621）"></a>D-Link DIR-859 命令注入漏洞（CVE-2019-17621）</h1><h2 id="漏洞环境-4"><a href="#漏洞环境-4" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
+<h1 id="D-Link-DIR-859-命令注入漏洞（CVE-2019-17621）"><a href="#D-Link-DIR-859-命令注入漏洞（CVE-2019-17621）" class="headerlink" title="D-Link DIR-859 命令注入漏洞（CVE-2019-17621）"></a>D-Link DIR-859 命令注入漏洞（CVE-2019-17621）<a id="DLINK"></a></h1><h2 id="漏洞环境-4"><a href="#漏洞环境-4" class="headerlink" title="漏洞环境"></a>漏洞环境</h2><ul>
 <li>docker：攻击、调试主机：192.168.2.1</li>
 <li>firmadyne：固件主机：192.168.0.1</li>
 <li>htdocs&#x2F;cgibin（有漏洞的服务程序）：192.168.0.1:49152</li>
@@ -439,7 +451,7 @@ thread.join()</code></pre>
 </blockquote>
 <p>两种方法都尝试了，docker都没起来</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271926418.png" alt="image-20240627192536273"></p>
-<h2 id="本地环境搭建"><a href="#本地环境搭建" class="headerlink" title="本地环境搭建"></a>本地环境搭建</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TzFepaBpYnMbZ8Mep4IXwA">D-Link DIR-859 RCE漏洞（CVE-2019-17621）分析复现 (qq.com)</a></p>
+<h2 id="本地环境搭建"><a href="#本地环境搭建" class="headerlink" title="本地环境搭建"></a>本地环境搭建<a id="LOCAL"></a></h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/TzFepaBpYnMbZ8Mep4IXwA">D-Link DIR-859 RCE漏洞（CVE-2019-17621）分析复现 (qq.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/VxerLee/p/16427304.html">零基础学IoT Pwn</a></p>
 <p>本地ubuntu22.04虚拟机搭建IOT环境</p>
 <h3 id="binwalk固件解包工具"><a href="#binwalk固件解包工具" class="headerlink" title="binwalk固件解包工具"></a>binwalk固件解包工具</h3><p><a target="_blank" rel="noopener" href="https://github.com/ReFirmLabs/binwalk">ReFirmLabs&#x2F;binwalk: Firmware Analysis Tool (github.com)</a></p>
@@ -569,7 +581,7 @@ firmadyne_path=Your_firmadyne_Path</code></pre>
 <p>调用了GENA_subscribe_new()，定义在gena.php文件中  htdocs&#x2F;upnpinc下</p>
 <p>这里也就是漏洞所在。。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406272304282.png" alt="image-20240627230435176"></p>
-<p>从这开始，对于iot-vulhub的复现，不仅仅依赖于docker环境部署，更多将在本地部署设备环境。</p>
+<p>从这开始，环境的构建将不依赖于dokcer环境，而是通过本地来模拟环境。</p>
 <hr>
 <p>ing。。。</p>
 </main>
