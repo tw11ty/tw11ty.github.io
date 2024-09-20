@@ -12,10 +12,10 @@ http://tw11ty.github.io/2024/06/10/the-end/
 http://tw11ty.github.io/2024/06/06/hello-world/
 http://tw11ty.github.io/tag/index.html
 http://tw11ty.github.io/
-http://tw11ty.github.io/tags/IOT/
 http://tw11ty.github.io/tags/ciscn/
 http://tw11ty.github.io/tags/writewp/
 http://tw11ty.github.io/tags/IO/
+http://tw11ty.github.io/tags/IOT/
+http://tw11ty.github.io/tags/arm/
 http://tw11ty.github.io/tags/exit-IO/
 http://tw11ty.github.io/tags/fmt/
-http://tw11ty.github.io/tags/arm/

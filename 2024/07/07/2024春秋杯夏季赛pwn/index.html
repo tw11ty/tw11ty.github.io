@@ -1,111 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    2024春秋杯夏季赛pwn 丨
+    
+
+    tw11ty&#39;s Blog
+  </title>
+
   
+  <link rel="shortcut icon" href="/icon.svg">
   
-  <title>2024春秋杯夏季赛pwn | tw11ty</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="2024春秋杯夏季赛-pwnawdp没看，ctf只做出来两题，还有一题理论可行。  参考博客： https:&#x2F;&#x2F;starrysky1004.github.io&#x2F;2024&#x2F;07&#x2F;05&#x2F;2024-shu-qi-xue-xi-ji-lu&#x2F; 2024春秋杯WP - lmarch2 - 博客园 (cnblogs.com)  目录- stdout  解法一 解法二 解法三  - Shuffled_Execut">
-<meta property="og:type" content="article">
-<meta property="og:title" content="2024春秋杯夏季赛pwn">
-<meta property="og:url" content="http://tw11ty.github.io/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/index.html">
-<meta property="og:site_name" content="tw11ty">
-<meta property="og:description" content="2024春秋杯夏季赛-pwnawdp没看，ctf只做出来两题，还有一题理论可行。  参考博客： https:&#x2F;&#x2F;starrysky1004.github.io&#x2F;2024&#x2F;07&#x2F;05&#x2F;2024-shu-qi-xue-xi-ji-lu&#x2F; 2024春秋杯WP - lmarch2 - 博客园 (cnblogs.com)  目录- stdout  解法一 解法二 解法三  - Shuffled_Execut">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071403848.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071418049.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071508360.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071529824.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071611991.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071622115.png">
-<meta property="article:published_time" content="2024-07-07T04:44:56.000Z">
-<meta property="article:modified_time" content="2024-07-15T03:42:50.518Z">
-<meta property="article:author" content="tw11ty">
-<meta property="article:tag" content="writewp">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071403848.png">
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   
-    <link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
   
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
   
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+<link rel="stylesheet" href="/css/root.css">
+
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+<link rel="stylesheet" href="/css/post.css">
 
-  
-  
-</head>
+<link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
 
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">tw11ty</a>
-      </h1>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">tw11ty</a>
+    <ul class="nav">
       
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">MyBlog</a>
-        </h2>
+      <li><a href="/archives">归档</a></li>
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://tw11ty.github.io"></form>
-      </div>
-    </div>
-  </div>
+      <li><a href="/about">关于</a></li>
+      
+      <li><a href="/group">友链</a></li>
+      
+    </ul>
+  </section>
 </header>
-
-      <div class="outer">
-        <section id="main"><article id="post-2024春秋杯夏季赛pwn" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/" class="article-date">
-  <time class="dt-published" datetime="2024-07-07T04:44:56.000Z" itemprop="datePublished">2024-07-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+  <main class="main">
+    <article class="post">
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      2024春秋杯夏季赛pwn
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+  <div class="post-title">2024春秋杯夏季赛pwn</div>
+  <div class="post-meta">
+    <div class="date">2024 July 7th</div>
+    <div class="tags">
       
-        <h1 id="2024春秋杯夏季赛-pwn"><a href="#2024春秋杯夏季赛-pwn" class="headerlink" title="2024春秋杯夏季赛-pwn"></a>2024春秋杯夏季赛-pwn</h1><p>awdp没看，ctf只做出来两题，还有一题理论可行。</p>
+      <div class="tag-item">writewp</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="2024春秋杯夏季赛-pwn"><a href="#2024春秋杯夏季赛-pwn" class="headerlink" title="2024春秋杯夏季赛-pwn"></a>2024春秋杯夏季赛-pwn</h1><p>awdp没看，ctf只做出来两题，还有一题理论可行。</p>
 <blockquote>
 <p>参考博客：</p>
 <p><a target="_blank" rel="noopener" href="https://starrysky1004.github.io/2024/07/05/2024-shu-qi-xue-xi-ji-lu/">https://starrysky1004.github.io/2024/07/05/2024-shu-qi-xue-xi-ji-lu/</a></p>
@@ -211,151 +174,22 @@
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407071622115.png" alt="image-20240707162258071"></p>
 <p>exp就不贴了。</p>
 <p>暑假的第一场比赛，算是尽心尽力了。</p>
+</main>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://tw11ty.github.io/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/" data-id="cm1apfr7a00090sjwc3ad0ouu" data-title="2024春秋杯夏季赛pwn" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writewp/" rel="tag">writewp</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          arm-pwn入门
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Iot-vulhub复现</div>
-    </a>
-  
-</nav>
-
-  
 </article>
 
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
+<script src="/js/highlight.js"></script>
 
+  </main>
+  <footer class="footer">
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/arm/" rel="tag">arm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ciscn/" rel="tag">ciscn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exit-IO/" rel="tag">exit &amp; IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fmt/" rel="tag">fmt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writewp/" rel="tag">writewp</a></li></ul>
-    </div>
-  </div>
-
-
+  <span>Copyright © 2024 typo</span>
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/IOT/" style="font-size: 10px;">IOT</a> <a href="/tags/arm/" style="font-size: 10px;">arm</a> <a href="/tags/ciscn/" style="font-size: 10px;">ciscn</a> <a href="/tags/exit-IO/" style="font-size: 10px;">exit & IO</a> <a href="/tags/fmt/" style="font-size: 10px;">fmt</a> <a href="/tags/writewp/" style="font-size: 20px;">writewp</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2024/07/15/WKCTF-pwn/">WKCTF-pwn</a>
-          </li>
-        
-          <li>
-            <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/">arm-pwn入门</a>
-          </li>
-        
-          <li>
-            <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/">2024春秋杯夏季赛pwn</a>
-          </li>
-        
-          <li>
-            <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">Iot-vulhub复现</a>
-          </li>
-        
-          <li>
-            <a href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">2024ciscn分区赛-pwn复现</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2024 tw11ty<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
-
-    </div>
-    <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+<script src="/js/theme.js"></script>
 
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
+
 </html>
