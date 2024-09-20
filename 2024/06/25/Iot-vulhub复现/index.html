@@ -1,268 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    Iot-vulhub复现 丨
+    
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+    tw11ty&#39;s Blog
+  </title>
 
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":"enable","motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。 由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了…… 目录- 环境构建  基础环境构建 漏洞环境构建  -">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Iot-vulhub复现">
-<meta property="og:url" content="http://example.com/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/index.html">
-<meta property="og:site_name" content="tw11ty">
-<meta property="og:description" content="借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。 由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了…… 目录- 环境构建  基础环境构建 漏洞环境构建  -">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903763.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903687.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902277.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903524.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903795.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903991.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902852.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251904405.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902945.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251859341.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251900140.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251923337.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251953973.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406252002547.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261004016.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260004775.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260909274.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260912255.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260914069.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260916879.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261029907.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260045636.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261030685.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262355451.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271159313.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270002901.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270004520.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271205845.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271207669.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271926418.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913673.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913451.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170935339.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170936295.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171034660.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171033321.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171040100.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171039126.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171111502.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171118223.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171324298.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171410301.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406272301792.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406272304282.png">
-<meta property="article:published_time" content="2024-06-25T10:46:14.000Z">
-<meta property="article:modified_time" content="2024-07-17T06:43:26.009Z">
-<meta property="article:author" content="kkkk">
-<meta property="article:tag" content="IOT">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903763.png">
-
-
-<link rel="canonical" href="http://example.com/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/","path":"2024/06/25/Iot-vulhub复现/","title":"Iot-vulhub复现"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Iot-vulhub复现 | tw11ty</title>
+  
+  <link rel="shortcut icon" href="/icon.svg">
   
 
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
 
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
+  
+<link rel="stylesheet" href="/css/root.css">
 
+  
+<link rel="stylesheet" href="/css/style.css">
 
+  
+<link rel="stylesheet" href="/css/post.css">
 
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
 <link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">tw11ty</p>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">A blog powered by Hexo</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">tw11ty</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">归档</a></li>
+      
+      <li><a href="/about">关于</a></li>
+      
+      <li><a href="/group">友链</a></li>
+      
+    </ul>
+  </section>
 </header>
-        
+  <main class="main">
+    <article class="post">
   
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%9E%84%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">环境构建 </span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%9E%84%E5%BB%BA"><span class="nav-number">2.1.</span> <span class="nav-text">基础环境构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%8E%AF%E5%A2%83%E6%9E%84%E5%BB%BA"><span class="nav-number">2.2.</span> <span class="nav-text">漏洞环境构建</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TOTOLINK-NR1800X-CVE-2022-41518"><span class="nav-number">3.</span> <span class="nav-text">TOTOLINK NR1800X (CVE-2022-41518)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%8E%AF%E5%A2%83"><span class="nav-number">3.1.</span> <span class="nav-text">漏洞环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">3.2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="nav-number">3.3.</span> <span class="nav-text">漏洞复现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vivotek-CC8160-%E6%A0%88%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E"><span class="nav-number">4.</span> <span class="nav-text">Vivotek CC8160 栈溢出漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%8E%AF%E5%A2%83-1"><span class="nav-number">4.1.</span> <span class="nav-text">漏洞环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-1"><span class="nav-number">4.2.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%A8%A1%E6%8B%9F"><span class="nav-number">4.2.1.</span> <span class="nav-text">用户模拟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%A8%A1%E6%8B%9F"><span class="nav-number">4.2.2.</span> <span class="nav-text">系统模拟</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0-1"><span class="nav-number">4.3.</span> <span class="nav-text">漏洞复现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8E%E4%B8%BA-HG532-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2017-17215%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">华为 HG532 远程代码执行漏洞（CVE-2017-17215）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%8E%AF%E5%A2%83-2"><span class="nav-number">5.1.</span> <span class="nav-text">漏洞环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-2"><span class="nav-number">5.2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0-2"><span class="nav-number">5.3.</span> <span class="nav-text">漏洞复现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cisco-RV110W-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2020-3331%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">Cisco RV110W 远程代码执行漏洞（CVE-2020-3331）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%8E%AF%E5%A2%83-3"><span class="nav-number">6.1.</span> <span class="nav-text">漏洞环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-3"><span class="nav-number">6.2.</span> <span class="nav-text">环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%8F%92%E6%9B%B2"><span class="nav-number">6.2.1.</span> <span class="nav-text">小插曲</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0-3"><span class="nav-number">6.3.</span> <span class="nav-text">漏洞复现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#D-Link-DIR-859-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2019-17621%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">D-Link DIR-859 命令注入漏洞（CVE-2019-17621）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%8E%AF%E5%A2%83-4"><span class="nav-number">7.1.</span> <span class="nav-text">漏洞环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-4"><span class="nav-number">7.2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">7.3.</span> <span class="nav-text">本地环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#binwalk%E5%9B%BA%E4%BB%B6%E8%A7%A3%E5%8C%85%E5%B7%A5%E5%85%B7"><span class="nav-number">7.3.1.</span> <span class="nav-text">binwalk固件解包工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qemu"><span class="nav-number">7.3.2.</span> <span class="nav-text">qemu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Firmadyne-%E5%9B%BA%E4%BB%B6%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7"><span class="nav-number">7.3.3.</span> <span class="nav-text">Firmadyne 固件仿真工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E8%BF%90%E8%A1%8C%E5%9B%BA%E4%BB%B6"><span class="nav-number">7.3.4.</span> <span class="nav-text">模拟运行固件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="nav-number">7.4.</span> <span class="nav-text">漏洞分析</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">kkkk</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">9</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">tags</span>
-      </div>
-  </nav>
-</div>
-
-        </div>
-      </div>
+  <div class="post-title">Iot-vulhub复现</div>
+  <div class="post-meta">
+    <div class="date">2024 June 25th</div>
+    <div class="tags">
+      
+      <div class="tag-item">IOT</div>
+      
     </div>
-
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
+  </div>
   
 
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="kkkk">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="tw11ty">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Iot-vulhub复现 | tw11ty">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Iot-vulhub复现
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2024-06-25 18:46:14" itemprop="dateCreated datePublished" datetime="2024-06-25T18:46:14+08:00">2024-06-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-07-17 14:43:26" itemprop="dateModified" datetime="2024-07-17T14:43:26+08:00">2024-07-17</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>14k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>13 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><p>借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了<a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub">Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)</a>，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。</p>
+  <main class="post-content"><p>借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了<a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub">Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)</a>，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。</p>
 <p>由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了……</p>
 <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>- <a href="#env">环境构建</a></p>
 <ul>
@@ -553,8 +359,8 @@ thread.join()</code></pre>
 </blockquote>
 <p>docker内进行端口转发(Docker-compose.yml中写好了端口映射)</p>
 <blockquote>
-<p>ssh <a href="mailto:&#114;&#x6f;&#111;&#116;&#x40;&#49;&#x32;&#x37;&#x2e;&#x30;&#x2e;&#48;&#46;&#49;">&#114;&#x6f;&#111;&#116;&#x40;&#49;&#x32;&#x37;&#x2e;&#x30;&#x2e;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
-<p>ssh <a href="mailto:&#114;&#111;&#x6f;&#116;&#64;&#49;&#x32;&#55;&#46;&#x30;&#x2e;&#48;&#x2e;&#49;">&#114;&#111;&#x6f;&#116;&#64;&#49;&#x32;&#55;&#46;&#x30;&#x2e;&#48;&#x2e;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
+<p>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#50;&#x37;&#x2e;&#48;&#46;&#x30;&#46;&#x31;">&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#50;&#x37;&#x2e;&#48;&#46;&#x30;&#46;&#x31;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
+<p>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#x40;&#x31;&#x32;&#x37;&#46;&#48;&#x2e;&#48;&#x2e;&#49;">&#114;&#x6f;&#x6f;&#116;&#x40;&#x31;&#x32;&#x37;&#46;&#48;&#x2e;&#48;&#x2e;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
 </blockquote>
 <p>nmap可以扫到服务  8888–漏洞服务    6666–gdbserver</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png" alt="image-20240626231935303"></p>
@@ -785,116 +591,22 @@ firmadyne_path=Your_firmadyne_Path</code></pre>
 <p>从这开始，环境的构建将不依赖于dokcer环境，而是通过本地来模拟环境。</p>
 <hr>
 <p>ing。。。</p>
+</main>
 
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/IOT/" rel="tag"># IOT</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/" rel="prev" title="2024ciscn分区赛-pwn复现">
-                  <i class="fa fa-angle-left"></i> 2024ciscn分区赛-pwn复现
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/" rel="next" title="2024春秋杯夏季赛pwn">
-                  2024春秋杯夏季赛pwn <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
+</article>
 
 
+<script src="/js/highlight.js"></script>
 
-
-
-
-</div>
   </main>
-
   <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2024</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">kkkk</span>
-  </div>
-<div class="wordcount">
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
-    </span>
-    <span title="Word count total">87k</span>
-  </span>
-  <span class="post-meta-item">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="Reading time total">1:19</span>
-  </span>
-</div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
-
-    </div>
-  </footer>
-
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
+  <span>Copyright © 2024 typo</span>
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
-
+</footer>
   
-
-
-
-  <script src="/js/third-party/fancybox.js"></script>
-
-
-
-  
-
-
-
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":"enable","home":"enable","archive":"enable","delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/"}</script>
-  <script src="/js/third-party/quicklink.js"></script>
+<script src="/js/theme.js"></script>
 
 </body>
+
 </html>
