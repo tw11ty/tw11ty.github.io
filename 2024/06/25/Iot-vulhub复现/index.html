@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":"enable","motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。 由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了…… 目录- 环境构建  基础环境构建 漏洞环境构建  -">
 <meta property="og:type" content="article">
@@ -553,8 +553,8 @@ thread.join()</code></pre>
 </blockquote>
 <p>docker内进行端口转发(Docker-compose.yml中写好了端口映射)</p>
 <blockquote>
-<p>ssh <a href="mailto:&#x72;&#111;&#111;&#116;&#x40;&#x31;&#50;&#x37;&#x2e;&#x30;&#x2e;&#48;&#46;&#49;">&#x72;&#111;&#111;&#116;&#x40;&#x31;&#50;&#x37;&#x2e;&#x30;&#x2e;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
-<p>ssh <a href="mailto:&#114;&#111;&#x6f;&#x74;&#64;&#49;&#x32;&#55;&#46;&#x30;&#x2e;&#x30;&#46;&#x31;">&#114;&#111;&#x6f;&#x74;&#64;&#49;&#x32;&#55;&#46;&#x30;&#x2e;&#x30;&#46;&#x31;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
+<p>ssh <a href="mailto:&#114;&#x6f;&#111;&#116;&#x40;&#49;&#x32;&#x37;&#x2e;&#x30;&#x2e;&#48;&#46;&#49;">&#114;&#x6f;&#111;&#116;&#x40;&#49;&#x32;&#x37;&#x2e;&#x30;&#x2e;&#48;&#46;&#49;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
+<p>ssh <a href="mailto:&#114;&#111;&#x6f;&#116;&#64;&#49;&#x32;&#55;&#46;&#x30;&#x2e;&#48;&#x2e;&#49;">&#114;&#111;&#x6f;&#116;&#64;&#49;&#x32;&#55;&#46;&#x30;&#x2e;&#48;&#x2e;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
 </blockquote>
 <p>nmap可以扫到服务  8888–漏洞服务    6666–gdbserver</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png" alt="image-20240626231935303"></p>
@@ -892,6 +892,9 @@ firmadyne_path=Your_firmadyne_Path</code></pre>
 
 
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":"enable","home":"enable","archive":"enable","delay":true,"timeout":3000,"priority":true,"url":"http://example.com/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
 
 </body>
 </html>
