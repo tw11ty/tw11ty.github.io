@@ -1,10 +1,10 @@
+http://tw11ty.github.io/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/
 http://tw11ty.github.io/2024/07/15/WKCTF-pwn/
 http://tw11ty.github.io/2024/06/10/the-end/
 http://tw11ty.github.io/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/
 http://tw11ty.github.io/2024/06/11/IO-FILE%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8/
 http://tw11ty.github.io/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/
 http://tw11ty.github.io/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/
-http://tw11ty.github.io/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/
 http://tw11ty.github.io/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/
 http://tw11ty.github.io/categories/index.html
 http://tw11ty.github.io/group/index.html
@@ -14,13 +14,13 @@ http://tw11ty.github.io/about/index-1.html
 http://tw11ty.github.io/about/index.html
 http://tw11ty.github.io/2024/06/06/hello-world/
 http://tw11ty.github.io/
-http://tw11ty.github.io/tags/ciscn/
 http://tw11ty.github.io/tags/IO/
 http://tw11ty.github.io/tags/writewp/
 http://tw11ty.github.io/tags/IOT/
 http://tw11ty.github.io/tags/exit-IO/
 http://tw11ty.github.io/tags/arm/
 http://tw11ty.github.io/tags/fmt/
+http://tw11ty.github.io/tags/ciscn-WriteUP/
 http://tw11ty.github.io/categories/WriteUP/
 http://tw11ty.github.io/categories/STU/
 http://tw11ty.github.io/categories/IOT/
