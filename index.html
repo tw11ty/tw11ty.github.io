@@ -1,269 +1,466 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
+
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
+	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
+	<link rel="shortcut icon" href="/img/logo_miccall.png">
+	
+			    <title>
+    tw11ty
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/css/mic_main.css" />
+    <link rel="stylesheet" href="/css/dropdownMenu.css" />
+    <meta name="keywords" content="miccall" />
     
+    	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	 
+    <noscript>
+        <link rel="stylesheet" href="/css/noscript.css" />
+    </noscript>
+    <style type="text/css">
+        body:before {
+          content: ' ';
+          position: fixed;
+          top: 0;
+          background: url('/img/bg.jpg') center 0 no-repeat;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-size: cover; 
+        }
+    </style>
 
-    tw11ty&#39;s Blog
-  </title>
+<link rel="stylesheet" href="/css/prism_coy.css">
 
+			    
   
-  <link rel="shortcut icon" href="/icon.svg">
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script async type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  
 
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
-  
-<link rel="stylesheet" href="/css/root.css">
-
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-<link rel="stylesheet" href="/css/post.css">
-
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/main.js"></script>
+	
 <link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
 <link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
-
-<body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">tw11ty</a>
-    <ul class="nav">
-      
-      <li><a href="/archives">归档</a></li>
-      
-      <li><a href="/about">关于</a></li>
-      
-      <li><a href="/group">友链</a></li>
-      
-    </ul>
-  </section>
+    
+		<body class="is-loading">
+    <!-- Wrapper 外包 s-->
+    <div id="wrapper" class="fade-in overlay">
+        <!-- Intro 头部显示 s -->
+                <div id="intro">
+            <h1>This is<br />
+                        MICCALL </h1>
+            <p> Whatever is worth doing is worth doing well <br/> I'll think of you every step of the way
+            </p>
+            <ul class="actions">
+                <li><a href="#header" class="button icon solo fa-arrow-down scrolly">Continue</a></li>
+            </ul>
+        </div>
+        <!-- Intro 头部显示 e -->
+        <!-- Header 头部logo start -->
+        <header id="header">
+    <a href="/" class="logo">MICCALL</a>
 </header>
-  <main class="main">
-    <div class="post-list">
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/07/15/WKCTF-pwn/">WKCTF-pwn</a>
-    <div class="post-item-summary">
-      baby_stackwait函数里面有个格式化字符串，多试几次能试出来offset&#x3D;20时拿到libc
+        <!-- Header 头部logo end -->
+        <!-- Nav 导航条 start -->
+        <nav id="nav" class="special" >
+            <ul class="menu links" >
+			<!-- Homepage  主页  --> 
+			<li >
+	            <a href="/" rel="nofollow">主页</a>
+	        </li>
+			<!-- categories_name  分类   --> 
+	        
+	        <li class="active">
+	            <a href="#s1">分类</a>
+	                    <ul class="submenu">
+	                        <li>
+	                        
+	                    </ul>
+	        </li>
+	        
+	        <!-- archives  归档   --> 
+	        
+	        
+		        <!-- Pages 自定义   -->
+		        
+		        <li>
+		            <a href="/about/" title="简历">
+		                简历
+		            </a>
+		        </li>
+		        
+		        <li>
+		            <a href="/group/" title="团队">
+		                团队
+		            </a>
+		        </li>
+		        
+		        <li>
+		            <a href="/gallery/" title="图库">
+		                图库
+		            </a>
+		        </li>
+		        
+		        <li>
+		            <a href="/tag/" title="标签">
+		                标签
+		            </a>
+		        </li>
+		        
 
 
-v2长度为256字节，此函数中的a1[256]会造成栈上的off by null
-
-布置的payload，rbp每次低字节为00
-
-可以用ret填，不过exp多打几次出了
-
-1234567891011121314151617181920212223242526272829303132333435363738#coding:utf-8from pwn impor
-      <a class="read-more" href="/2024/07/15/WKCTF-pwn/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.07.15</div>
-      <div class="tags">
+            </ul>
+            <!-- icons 图标   -->
+			<ul class="icons">
+                    
+                    <li>
+                        <a title="github" href="https://github.com/miccall" target="_blank" rel="noopener">
+                            <i class="icon fa fa-github"></i>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a title="500px" href="http://500px.com" target="_blank" rel="noopener">
+                            <i class="icon fa fa-500px"></i>
+                        </a>
+                    </li>
+                    
+			</ul>
+</nav>
+        <!-- Nav 导航条 end -->
+        <!-- Main 主要部分 start -->
         
-        <div class="tag-item">writewp</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/">arm-pwn入门</a>
-    <div class="post-item-summary">
-      一些师傅的博客：
-关于学习arm架构下的pwn的总结 - ZikH26 - 博客园 (cnblogs.com)
-arm pwn 入门 | blingbling’s blog (blingblingxuanxuan.github.io)
-IOT pwn_apt install mips-linux-CSDN博客
-[原创] CTF 中 ARM &amp; AArch64 架构下的 Pwn-Pwn-看雪-安全社区|安全招聘|kanxue.com 
-也参考了许多其他师傅们的博客，这里
-      <a class="read-more" href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.07.12</div>
-      <div class="tags">
-        
-        <div class="tag-item">arm</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/">2024春秋杯夏季赛pwn</a>
-    <div class="post-item-summary">
-      2024春秋杯夏季赛-pwnawdp没看，ctf只做出来两题，还有一题理论可行。
+        <!-- Main-first -->
+                    <div id="main">
+            <!-- Main first s-->
+            <article id="me" class="panel">
+                <header style="color: #000000">
+                    <h1>Miccall Metro</h1>
+                    <p>Technical  Artist  of  Games</p>
+                </header>
+                <a href="" class="jumplink pic">
+                    <span class="arrow icon fa-chevron-right"><span></span></span>
+                    <img src="/images/me.jpg" alt="" />
+                </a>
+            </article>
+            <!-- Main first e-->
+        </div>
 
-参考博客：
-https://starrysky1004.github.io/2024/07/05/2024-shu-qi-xue-xi-ji-lu/
-2024春秋杯WP - lmarch2 - 博客园 (cnblogs.com)
-
-目录- stdout
-
-解法一
-解法二
-解法三
-
-- Shuffled_Execution
-- Save the preceniss
-
-不可能的爆破…
-正确解法
-
-
-      <a class="read-more" href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.07.07</div>
-      <div class="tags">
         
-        <div class="tag-item">writewp</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">Iot-vulhub复现</a>
-    <div class="post-item-summary">
-      借着逆向课的作业，就借此机会来简单学习并复现iot固件漏洞。网上搜集资料找到了Vu1nT0tal&#x2F;IoT-vulhub: IoT固件漏洞复现环境 (github.com)，感觉该项目对0基础入门iot固件漏洞复现是蛮有帮助的，就以此对相关漏洞进行复现。
-由于我的服务器是国内的，所以构建过程会有很多麻烦，而且dockerhub也g了……
-目录- 环境构建
+        <!-- 文章列表   s -->
+        <div id="main" style="background-color: transparent; padding:0;">
+        <section class="link_container" style="margin-top: 0; background-color: transparent; ">
+            <div class="link_row">
+                <!-- 文章sample  s-->
 
-基础环境构建
-漏洞环境构建
-
-- TOTOLINK NR1800X (CVE-2022-41518)
-- Viv
-      <a class="read-more" href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.06.25</div>
-      <div class="tags">
-        
-        <div class="tag-item">IOT</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">2024ciscn分区赛-pwn复现</a>
-    <div class="post-item-summary">
-      2024华东北分区赛-pwn复现第一次打国赛，也是第一次打awdp（非正规）。赛后平台、题目都是非预期。竟然可以用fix来break，算是长见识了。这次比赛更多的是积累经验了。
-8web 2pwn。两道题都通了，可是都没fix成功。
-9.23访问平台地址，9.30靶机开始访问
-pwn-1这题蛮可惜的，漏洞就是栈溢出+格式化字符串，花了40多分钟打通。一开始看到题目先想着fix了，没有先break。结果patch了6次都没过，到了10.45放弃fix这题，开始break。到13
-      <a class="read-more" href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.06.25</div>
-      <div class="tags">
-        
-        <div class="tag-item">ciscn</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/06/11/IO-FILE%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8/">_IO_FILE基础利用</a>
-    <div class="post-item-summary">
-      _IO_FILE利用
-sky123师傅博客：http://t.csdnimg.cn/O8y8S，从IO_FILE的结构、原理到利用，写得极其详细易懂
-hollk师傅：好好说话之IO_FILE利用（1）：利用_IO_2_1_stdout泄露libc_libc泄露方式-CSDN博客
-
-_IO_FILE结构 在2.31中定义在了struct_FILE.h头文件中
-参照sky123师傅的贴图仿作出一幅IO_FILE结构关系图
-
-1.FILE结构_IO_FILE结构在较低版本的libc
-      <a class="read-more" href="/2024/06/11/IO-FILE%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.06.11</div>
-      <div class="tags">
-        
-        <div class="tag-item">IO</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/06/10/the-end/">the_end</a>
-    <div class="post-item-summary">
-      hctf2018_the_end远程：2.27-3ubuntu1
-
-每次往一个地址里面写1字节，给了libc
-_dl_rtld_unlock_recursive&#x2F;_dl_rtld_lock_recursive往libc中写入数据，通过exit退出，打exithook，用one_gadget来获取shell
-我们劫持ld中rtld_global结构体的_dl_rtld_unlock_recursive&#x2F;_dl_rtld_lock_recursive
-最后打的
-      <a class="read-more" href="/2024/06/10/the-end/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.06.10</div>
-      <div class="tags">
-        
-        <div class="tag-item">exit & IO</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/">一次性格式化字符串利用</a>
-    <div class="post-item-summary">
-      一次性格式化字符串【2023 强网杯】ez_fmt没开pie，开了 full Relro，改不了got和fini_array，也给了buf地址，栈上地址用偏移算
-改printf_ret地址，绕过w&#x3D;&#x3D;0xffff的限制，控制程序再次执行read 0x00401205  再次执行格式化字符串
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464
-      <a class="read-more" href="/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.06.08</div>
-      <div class="tags">
-        
-        <div class="tag-item">fmt</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2024/06/06/hello-world/">Hello World</a>
-    <div class="post-item-summary">
-      Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new &quot
-      <a class="read-more" href="/2024/06/06/hello-world/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2024.06.06</div>
-      <div class="tags">
-        
-      </div>
-    </div>
-  </section>
-  
-</div>
-
-
-  </main>
-  <footer class="footer">
-  
-  <span>Copyright © 2024 typo</span>
+                
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/07/15/WKCTF-pwn/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> WKCTF-pwn </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-07-15</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> arm-pwn入门 </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-07-12</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> 2024春秋杯夏季赛pwn </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-07-07</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> Iot-vulhub复现 </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-06-25</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> 2024ciscn分区赛-pwn复现 </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-06-25</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/06/11/IO-FILE%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> _IO_FILE基础利用 </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-06-11</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/06/10/the-end/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> the_end </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-06-10</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> 一次性格式化字符串利用 </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-06-08</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+                <div class="6u 12u(narrower)">
+                    <section class="link_box special">
+                       <a href="/2024/06/06/hello-world/">
+                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
+                            <!--标题-->
+                            <h2 class="page_title_text"> Hello World </h2>
+                            <!--段落-->
+                        </div>
+                        </a>
+                        <div class="home-post-info">
+                            <!-- Author Avatar -->
+                            <div class="home-post-info-author-avatar">
+                                <h6><span class="home-post-info-data">2024-06-06</span></h6>
+                                <div class="home-post-info-Category">
+                                    <!-- Category -->
+                                    <span>
+                            <h6>
+                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
+                                </a>
+                            </h6>
+                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- 文章sample  e-->
+            
+            </div>
+        </section>
+        </div>
+        <!-- 文章列表   end -->
+        <!-- Main 主要部分 end -->
+        <!-- footer  页码 start-->
+        <footer style="text-align: center; padding-top: 2em;">
   
 </footer>
-  
-<script src="/js/theme.js"></script>
 
+<script src="/css/prism_coy.css" async></script>
+
+
+        <!-- footer  页码 end-->
+        <!-- Copyright 版权 start -->
+                <div id="copyright">
+            <ul>
+                <li>&copy;Powered By <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
+                <li>Design: <a target="_blank" rel="noopener" href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
+            </ul>
+            
+                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+			
+        </div>
+        <!-- Copyright 版权 end -->
+    </div>
+    <!-- Wrapper 外包 e-->
+    <!-- Scripts -->
 </body>
 
+ 	
 </html>
