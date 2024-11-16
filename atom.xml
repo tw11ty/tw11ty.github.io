@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>tw11ty Blog</title>
+  <title>tw11ty&#39;s Blog</title>
   
-  <subtitle>MyBlog</subtitle>
+  
   <link href="http://tw11ty.github.io/atom.xml" rel="self"/>
   
   <link href="http://tw11ty.github.io/"/>
