@@ -1,449 +1,231 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
-	<link rel="shortcut icon" href="/img/logo_miccall.png">
-	
-			    <title>
-    tw11ty
-    </title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/css/mic_main.css" />
-    <link rel="stylesheet" href="/css/dropdownMenu.css" />
-    <meta name="keywords" content="miccall" />
-    
-    	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-	 
-    <noscript>
-        <link rel="stylesheet" href="/css/noscript.css" />
-    </noscript>
-    <style type="text/css">
-        body:before {
-          content: ' ';
-          position: fixed;
-          top: 0;
-          background: url('/img/bg.jpg') center 0 no-repeat;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          background-size: cover; 
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Archives | tw11ty Blog</title><meta name="author" content="tw11ty"><meta name="copyright" content="tw11ty"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="Archives">
+<meta property="og:url" content="http://tw11ty.github.io/archives/index.html">
+<meta property="og:site_name" content="tw11ty Blog">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://tw11ty.github.io/img/MyImg.png">
+<meta property="article:author" content="tw11ty">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://tw11ty.github.io/img/MyImg.png"><link rel="shortcut icon" href="/img/info.ico"><link rel="canonical" href="http://tw11ty.github.io/archives/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
         }
-    </style>
+        return value
+      }
+    }
 
-<link rel="stylesheet" href="/css/prism_coy.css">
-
-			    
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
   
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
         }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
         }
-      });
-    </script>
-    <script async type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
+      }
 
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
 
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/jquery.scrollex.min.js"></script>
-    <script src="/js/jquery.scrolly.min.js"></script>
-    <script src="/js/skel.min.js"></script>
-    <script src="/js/util.js"></script>
-    <script src="/js/main.js"></script>
-	
-<link rel="alternate" href="/atom.xml" title="tw11ty" type="application/atom+xml">
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+      const theme = saveToLocal.get('theme')
     
-		<body class="is-loading">
-    <!-- Wrapper 外包 s-->
-    <div id="wrapper" class="fade-in overlay">
-        <!-- Intro 头部显示 s -->
-                <div id="intro">
-            <h1>This is<br />
-                        MICCALL </h1>
-            <p> Whatever is worth doing is worth doing well <br/> I'll think of you every step of the way
-            </p>
-            <ul class="actions">
-                <li><a href="#header" class="button icon solo fa-arrow-down scrolly">Continue</a></li>
-            </ul>
-        </div>
-        <!-- Intro 头部显示 e -->
-        <!-- Header 头部logo start -->
-        <header id="header">
-    <a href="/" class="logo">MICCALL</a>
-</header>
-        <!-- Header 头部logo end -->
-        <!-- Nav 导航条 start -->
-        <nav id="nav" class="special" >
-            <ul class="menu links" >
-			<!-- Homepage  主页  --> 
-			<li >
-	            <a href="/" rel="nofollow">主页</a>
-	        </li>
-			<!-- categories_name  分类   --> 
-	        
-	        <li class="active">
-	            <a href="#s1">分类</a>
-	                    <ul class="submenu">
-	                        <li>
-	                        
-	                    </ul>
-	        </li>
-	        
-	        <!-- archives  归档   --> 
-	        
-	        
-		        <!-- Pages 自定义   -->
-		        
-		        <li>
-		            <a href="/about/" title="简历">
-		                简历
-		            </a>
-		        </li>
-		        
-		        <li>
-		            <a href="/group/" title="团队">
-		                团队
-		            </a>
-		        </li>
-		        
-		        <li>
-		            <a href="/gallery/" title="图库">
-		                图库
-		            </a>
-		        </li>
-		        
-		        <li>
-		            <a href="/tag/" title="标签">
-		                标签
-		            </a>
-		        </li>
-		        
-
-
-            </ul>
-            <!-- icons 图标   -->
-			<ul class="icons">
-                    
-                    <li>
-                        <a title="github" href="https://github.com/miccall" target="_blank" rel="noopener">
-                            <i class="icon fa fa-github"></i>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a title="500px" href="http://500px.com" target="_blank" rel="noopener">
-                            <i class="icon fa fa-500px"></i>
-                        </a>
-                    </li>
-                    
-			</ul>
-</nav>
-        <!-- Nav 导航条 end -->
-        <!-- Main 主要部分 start -->
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
         
-        <!-- 文章列表   s -->
-        <div id="main" style="background-color: transparent; padding:0;">
-        <section class="link_container" style="margin-top: 0; background-color: transparent; ">
-            <div class="link_row">
-                <!-- 文章sample  s-->
-
-                
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/07/15/WKCTF-pwn/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> WKCTF-pwn </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-07-15</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> arm-pwn入门 </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-07-12</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> 2024春秋杯夏季赛pwn </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-07-07</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> Iot-vulhub复现 </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-06-25</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> 2024ciscn分区赛-pwn复现 </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-06-25</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/06/11/IO-FILE%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> _IO_FILE基础利用 </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-06-11</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/06/10/the-end/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> the_end </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-06-10</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> 一次性格式化字符串利用 </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-06-08</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-                <div class="6u 12u(narrower)">
-                    <section class="link_box special">
-                       <a href="/2024/06/06/hello-world/">
-                        <div class="page_title" style="background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;">
-                            <!--标题-->
-                            <h2 class="page_title_text"> Hello World </h2>
-                            <!--段落-->
-                        </div>
-                        </a>
-                        <div class="home-post-info">
-                            <!-- Author Avatar -->
-                            <div class="home-post-info-author-avatar">
-                                <h6><span class="home-post-info-data">2024-06-06</span></h6>
-                                <div class="home-post-info-Category">
-                                    <!-- Category -->
-                                    <span>
-                            <h6>
-                            <a class="post_category-link" target="_blank" rel="noopener" href="http://localhost:4000/categories/Algorithm/">
-                                </a>
-                            </h6>
-                        </span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- 文章sample  e-->
-            
-            </div>
-        </section>
-        </div>
-        <!-- 文章列表   end -->
-        <!-- Main 主要部分 end -->
-        <!-- footer  页码 start-->
-        <footer style="text-align: center; padding-top: 2em;">
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
   
-</footer>
-
-<script src="/css/prism_coy.css" async></script>
-
-
-        <!-- footer  页码 end-->
-        <!-- Copyright 版权 start -->
-                <div id="copyright">
-            <ul>
-                <li>&copy;Powered By <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
-                <li>Design: <a target="_blank" rel="noopener" href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
-            </ul>
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"Author: tw11ty","link":"Link: ","source":"Source: tw11ty Blog","info":"Copyright belongs to the author. For commercial use, please contact the author for authorization. For non-commercial use, please indicate the source."}},
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Archives',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  isShuoshuo: false
+}</script><link rel="alternate" href="/atom.xml" title="tw11ty Blog" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/MyImg.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/img.png" alt="Logo"><span class="site-name">tw11ty Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><h1 class="title-seo">Archives</h1></header><main class="layout" id="content-inner"><div id="archive"><div class="article-sort-title">All Articles - 9</div><div class="article-sort"><div class="article-sort-item year">2024</div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-07-15T03:33:07.000Z" title="Created 2024-07-15 11:33:07">2024-07-15</time></div><a class="article-sort-item-title" href="/2024/07/15/WKCTF-pwn/" title="WKCTF-pwn">WKCTF-pwn</a></div></div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-07-12T13:02:32.000Z" title="Created 2024-07-12 21:02:32">2024-07-12</time></div><a class="article-sort-item-title" href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/" title="arm-pwn入门">arm-pwn入门</a></div></div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-07-07T04:44:56.000Z" title="Created 2024-07-07 12:44:56">2024-07-07</time></div><a class="article-sort-item-title" href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/" title="2024春秋杯夏季赛pwn">2024春秋杯夏季赛pwn</a></div></div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-06-25T10:46:14.000Z" title="Created 2024-06-25 18:46:14">2024-06-25</time></div><a class="article-sort-item-title" href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/" title="Iot-vulhub复现">Iot-vulhub复现</a></div></div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-06-25T10:23:13.000Z" title="Created 2024-06-25 18:23:13">2024-06-25</time></div><a class="article-sort-item-title" href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/" title="2024ciscn分区赛-pwn复现">2024ciscn分区赛-pwn复现</a></div></div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-06-11T11:46:46.000Z" title="Created 2024-06-11 19:46:46">2024-06-11</time></div><a class="article-sort-item-title" href="/2024/06/11/IO-FILE%E5%9F%BA%E7%A1%80%E5%88%A9%E7%94%A8/" title="_IO_FILE基础利用">_IO_FILE基础利用</a></div></div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-06-10T13:21:59.000Z" title="Created 2024-06-10 21:21:59">2024-06-10</time></div><a class="article-sort-item-title" href="/2024/06/10/the-end/" title="the_end">the_end</a></div></div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-06-08T08:43:06.000Z" title="Created 2024-06-08 16:43:06">2024-06-08</time></div><a class="article-sort-item-title" href="/2024/06/08/%E4%B8%80%E6%AC%A1%E6%80%A7%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%88%A9%E7%94%A8/" title="一次性格式化字符串利用">一次性格式化字符串利用</a></div></div><div class="article-sort-item"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2024-06-06T09:15:58.683Z" title="Created 2024-06-06 17:15:58">2024-06-06</time></div><a class="article-sort-item-title" href="/2024/06/06/hello-world/" title="Hello World">Hello World</a></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/MyImg.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">tw11ty</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/tw11ty"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">简简单单学学技术，不求甚解，不求甚高。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/15/WKCTF-pwn/" title="WKCTF-pwn">WKCTF-pwn</a><time datetime="2024-07-15T03:33:07.000Z" title="Created 2024-07-15 11:33:07">2024-07-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/12/arm-pwn%E5%85%A5%E9%97%A8/" title="arm-pwn入门">arm-pwn入门</a><time datetime="2024-07-12T13:02:32.000Z" title="Created 2024-07-12 21:02:32">2024-07-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/07/2024%E6%98%A5%E7%A7%8B%E6%9D%AF%E5%A4%8F%E5%AD%A3%E8%B5%9Bpwn/" title="2024春秋杯夏季赛pwn">2024春秋杯夏季赛pwn</a><time datetime="2024-07-07T04:44:56.000Z" title="Created 2024-07-07 12:44:56">2024-07-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/25/Iot-vulhub%E5%A4%8D%E7%8E%B0/" title="Iot-vulhub复现">Iot-vulhub复现</a><time datetime="2024-06-25T10:46:14.000Z" title="Created 2024-06-25 18:46:14">2024-06-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/" title="2024ciscn分区赛-pwn复现">2024ciscn分区赛-pwn复现</a><time datetime="2024-06-25T10:23:13.000Z" title="Created 2024-06-25 18:23:13">2024-06-25</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>Categories</span>
             
-                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
-			
-        </div>
-        <!-- Copyright 版权 end -->
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/IOT/"><span class="card-category-list-name">IOT</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/STU/"><span class="card-category-list-name">STU</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/WriteUP/"><span class="card-category-list-name">WriteUP</span><span class="card-category-list-count">3</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/tags/ciscn/" style="font-size: 1.15em; color: rgb(95, 129, 190);">ciscn</a><a href="/tags/IO/" style="font-size: 1.15em; color: rgb(50, 135, 165);">IO</a><a href="/tags/writewp/" style="font-size: 1.45em; color: rgb(92, 50, 190);">writewp</a><a href="/tags/IOT/" style="font-size: 1.15em; color: rgb(179, 50, 50);">IOT</a><a href="/tags/exit-IO/" style="font-size: 1.15em; color: rgb(50, 72, 103);">exit & IO</a><a href="/tags/arm/" style="font-size: 1.15em; color: rgb(153, 50, 79);">arm</a><a href="/tags/fmt/" style="font-size: 1.15em; color: rgb(182, 99, 197);">fmt</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>Archives</span>
+      
     </div>
-    <!-- Wrapper 外包 e-->
-    <!-- Scripts -->
-</body>
+    <ul class="card-archive-list">
+  
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2024/07/">
+          <span class="card-archive-list-date">July 2024</span>
+          <span class="card-archive-list-count">3</span>
+        </a>
+      </li>
+    
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2024/06/">
+          <span class="card-archive-list-date">June 2024</span>
+          <span class="card-archive-list-count">6</span>
+        </a>
+      </li>
+    </ul></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By tw11ty</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="IOT,VULNERABLE,PWN,CTF,HACK" data-fontsize="15px" data-random="true" async="async"></script><script>(() => {
+  const option = null
+  const config = {"site_uv":false,"site_pv":false,"page_pv":false,"token":null}
 
- 	
-</html>
+  const runTrack = () => {
+    umami.track(props => ({ ...props, url: window.location.pathname, title: GLOBAL_CONFIG_SITE.title }))
+  }
+
+  const loadUmamiJS = () => {
+    btf.getScript('https://cloud.umami.is/script.js', {
+      'data-website-id': '',
+      'data-auto-track': 'false',
+      ...option
+    }).then(runTrack)
+  }
+
+  const getData = async (isPost) => {
+    const now = Date.now()
+    const keyUrl = isPost ? `&url=${window.location.pathname}` : ''
+    const headerList = { 'Accept': 'application/json' }
+    if (false) headerList['Authorization'] = `Bearer ${config.token}`
+    else headerList['x-umami-api-key'] = config.token
+    const res = await fetch(`https://api.umami.is/v1/websites//stats?startAt=0000000000&endAt=${now}${keyUrl}`, {
+      method: "GET",
+      headers: headerList
+    })
+    return await res.json()
+  }
+
+  const insertData = async () => {
+    try {
+      if (GLOBAL_CONFIG_SITE.isPost && config.page_pv) {
+        const pagePV = document.getElementById('umamiPV')
+        if (pagePV) {
+          const data = await getData(true)
+          pagePV.textContent = data.pageviews.value
+        }
+      } else {
+        const data = (config.site_uv || config.site_pv) && await getData()
+        if (config.site_uv) {
+          const siteUV = document.getElementById('umami-site-uv')
+          if (siteUV) siteUV.textContent = data.visitors.value
+        }
+        if (config.site_pv) {
+          const sitePV = document.getElementById('umami-site-pv')
+          if (sitePV) sitePV.textContent = data.pageviews.value
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load Umami Analytics:', e)
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', runTrack, 'umami_analytics_run_track')
+  btf.addGlobalFn('pjaxComplete', insertData, 'umami_analytics_insert')
+
+  loadUmamiJS()
+  insertData()
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
