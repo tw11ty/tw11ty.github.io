@@ -164,13 +164,6 @@
 
   
   <url>
-    <loc>http://tw11ty.github.io/tags/IOT/</loc>
-    <lastmod>2024-11-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://tw11ty.github.io/tags/writewp/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -192,6 +185,13 @@
   </url>
   
   <url>
+    <loc>http://tw11ty.github.io/tags/IOT/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://tw11ty.github.io/tags/ctfshow/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -199,14 +199,14 @@
   </url>
   
   <url>
-    <loc>http://tw11ty.github.io/tags/tips/</loc>
+    <loc>http://tw11ty.github.io/tags/arm/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://tw11ty.github.io/tags/arm/</loc>
+    <loc>http://tw11ty.github.io/tags/tips/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -229,13 +229,6 @@
 
   
   <url>
-    <loc>http://tw11ty.github.io/categories/IOT/</loc>
-    <lastmod>2024-11-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://tw11ty.github.io/categories/WriteUP/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -244,6 +237,13 @@
   
   <url>
     <loc>http://tw11ty.github.io/categories/STU/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://tw11ty.github.io/categories/IOT/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
