@@ -146,7 +146,7 @@
 
   
   <url>
-    <loc>http://tw11ty.github.io/tags/IO/</loc>
+    <loc>http://tw11ty.github.io/tags/ciscn-WriteUP/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -160,14 +160,14 @@
   </url>
   
   <url>
-    <loc>http://tw11ty.github.io/tags/IOT/</loc>
+    <loc>http://tw11ty.github.io/tags/IO/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://tw11ty.github.io/tags/exit-IO/</loc>
+    <loc>http://tw11ty.github.io/tags/IOT/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -181,14 +181,14 @@
   </url>
   
   <url>
-    <loc>http://tw11ty.github.io/tags/fmt/</loc>
+    <loc>http://tw11ty.github.io/tags/exit-IO/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://tw11ty.github.io/tags/ciscn-WriteUP/</loc>
+    <loc>http://tw11ty.github.io/tags/fmt/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
