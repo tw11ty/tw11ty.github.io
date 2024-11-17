@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tw11ty.github.io/2024/11/17/gdb-tips/</loc>
+    
+    <lastmod>2024-11-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://tw11ty.github.io/2024/11/17/ctfshow-pwn-181-204/</loc>
+    
+    <lastmod>2024-11-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://tw11ty.github.io/2024/06/25/2024ciscn%E5%88%86%E5%8C%BA%E8%B5%9B-pwn%E5%A4%8D%E7%8E%B0/</loc>
     
     <lastmod>2024-11-16</lastmod>
@@ -160,7 +178,14 @@
   </url>
   
   <url>
-    <loc>http://tw11ty.github.io/tags/IO/</loc>
+    <loc>http://tw11ty.github.io/tags/arm/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://tw11ty.github.io/tags/tips/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -168,13 +193,6 @@
   
   <url>
     <loc>http://tw11ty.github.io/tags/IOT/</loc>
-    <lastmod>2024-11-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://tw11ty.github.io/tags/arm/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -189,6 +207,20 @@
   
   <url>
     <loc>http://tw11ty.github.io/tags/fmt/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://tw11ty.github.io/tags/IO/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://tw11ty.github.io/tags/ctfshow/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -211,7 +243,21 @@
   </url>
   
   <url>
+    <loc>http://tw11ty.github.io/categories/gdb-usage/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://tw11ty.github.io/categories/IOT/</loc>
+    <lastmod>2024-11-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://tw11ty.github.io/categories/ctfshow/</loc>
     <lastmod>2024-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
