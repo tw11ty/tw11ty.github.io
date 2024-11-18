@@ -7,7 +7,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://tw11ty.github.io/img/MyImg.png">
 <meta property="article:published_time" content="2024-11-17T12:04:13.000Z">
-<meta property="article:modified_time" content="2024-11-17T14:33:14.510Z">
+<meta property="article:modified_time" content="2024-11-18T05:47:29.848Z">
 <meta property="article:author" content="tw11ty">
 <meta property="article:tag" content="tips">
 <meta name="twitter:card" content="summary">
@@ -18,7 +18,7 @@
   "url": "http://tw11ty.github.io/2024/11/17/gdb-tips/",
   "image": "http://tw11ty.github.io/img/MyImg.png",
   "datePublished": "2024-11-17T12:04:13.000Z",
-  "dateModified": "2024-11-17T14:33:14.510Z",
+  "dateModified": "2024-11-18T05:47:29.848Z",
   "author": [
     {
       "@type": "Person",
@@ -162,7 +162,7 @@
   isToc: true,
   isShuoshuo: false
 }</script><link rel="alternate" href="/atom.xml" title="tw11ty's Blog" type="application/atom+xml">
-<link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/MyImg.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/img.png" alt="Logo"><span class="site-name">tw11ty's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">gdb_tips</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">gdb_tips</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-17T12:04:13.000Z" title="Created 2024-11-17 20:04:13">2024-11-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-17T14:33:14.510Z" title="Updated 2024-11-17 22:33:14">2024-11-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/gdb-usage/">gdb_usage</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>学长推荐了个有趣的github项目，就此来回顾学习一下gdb的调试技巧：<a target="_blank" rel="noopener" href="https://github.com/hellogcc/100-gdb-tips/blob/master/src/index.md">100-gdb-tips&#x2F;src&#x2F;index.md at master · hellogcc&#x2F;100-gdb-tips</a></p>
+<link rel="stylesheet" href="/css/prism.css" type="text/css"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/MyImg.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/img.png" alt="Logo"><span class="site-name">tw11ty's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">gdb_tips</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user-circle"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">gdb_tips</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-11-17T12:04:13.000Z" title="Created 2024-11-17 20:04:13">2024-11-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-18T05:47:29.848Z" title="Updated 2024-11-18 13:47:29">2024-11-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/gdb-usage/">gdb_usage</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>学长推荐了个有趣的github项目，就此来回顾学习一下gdb的调试技巧：<a target="_blank" rel="noopener" href="https://github.com/hellogcc/100-gdb-tips/blob/master/src/index.md">100-gdb-tips&#x2F;src&#x2F;index.md at master · hellogcc&#x2F;100-gdb-tips</a></p>
 <h1 id="信息显示"><a href="#信息显示" class="headerlink" title="信息显示"></a>信息显示</h1><h2 id="显示gdb版本信息"><a href="#显示gdb版本信息" class="headerlink" title="显示gdb版本信息"></a>显示gdb版本信息</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gdb --version</span><br><span class="line">gdb -v</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示正在运行的 GDB 版本。您应该将此信息包含在 GDB 错误报告中。如果您的站点使用多个版本的 GDB，您可能需要确定正在运行的 GDB 版本；随着 GDB 的发展，新的命令被引入，旧的命令可能会消失。此外，许多系统供应商提供了 GDB 的变体版本，并且 GNU/Linux 发行版中也有 GDB 的变体版本。版本号与启动GDB时公布的版本号相同。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">目前只接触到gdb版本会和python版本存在一定兼容性问题  而一些插件又依赖于python版本，所以会导致gdb版本低会安装不了插件</span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411172021157.png" alt="image-20241117201712754"></p>
@@ -203,9 +203,28 @@
 <h3 id="usage"><a href="#usage" class="headerlink" title="usage"></a>usage</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">info functions</span><br><span class="line">info functions thre*   #匹配正则</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411172132988.png" alt="image-20241117213222927"></p>
-<h2 id="基础调试命令"><a href="#基础调试命令" class="headerlink" title="基础调试命令"></a>基础调试命令</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">start：</span><br><span class="line">run（r）：执行程序，遇到断点将停止，等待用户输入。</span><br><span class="line">continue （c ）：继续运行程序，直到遇到下一个断点或错误。</span><br><span class="line">next（ n）：单步跟踪程序，当遇到函数调用时，也不进入此函数体；此命令同 step 的主要区别是，step 遇到用户自定义的函数，将步进到函数中去运行，而 next 则直接调用函数，不会进入到函数体内。</span><br><span class="line">nexti（ni）：同next，单步一条机器指令，不进入函数。</span><br><span class="line">step （s）：单步调试如果有函数调用，则进入函数；与命令n不同，n是不进入调用的函数的</span><br><span class="line">step（si）：同step，单步一条机器指令。</span><br><span class="line">until：用于退出循环体</span><br><span class="line">until N： 执行运行程序，直到当前行前面已经运行了N行代码。</span><br><span class="line">finish（fini）： 退出正在执行的函数</span><br><span class="line">quit（q）：q ，退出gdb</span><br></pre></td></tr></table></figure>
-
+<h2 id="调试技巧"><a href="#调试技巧" class="headerlink" title="调试技巧"></a>调试技巧</h2><ul>
+<li>start：程序从头开始重新启动</li>
+<li>run（r）：执行程序，遇到断点将停止，等待用户输入。</li>
+<li>continue （c ）：继续运行程序，直到遇到下一个断点或错误。</li>
+<li>next（ n）：单步跟踪程序，当遇到函数调用时，也不进入此函数体；此命令同 step 的主要区别是，step 遇到用户自定义的函数，将步进到函数中去运行，而 next 则直接调用函数，不会进入到函数体内。</li>
+<li>nexti（ni）：同next，单步一条机器指令，不进入函数。</li>
+<li>step （s）：单步调试如果有函数调用，则进入函数；与命令n不同，n是不进入调用的函数的</li>
+<li>stepi（si）：同step，单步一条机器指令。</li>
+<li>until：用于退出循环体了。</li>
+<li>until N： 执行运行程序，直到当前行前面已经运行了N行代码。</li>
+<li>finish（fini）： 退出正在执行的函数。</li>
+<li>quit（q）：退出gdb。</li>
+<li>info frame（i frame&#x2F;f）：打印函数堆栈帧信息。</li>
+<li>info registers（i registers&#x2F;r）：查看函数寄存器信息。</li>
+<li>disasseble func：查看函数反汇编代码。</li>
+<li>up N：向上切换函数栈帧。</li>
+<li>down N：向下切换函数栈帧。</li>
+<li>set debug entry-values 1：打印尾调用堆栈帧信息。</li>
+<li>frame N：选择函数堆栈帧（N为层数），也可以使用frame addr</li>
+</ul>
 <h3 id="n-ni-的区别"><a href="#n-ni-的区别" class="headerlink" title="n &amp; ni 的区别"></a>n &amp; ni 的区别</h3><p>前者用于源代码级别的调试，后者用于机器码级别的调试。</p>
+<p>（个人调试时喜欢使用ni&#x2F;si指令😍）</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411172212936.png" alt="image-20241117221258876"></p>
 <p>执行n后，跳过了sum &#x3D; x+y对应的汇编语句</p>
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411172213052.png" alt="image-20241117221326966"></p>
@@ -223,7 +242,167 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p (void)func(1, 5)</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411172227272.png" alt="image-20241117222705213"></p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://tw11ty.github.io">tw11ty</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://tw11ty.github.io/2024/11/17/gdb-tips/">http://tw11ty.github.io/2024/11/17/gdb-tips/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/tips/">tips</a></div><div class="post-share"><div class="social-share" data-image="/img/MyImg.png" data-sites="facebook,twitter,wechat,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2024/11/17/ctfshow-pwn-181-204/" title="ctfshow_pwn_181_204"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">ctfshow_pwn_181_204</div></div><div class="info-2"><div class="info-item-1">前言这段时间没搞过pwn了，发现ctfshow wp更新了，那就来学一下吧😋（绝对不是这个原因🙅） 181–ret2text直接就是栈溢出了  能覆盖返回地址三字节  函数表里面有个Mid函数读flag，直接返回即可  123456789101112131415161718#coding:utf-8from tw11ty import *#from ctypes import *if __name__ == &#x27;__main__&#x27; :    # context.log_level = &#x27;info&#x27;    IPort = &#x27;pwn.challenge.ctf.show 28220&#x27;    pwnfile = &#x27;./181&#x27;    libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;    elf  = ELF(pwnfile)    io = init(pwnfile, IPort, libc_name)    # debug(&#x27;b...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%98%BE%E7%A4%BA"><span class="toc-number">2.</span> <span class="toc-text">信息显示</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%BE%E7%A4%BAgdb%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">2.1.</span> <span class="toc-text">显示gdb版本信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%BE%E7%A4%BAgdb%E7%89%88%E6%9D%83%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF"><span class="toc-number">2.2.</span> <span class="toc-text">显示gdb版权相关信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8gdb%E6%97%B6%E4%B8%8D%E6%98%BE%E7%A4%BA%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.</span> <span class="toc-text">调用gdb时不显示提示信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E4%BF%A1%E6%81%AF%E5%A4%9A%E6%97%B6%E4%B8%8D%E4%BC%9A%E6%9A%82%E5%81%9C%E8%BE%93%E5%87%BA"><span class="toc-number">2.4.</span> <span class="toc-text">输出信息多时不会暂停输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwndbg%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">2.5.</span> <span class="toc-text">pwndbg设置输出重定向</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E6%9B%B4%E6%96%B0-gdbinit"><span class="toc-number">2.5.1.</span> <span class="toc-text">快捷更新~&#x2F;.gdbinit</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E5%87%BD%E6%95%B0%E5%90%8D"><span class="toc-number">3.1.</span> <span class="toc-text">列出函数名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#demo"><span class="toc-number">3.1.1.</span> <span class="toc-text">demo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#usage"><span class="toc-number">3.1.2.</span> <span class="toc-text">usage</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%B0%83%E8%AF%95%E5%91%BD%E4%BB%A4"><span class="toc-number">3.2.</span> <span class="toc-text">基础调试命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#n-ni-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.2.1.</span> <span class="toc-text">n &amp; ni 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#s-si-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.2.2.</span> <span class="toc-text">s &amp; si 的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-number">3.3.</span> <span class="toc-text">直接执行函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%8A%A0%E8%BD%BD%E8%B0%83%E8%AF%95%E4%BF%A1%E6%81%AF"><span class="toc-number">3.3.1.</span> <span class="toc-text">手动加载调试信息</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(/img/foor.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2024 By tw11ty</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="IOT,VULNERABLE,PWN,CTF,HACK,FMT,STACKOVERFLOW,SECURITY,VULNHUB,BUGCROWD,H1" data-fontsize="15px" data-random="true" async="async"></script><script>(() => {
+<h1 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h1><h2 id="调试技巧-1"><a href="#调试技巧-1" class="headerlink" title="调试技巧"></a>调试技巧</h2><ul>
+<li>匿名空间设置断点   b  Foo::foo      b  (anonymous namespace)::bar</li>
+<li>程序地址上打断点  b *address</li>
+<li>在程序入口处打断点 去除符号表后可以 先start 执行到__libc_start_main找main函数的调用地址</li>
+<li>在文件行号上打断点  文件编译时-g添加了调试信息，那么可以直接 b N进行源代码级别的行号设置断点</li>
+<li>保存已经设置的断点  save breakpoints file-name-to-save</li>
+<li>查看断点  info breakpoints （i b）</li>
+<li>设置临时断点（生效一次）tbreak（tbr）   –&gt; enable once 断点编号</li>
+<li>设置条件断点  b 10 if i&#x3D;&#x3D;101</li>
+<li>禁用断点  disable  断点编号（批量禁止disable num1-num2）</li>
+<li>启用断点  enable  断点编号</li>
+<li>忽略前N次命中：ignore 断点编号 次数</li>
+<li>删除断点 delete [断点]  （单delete删除全部）</li>
+</ul>
+<h2 id="gcc-s-和-strip命令区别"><a href="#gcc-s-和-strip命令区别" class="headerlink" title="gcc -s 和 strip命令区别"></a>gcc -s 和 strip命令区别</h2><p>gcc作为编译器&#x2F;链接器，-s选项是在链接时完成的。用来删除符号表和重定向信息。</p>
+<p>strip则是对已经编译生成的目标文件进行删减。有对应的命令选项来进行删除，比如-g选项能删除对应gcc -g添加的调试信息而保留符号表。</p>
+<blockquote>
+<p>一般在实际开发中，经常需要对ELF格式二进制文件进行strip操作，删除部分section：减少size，节省空间；去掉symbol table，增加逆向工程难度😭</p>
+</blockquote>
+<p>(<code>nm</code> 命令是 <code>Linux</code> 下的一个强大的文件分析工具，用于检查和分析二进制文件、库文件、可执行文件中的符号表。)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411181305032.png" alt="image-20241118130529914"></p>
+<blockquote>
+<p>提取调试信息：objcopy –only-keep-debug program program.debug</p>
+<p>gdb加载调试信息：symbol-file program.debug</p>
+</blockquote>
+<h3 id="去除符号表后调试程序时调用-libc-start-main的原因"><a href="#去除符号表后调试程序时调用-libc-start-main的原因" class="headerlink" title="去除符号表后调试程序时调用__libc_start_main的原因"></a>去除符号表后调试程序时调用__libc_start_main的原因</h3><p>去除符号表后，调试器不能找到main的入口地址，只能依赖程序启动的默认流程。</p>
+<p>在 Linux 程序中，程序启动通常经过以下步骤：</p>
+<ol>
+<li>**程序入口点 (<code>_start</code>)**：<ul>
+<li>这是 ELF 文件的默认入口，由操作系统加载程序后首先执行。</li>
+<li><code>_start</code> 通常初始化运行时环境（如栈、堆等），并调用 <code>__libc_start_main</code>。</li>
+</ul>
+</li>
+<li>**<code>__libc_start_main</code>**：<ul>
+<li>一个标准的 C 程序入口函数，它负责：<ul>
+<li>初始化全局变量。</li>
+<li>执行构造函数（<code>.init_array</code> 中的函数）。</li>
+<li>最终调用 <code>main</code> 函数。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>调用 <code>main</code> 函数</strong>：<ul>
+<li>当 <code>__libc_start_main</code> 完成初始化后，它会跳转到 <code>main</code> 函数，开始程序的主要逻辑。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411181335234.png" alt="image-20241118133501181"></p>
+<p><strong>直接调试去除符号表的程序将调用libc_start_main</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411181331063.png" alt="image-20241118133103781"></p>
+<p><strong>加载符号表后再启动断在main函数</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/tw11ty/MyPic/img202411181331200.png" alt="image-20241118133155920"></p>
+<h3 id="strip使用方法"><a href="#strip使用方法" class="headerlink" title="strip使用方法"></a>strip使用方法</h3><table>
+<thead>
+<tr>
+<th><strong>选项</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-I --input-target=&lt;bfdname&gt;</code></td>
+<td>假设输入文件的格式为 <code>&lt;bfdname&gt;</code></td>
+</tr>
+<tr>
+<td><code>-O --output-target=&lt;bfdname&gt;</code></td>
+<td>创建格式为 <code>&lt;bfdname&gt;</code> 的输出文件</td>
+</tr>
+<tr>
+<td><code>-F --target=&lt;bfdname&gt;</code></td>
+<td>将输入和输出格式都设置为 <code>&lt;bfdname&gt;</code></td>
+</tr>
+<tr>
+<td><code>-p --preserve-dates</code></td>
+<td>将修改&#x2F;访问时间戳复制到输出文件</td>
+</tr>
+<tr>
+<td><code>-D --enable-deterministic-archives</code></td>
+<td>生成确定性输出时剥离归档文件（默认行为）</td>
+</tr>
+<tr>
+<td><code>-U --disable-deterministic-archives</code></td>
+<td>禁用 <code>-D</code> 行为</td>
+</tr>
+<tr>
+<td><code>-R --remove-section=&lt;name&gt;</code></td>
+<td>从输出中移除名称为 <code>&lt;name&gt;</code> 的段</td>
+</tr>
+<tr>
+<td><code>--remove-relocations &lt;name&gt;</code></td>
+<td>从 <code>&lt;name&gt;</code> 段移除重定位信息</td>
+</tr>
+<tr>
+<td><code>-s --strip-all</code></td>
+<td>移除所有符号和重定位信息</td>
+</tr>
+<tr>
+<td><code>-g -S -d --strip-debug</code></td>
+<td>移除所有调试符号和段</td>
+</tr>
+<tr>
+<td><code>--strip-dwo</code></td>
+<td>移除所有 DWO 段</td>
+</tr>
+<tr>
+<td><code>--strip-unneeded</code></td>
+<td>移除重定位信息不需要的符号</td>
+</tr>
+<tr>
+<td><code>--only-keep-debug</code></td>
+<td>仅保留调试信息，移除其他信息</td>
+</tr>
+<tr>
+<td><code>-M --merge-notes</code></td>
+<td>移除注释段中冗余的条目（默认行为）</td>
+</tr>
+<tr>
+<td><code>--no-merge-notes</code></td>
+<td>不尝试移除冗余注释</td>
+</tr>
+<tr>
+<td><code>-N --strip-symbol=&lt;name&gt;</code></td>
+<td>不复制名称为 <code>&lt;name&gt;</code> 的符号</td>
+</tr>
+<tr>
+<td><code>--keep-section=&lt;name&gt;</code></td>
+<td>不剥离名称为 <code>&lt;name&gt;</code> 的段</td>
+</tr>
+<tr>
+<td><code>-K --keep-symbol=&lt;name&gt;</code></td>
+<td>不剥离名称为 <code>&lt;name&gt;</code> 的符号</td>
+</tr>
+<tr>
+<td><code>--keep-file-symbols</code></td>
+<td>不剥离文件符号</td>
+</tr>
+<tr>
+<td><code>-w --wildcard</code></td>
+<td>允许符号匹配中使用通配符</td>
+</tr>
+<tr>
+<td><code>-x --discard-all</code></td>
+<td>移除所有非全局符号</td>
+</tr>
+<tr>
+<td><code>-X --discard-locals</code></td>
+<td>移除所有编译器生成的符号</td>
+</tr>
+<tr>
+<td><code>-v --verbose</code></td>
+<td>列出所有被修改的目标文件</td>
+</tr>
+<tr>
+<td><code>-V --version</code></td>
+<td>显示此程序的版本号</td>
+</tr>
+<tr>
+<td><code>-h --help</code></td>
+<td>显示帮助信息</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://tw11ty.github.io">tw11ty</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://tw11ty.github.io/2024/11/17/gdb-tips/">http://tw11ty.github.io/2024/11/17/gdb-tips/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/tips/">tips</a></div><div class="post-share"><div class="social-share" data-image="/img/MyImg.png" data-sites="facebook,twitter,wechat,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2024/11/17/ctfshow-pwn-181-204/" title="ctfshow_pwn_181_204"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">ctfshow_pwn_181_204</div></div><div class="info-2"><div class="info-item-1">前言这段时间没搞过pwn了，发现ctfshow wp更新了，那就来学一下吧😋（绝对不是这个原因🙅） 181–ret2text直接就是栈溢出了  能覆盖返回地址三字节  函数表里面有个Mid函数读flag，直接返回即可  123456789101112131415161718#coding:utf-8from tw11ty import *#from ctypes import *if __name__ == &#x27;__main__&#x27; :    # context.log_level = &#x27;info&#x27;    IPort = &#x27;pwn.challenge.ctf.show 28220&#x27;    pwnfile = &#x27;./181&#x27;    libc_name = &#x27;/lib/x86_64-linux-gnu/libc.so.6&#x27;    elf  = ELF(pwnfile)    io = init(pwnfile, IPort, libc_name)    # debug(&#x27;b...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%98%BE%E7%A4%BA"><span class="toc-number">2.</span> <span class="toc-text">信息显示</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%BE%E7%A4%BAgdb%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">2.1.</span> <span class="toc-text">显示gdb版本信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%BE%E7%A4%BAgdb%E7%89%88%E6%9D%83%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF"><span class="toc-number">2.2.</span> <span class="toc-text">显示gdb版权相关信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8gdb%E6%97%B6%E4%B8%8D%E6%98%BE%E7%A4%BA%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.</span> <span class="toc-text">调用gdb时不显示提示信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E4%BF%A1%E6%81%AF%E5%A4%9A%E6%97%B6%E4%B8%8D%E4%BC%9A%E6%9A%82%E5%81%9C%E8%BE%93%E5%87%BA"><span class="toc-number">2.4.</span> <span class="toc-text">输出信息多时不会暂停输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwndbg%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">2.5.</span> <span class="toc-text">pwndbg设置输出重定向</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E6%9B%B4%E6%96%B0-gdbinit"><span class="toc-number">2.5.1.</span> <span class="toc-text">快捷更新~&#x2F;.gdbinit</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E5%87%BD%E6%95%B0%E5%90%8D"><span class="toc-number">3.1.</span> <span class="toc-text">列出函数名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#demo"><span class="toc-number">3.1.1.</span> <span class="toc-text">demo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#usage"><span class="toc-number">3.1.2.</span> <span class="toc-text">usage</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="toc-number">3.2.</span> <span class="toc-text">调试技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#n-ni-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.2.1.</span> <span class="toc-text">n &amp; ni 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#s-si-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.2.2.</span> <span class="toc-text">s &amp; si 的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-number">3.3.</span> <span class="toc-text">直接执行函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%8A%A0%E8%BD%BD%E8%B0%83%E8%AF%95%E4%BF%A1%E6%81%AF"><span class="toc-number">3.3.1.</span> <span class="toc-text">手动加载调试信息</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%AD%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text">断点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7-1"><span class="toc-number">4.1.</span> <span class="toc-text">调试技巧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gcc-s-%E5%92%8C-strip%E5%91%BD%E4%BB%A4%E5%8C%BA%E5%88%AB"><span class="toc-number">4.2.</span> <span class="toc-text">gcc -s 和 strip命令区别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E7%AC%A6%E5%8F%B7%E8%A1%A8%E5%90%8E%E8%B0%83%E8%AF%95%E7%A8%8B%E5%BA%8F%E6%97%B6%E8%B0%83%E7%94%A8-libc-start-main%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">4.2.1.</span> <span class="toc-text">去除符号表后调试程序时调用__libc_start_main的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#strip%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">4.2.2.</span> <span class="toc-text">strip使用方法</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(/img/foor.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2024 By tw11ty</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="true" data-click="true"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="IOT,VULNERABLE,PWN,CTF,HACK,FMT,STACKOVERFLOW,SECURITY,VULNHUB,BUGCROWD,H1" data-fontsize="15px" data-random="true" async="async"></script><script>(() => {
   const option = null
   const config = {"site_uv":false,"site_pv":false,"page_pv":false,"token":null}
 
